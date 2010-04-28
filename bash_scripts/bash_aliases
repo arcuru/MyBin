@@ -35,12 +35,10 @@ alias transferdirece='scp -r $1 pjackson6@ecelinsrv1.ece.gatech.edu:$2'
 
 #	Upgrading with bauerbill & pacman
 alias upgrade='sudo bauerbill -Syu --rebase --aur --build-as patty'
-alias install='sudo pacman -S'
-alias installaur='sudo bauerbill -S --aur --build-as patty'
+alias install='sudo bauerbill -S --aur --build-as patty'
 alias remove='sudo pacman -Rs'
 alias clean='rm -rf /tmp/bauerbill'
-alias search='pacman -Ss'
-alias searchaur='bauerbill -Ss --aur'
+alias search='bauerbill -Ss --aur'
 
 
 #	Upgrading with apt-get

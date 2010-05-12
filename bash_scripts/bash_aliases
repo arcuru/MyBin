@@ -1,0 +1,61 @@
+#Must edit ~/.bashrc to reference this file for aliases
+
+#	Overwriting basic commands
+alias ls='ls -ph --color=auto'
+alias rm='rm -I'
+alias temp='acpi -t'
+alias tarballpack='tar cvzf $1 $2'
+alias tarballunpack='tar xzvf'
+alias maxbright='sudo setpci -s 00:02.0 f4.b=ff'
+
+#	Mounting Samba share
+alias umountsamba='sudo umount /media/Raid1'
+
+#	Connecting to GT places
+alias connectacme='ssh pjackson6@acme.gatech.edu'
+alias retrieveacme='scp pjackson6@acme.gatech.edu:$1 $2'
+alias retrievediracme='scp -r pjackson6@acme.gatech.edu:$1 $2'
+alias transferacme='scp $1 pjackson6@acme.gatech.edu:$2'
+alias transferdiracme='scp -r $1 pjackson6@acme.gatech.edu:$2'
+alias connectece='ssh -Y pjackson6@ecelinsrv1.ece.gatech.edu'
+alias retrieveece='scp pjackson6@ecelinsrv1.ece.gatech.edu:$1 $2'
+alias retrievedirece='scp -r pjackson6@ecelinsrv1.ece.gatech.edu:$1 $2'
+alias transferece='scp $1 pjackson6@ecelinsrv1.ece.gatech.edu:$2'
+alias transferdirece='scp -r $1 pjackson6@ecelinsrv1.ece.gatech.edu:$2'
+
+#	Publishing webpages to acme.gatech or localhost apache
+#alias publish='scp -r ~/public_html pjackson6@acme.gatech.edu:; chmod o+x ~/public_html; chmod o+r ~/public_html/*'
+#alias publish='sudo cp -r /home/patty/public_html/* /var/www/'
+#alias publish1='sudo cp -r /home/patty/public_html/week1/* /var/www/week1/'
+#alias publish2='sudo cp -r /home/patty/public_html/week2/* /var/www/week2/'
+#alias publish3='sudo cp -r /home/patty/public_html/week3/* /var/www/week3/'
+#alias publish4='sudo cp -r /home/patty/public_html/week4/* /var/www/week4/'
+#alias publish5='sudo cp -r /home/patty/public_html/week5/* /var/www/week5/'
+
+#	Upgrading with bauerbill & pacman
+alias upgrade='sudo bauerbill -Syu --rebase --aur --build-as patty'
+alias install='sudo pacman -S'
+alias installaur='sudo bauerbill -S --aur --build-as patty'
+alias remove='sudo pacman -Rs'
+alias clean='rm -rf /tmp/bauerbill'
+alias search='pacman -Ss'
+alias searchaur='bauerbill -Ss --aur'
+
+
+#	Upgrading with apt-get
+#alias update='sudo apt-get update && sudo apt-get upgrade'
+#alias upgrade='sudo apt-get upgrade'
+#alias dist-upgrade='sudo apt-get dist-upgrade'
+#alias clean='sudo apt-get clean && sudo apt-get autoremove'
+#alias check='sudo apt-get check'
+
+#	Compiling
+#alias gcc='gcc $1 -lm' #-lm lets sqrt be used
+alias gmp='gcc $1 -lgmp'
+alias gmp++='g++ $1 -lgmpxx -lgmp'
+
+#	Usable with pulseaudio
+#alias audio='killall pulseaudio; sudo start pulseaudio'
+
+alias bghide='feh --bg-scale ~/Dropbox/Photos/Wallpapers/yep.jpg'
+alias bgreturn='feh --bg-scale ~/Dropbox/Photos/Wallpapers/sexy-market-for-headphones-1280x800.jpg'

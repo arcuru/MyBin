@@ -1,0 +1,807 @@
+#!/bin/bash
+
+
+### FIBONACCI MAY BE WRONG
+
+
+
+
+
+#################################
+#
+#
+#Exponentials
+#
+#
+#################################
+
+
+function exponential
+{
+	############
+	#
+	#	Exponential Function
+	#
+	#	Calls appropriate functions to perform calculation
+	#
+	############
+	exptalk
+	expmove $input1
+	check
+	expmulttalk
+	if [ $expmult -ge 1 ]
+	then
+		expmultcalc
+		return
+	fi
+	resume
+	cut 0
+	if [ $resume -ge 1 ]
+	then
+		resumeexp
+	else
+		calcexp
+	fi
+}
+
+function expmulttalk
+{
+	echo "Would you like to do a Big Multiply?(y/n)"
+	read yn
+	if [ $yn == 'y' ]
+	then
+		expmult=1
+	else
+		expmult=0
+	fi
+}
+
+function expmultcalc
+{
+	cut 9
+	echo "What is the number for the smaller value to use?"
+	read path1
+	path2=$[input2-path1]
+	if [ -d $path2 ]
+	then
+		readfile $path1 m
+		p=$c
+		readfile $path2 n
+		d=$c
+		bigmultiply m $p n $d q
+		combine q
+		write $input2
+		testing
+	else
+		echo "Second number does not exist"
+		expmultcalc
+	fi
+	
+}
+
+function exptalk
+{
+	############
+	#
+	#	Exponential Talk
+	#
+	#	Gathers information to perform exponent calculation
+	#
+	############
+	echo "Find exponential of what number?"
+	read input1
+	echo "Raise $input1 to what power?"
+	read input2
+}
+
+function expmove
+{
+	############
+	#
+	#	Exponential Move
+	#
+	#	Creates/Moves to correct directory to store exponent calculations
+	#
+	############
+	cd
+	movement Calculations
+	movement Exponentials
+	movement $1^x
+}
+
+function calcexp
+{
+	############
+	#
+	#	Exponential Function
+	#
+	#	Calculates exponential
+	#
+	############
+	#Setup and running multiply
+	declare n1=1
+	d=1
+	count=1
+	upper=$input2
+	multiply input1 n n
+	combine n
+	write $input2
+	testing
+}
+
+function resumeexp
+{
+	############
+	#
+	#	Resume Exponential Function
+	#
+	#	Resumes exponential calculations
+	#
+	############
+	readfile $resume n
+	d=$c
+	count=$[resume+1]
+	upper=$input2
+	multiply input1 n n
+	combine n
+	write $input2
+	testing
+}
+
+
+#################################
+#
+#
+#	Factorials
+#
+#
+#################################
+
+function factorial
+{
+	############
+	#
+	#	Factorial Function
+	#
+	#	Calls appropriate functions to perform calculation
+	#
+	############
+	factalk
+	facmove
+	check
+	resume
+	cut 0
+	if [ $resume -ge 1 ]
+	then
+		resumefac
+	else
+		calcfac
+	fi
+}
+
+function facmove
+{
+	############
+	#
+	#	Factorial Move
+	#
+	#	Creates/Moves to correct directory to store factorial calculations   
+	#
+	############
+	cd
+	movement Calculations
+	movement Factorials
+}
+
+function factalk
+{
+	############
+	#
+	#	Factorial Talk
+	#
+	#	Gathers information to perform factorial calculation
+	#
+	############
+	echo "Find factorial of what number?"
+	read input2
+	input1=$input2
+}
+
+
+
+function calcfac
+{
+	############
+	#
+	#	Factorial Calculation
+	#
+	#	Calculates factorial
+	#
+	############
+	#Setup and running multiply
+	declare n1=1
+	d=1
+	count=1
+	upper=$input2
+	multiply count n n
+	combine n
+	write $input2
+	testing
+}
+
+function resumefac
+{
+	############
+	#
+	#	Resume Factorial Function
+	#
+	#	Uses already calculated factorial to calculate higher number
+	#
+	############
+	readfile $resume n
+	#Setup for Multiply
+	d=$c
+	count=$[resume+1]
+	upper=$input2
+	multiply count n n
+	combine n
+	write $input2
+	testing
+}
+
+
+
+#################################
+#
+#
+#	Multiply
+#
+#
+#################################
+
+function multiplication
+{
+	############
+	#
+	#	Multiplication Function
+	#
+	#	Multiplies two large numbers together
+	#
+	############
+	cut 9
+	multtalk
+	bigmultiply m $mlength n $nlength q
+	combine q
+	echo $z
+	echo ${#z}
+}
+
+
+function multtalk
+{
+	echo 'Where is the smaller number stored?'
+	multtalkhelp m
+	mlength=$c
+	echo 'Where is the larger number stored?'
+	multtalkhelp n
+	nlength=$c
+}
+
+function multtalkhelp
+{
+	echo "1) Exponentials"
+	echo "2) Factorials"
+	echo "3) Fibonacci"
+	read path1
+	cd
+	movement Calculations
+	case $path1 in
+		1) movement Exponentials
+		ls
+		echo 'Which exponential is it?'
+		read tmp
+		cd $tmp^x;;
+		2) movement Factorials;;
+		3) movement Fibonacci;;
+	esac
+	echo 'What is its value?'
+	ls
+	read tmp
+	readfile $tmp $1
+}
+
+#################################
+#
+#
+#	Fibonacci
+#
+#
+#################################
+
+function fibonacci
+{
+	############
+	#
+	#	Fibonacci Function
+	#
+	#	Calls appropriate functions to perform calculation
+	#
+	############
+	fibtalk
+	fibmove
+	check
+	resume
+	cut 17
+	if [ $resume -ge 1 ]
+	then
+		resumefib
+	else
+		calcfib
+	fi
+}
+
+function fibmove
+{
+	############
+	#
+	#	Fibonacci Move
+	#
+	#	Creates/Moves to correct directory to store fibonacci calculations   
+	#
+	############
+	cd
+	movement Calculations
+	movement Fibonacci
+}
+
+function fibtalk
+{
+	############
+	#
+	#	Fibonacci Talk
+	#
+	#	Gathers information to perform factorial calculation
+	#
+	############
+	echo "Find what Fibonacci number?"
+	read input2
+	input1=$input2
+}
+
+function calcfib
+{
+	############
+	#
+	#	Fibonacci Calculation
+	#
+	#	Calculates fibonacci number
+	#
+	############
+	n1=1
+	k1=1
+	count=3
+	d=1
+	f=1
+	upper=$input2
+	fibadd
+}
+
+function  fibadd
+{
+	############
+	#
+	#	Fibonacci addition
+	#
+	#	Correctly calculates Fibonacci numbers
+	#
+	############
+	while [ $count -le $upper ]
+	do
+		echo $count
+		if [ $[$count%2] == 0 ]
+		then
+			addition n $d k $f n
+			if [ $m -ne 0 ]
+			then
+				d=$[d+1]
+				f=$[f+1]
+				export k$f=0
+			fi
+		else
+			addition n $d k $f k
+			if [ $m -ne 0 ]
+			then
+				d=$[d+1]
+				f=$[f+1]
+				export n$d=0
+			fi
+		fi
+		count=$[count+1]
+	done
+	if [ $[upper%2] == 0 ]
+	then
+		combine n
+		write $input2
+		testingvar=$z				#For testing function
+		combine k
+		write $[upper-1]
+		z=$testingvar				#For testing functioncd $resume
+	else
+		combine n
+		write $[upper-1]
+		combine k
+		write $input2
+	fi
+	testing
+}
+
+function resumefib
+{
+	############
+	#
+	#	Resume Fibonacci Function
+	#
+	#	Uses already calculated fibonacci number to calculate higher number
+	#
+	############
+	readfile $resume n
+	d=$c
+	readfile $[resume-1] k
+	f=$c
+	count=$[resume+1]
+	upper=$input2
+	fibmove
+	fibadd
+}
+
+
+
+#################################
+#
+#
+#	Shared/Utilities
+#
+#
+#################################
+
+#################################
+#
+#
+#	Explanations
+#
+#
+#	Addition
+#		-Adds two Number sets and exports as a third
+#		1	Number set to be added
+#		2	Length of first Number set
+#		3	Number set to be added
+#		4	Length of second Number set
+#		5	Number set to be exported
+#
+#	BigMultiply
+#		-Multiplies two Number sets
+#		1	Number set to be multipied
+#		2	Length of first Number set
+#		3	Number set to be multiplied
+#		4	Length of second Number set
+#		5	Number set to be exported
+#
+#	Check
+#		-Checks to see if calculation has already been saved
+#		-Prompts for redoing calculation, outputting stored value,
+#			or doing testing.
+#		-Uses input2 
+#
+#	Combine
+#		-Creates a variable (z) from a Number set
+#		-The variable 'd' must be the length of the Number set
+#		1	Number set to be combined
+#
+#	Cut
+#		-Determines length of each variable based on length of
+#			multiplication factor (input1)
+#		1(o)	Manual setting of length
+#
+#	Movement
+#		-Checks for/Makes new directory
+#		1	Name of new directory
+#
+#	Multiply
+#		-Multiplies a Number set by a given number
+#		1	Number to multiply by
+#		2	Number set to be multiplied
+#		3	Number set to be exported
+#
+#	Readfile
+#		-Reads file into multiple variables
+#		1	Name of directory and file
+#		2	Number set to be exported
+#
+#	Resume
+#		-Standard questionnaire about resuming
+#		-Records option as variable 'resume'
+#
+#	Testing
+#		-If testing was decided upon in 'Check' it will check the finished
+#			calculation (z) against the saved value
+#		-Outputs result
+#
+#	Write
+#		-If folder of input doesn't exist, creates a folder and moves in
+#		-Writes variable 'z' into two files, with and without wrapping
+#		1	Name to write to
+#		
+#
+#################################
+
+function addition
+{
+	if [ $4 -ge $2 ]
+	then
+		check=$[$2+1]
+		while [ $check -le $4 ]
+		do
+			export $1$check=0
+			check=$[check+1]
+		done
+		up=$4
+	else
+		check=$[$4+1]
+		while [ $check -le $2 ]
+		do
+			export $3$check=0
+			check=$[check+1]
+		done
+		up=$2
+	fi
+	c=1
+	m=0
+	while [ $c -le $up ]
+	do
+		export $5$c=$[$1$c+$3$c+m]
+		m=$[$5$c/CUT]
+		export $5$c=$[$5$c%CUT]
+		c=$[c+1]
+	done
+	if [ $m -ne 0 ]
+	then
+		export $5$[$up+1]=$m
+	fi
+}
+
+function bigmultiply
+{
+	cut 9
+	holder=$4
+	t=1
+	outputlength=1
+	while [ $t -le $2 ]
+	do
+		count=1
+		upper=1
+		d=$holder
+		multiply $1$t $3 g
+		c=1
+		while [ $c -le $d ]
+		do
+			export x$[c+t-1]=$[g$[c]]
+			c=$[c+1]
+		done
+		counter=1
+		while [ $counter -le $[t-1] ]
+		do
+			export x$[counter]=0
+			counter=$[counter+1]
+		done
+		combine x
+		addition $5 $outputlength x $[d+t-1] $5
+		outputlength=$[d+t-1]
+		t=$[t+1]
+	done
+	d=$outputlength
+}
+
+function check
+{
+	testnum=2
+	if [ -d $input2 ]
+	then
+		echo "That answer exists"
+		echo "Redo calculation or test?(y/n/t)"
+		read yn
+		if [ $yn == "n" ]
+		then
+			cd $input2
+			z=$(awk '{ print $1 }' $input2)
+			echo $z
+			echo ${#z}
+			exit
+		else
+			if [ $yn == "y" ]
+			then
+				rm -r $input2
+			else
+				mv $input2 ~/Calculations
+				testnum=1
+			fi
+		fi
+	fi
+}
+
+function combine
+{
+	q=1
+	z="$[$1$d]"
+	#z=`expr $[$1$d] : "0*\(.*\)"`
+	while [ $q -le $[d-1] ]
+	do
+		if [ $[$1$[d-q]] -ne 0 ]
+		then
+			o=0
+			u=length			#length comes from cut
+			while [ $o -le 0 ]
+			do
+				u=$[u-1]
+				o=$[$[$1$[d-q]]/(10**$u)]	
+			done
+			j=$[length-$u-1]
+		else
+			j=$[length-1]
+		fi
+		case $j in
+			0)	z="$z$[$1$[d-q]]";;
+			1)	z="$z""0""$[$1$[d-q]]";;
+			2)	z="$z""00""$[$1$[d-q]]";;
+			3)	z="$z""000""$[$1$[d-q]]";;
+			4)	z="$z""0000""$[$1$[d-q]]";;
+			5)	z="$z""00000""$[$1$[d-q]]";;
+			6)	z="$z""000000""$[$1$[d-q]]";;
+			7)	z="$z""0000000""$[$1$[d-q]]";;
+			8)	z="$z""00000000""$[$1$[d-q]]";;
+			9)	z="$z""000000000""$[$1$[d-q]]";;
+			10)	z="$z""0000000000""$[$1$[d-q]]";;
+			11)	z="$z""00000000000""$[$1$[d-q]]";;
+			12)	z="$z""000000000000""$[$1$[d-q]]";;
+			13)	z="$z""0000000000000""$[$1$[d-q]]";;
+			14)	z="$z""00000000000000""$[$1$[d-q]]";;
+			15)	z="$z""000000000000000""$[$1$[d-q]]";;
+			16)	z="$z""0000000000000000""$[$1$[d-q]]";;
+			17)	z="$z""00000000000000000""$[$1$[d-q]]";;
+		esac
+		q=$[q+1]
+	done
+}
+
+function cut
+{
+	if [ $1 -ge 1 ]
+	then
+		length=$1
+	else
+		o=0
+		length=18
+		while [ $o -le 0 ]
+		do
+			length=$[length-1]
+			o=$[$input1/(10**$length)]	
+		done
+		length=$[17-length]
+	fi
+	CUT=$[10**length]
+}
+
+function movement
+{
+	if [ -d $1 ]
+	then
+		cd $1
+	else
+		mkdir $1
+		cd $1
+	fi
+}
+
+function multiply
+{
+	while [ $count -le $upper ]
+	do
+		echo $count
+		rem=0
+		c=1
+		while [ $c -le $d ]
+		do
+			export $3$c=$[$2$c*$1+rem]
+			rem=$[$3$c/CUT]
+			export $3$c=$[$3$c%CUT]
+			c=$[c+1]
+		done
+		if [ $rem -ne 0 ]
+		then
+			d=$[d+1]
+			export $3$d=$rem
+		fi
+
+		if [ $[$count%500] == 0 ]
+		then
+			combine $3
+			write $count
+		fi
+		count=$[count+1]
+	done
+}
+
+function readfile
+{
+	cd $1
+	f=$(awk '{ print $1 }' $1)
+	reslength=${#f}
+	reslength1=$[reslength/length]
+	reslength2=$[reslength%length]
+	c=1
+	while [ $c -le $reslength1 ]
+	do
+		h=${f:$[reslength-(c*length)]:$[length]}
+		export $2$c=`expr $h : "0*\(.*\)"`			#Strips leading 0's
+		c=$[c+1]		
+	done
+	if [ $reslength2 -ne 0 ]
+	then
+		export $2$c=${f:0:reslength2}
+	else
+		c=$[c-1]
+	fi
+	cd ..
+}
+
+function resume
+{
+	echo "Perform full Calc or Resume?"
+	echo "Enter # to resume from or 0 to perform full calc."
+	ls
+	read resume
+}
+
+function testing
+{
+	if [ $testnum == 1 ]
+	then
+		cd ~/Calculations/$input2
+		g=$(awk '{ print $1 }' $input2)
+		if [ $g == $z ]
+		then
+			echo "No problem"
+			rm -r ~/Calculations/$input2
+		else
+			echo "Problem"
+		fi
+	fi
+}
+
+function write
+{
+	echo $z
+	echo ${#z}
+	if [ -d $1 ]
+	then
+		return
+	fi
+	mkdir $1
+	cd $1
+	echo $z>$1
+	fold $1>$1_Wrap
+	cd ..
+}
+
+
+echo "What would you like to do?"
+echo "1) Exponentials"
+echo "2) Factorials"
+echo "3) Multiplication"
+echo "4) Fibonacci"
+read input
+case $input in
+	1) exponential;;
+	2) factorial;;
+	3) multiplication;;
+	4) fibonacci;;
+esac

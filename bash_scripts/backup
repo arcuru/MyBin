@@ -1,0 +1,44 @@
+#!/bin/bash	
+
+function extdev
+{
+	echo "Full Backup(1) or just important stuff(2)?"
+	read imp
+	echo "Name of external device."
+	read name
+	cd /media/$name
+	if [ -d backup ]
+	then
+		echo "Overwrite? (y/n)"
+		read check		
+	else
+		mkdir backup
+	fi
+	if [ $check == "n" ]
+	then
+		exit
+	else
+		if [ $imp == "1" ]
+		then
+			cp -r ~ /media/$name/backup
+		else
+			cp -r ~/bin /media/$name/backup/patty/bin
+			cp -r ~/Documents /media/$name/backup/patty/Documents
+			cp -r ~/Calculations /media/$name/backup/patty/Calculations
+		fi
+	fi	
+}
+
+function transfer
+{
+		scp -r ~/bin ~/Documents pjackson6@acme.gatech.edu:~
+}
+
+echo "Backup to external device(1), GT prism account(2), or both(3)."
+read input
+case $input in
+	1) extdev;;
+	2) transfer;;
+	3) extdev
+	   transfer;;
+esac

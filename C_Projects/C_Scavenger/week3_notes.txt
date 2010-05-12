@@ -1,0 +1,17 @@
+//while loop at bottom of scavenger_2 wiil be like below
+while ( parsePacket(&packet,in)) {
+	printPacket(&packet,log);
+}
+
+to read only 1 hex character at a time
+fscanf(in,"%1x",&c);
+
+int parsePacket(FILE* in, packet* c) {
+	int c=0;
+	fscanf(in,"%d",&c);
+	p->packet_num=c;
+	c=read4(in);
+	p->one_bit_1=c&0x1;
+	p->one_bit_2=(c&0x2)>>1;
+	p->one_bit_3=(c&0x4)>>2;
+	p->one_bit_4=(c&0x8)>>3;

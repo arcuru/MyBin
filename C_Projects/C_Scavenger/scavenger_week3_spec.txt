@@ -1,0 +1,116 @@
++------------------------------------------------------------------------------+
+|                 . o 0  Scavenger Specification, Week 3  0 o .                |
++------------------------------------------------------------------------------+
+
+DUE 5:30 p.m., Monday, September 25, 2006
+
+GOAL
+
+To modify your program from week 2 to have two source files: one for your main
+function and one for handling packets.  You need to read the tracefile bytes
+into a special packet structure, and then print them in a formatted way from that
+structure.
+
+
+SPECIFICS
+
+1.  Copy the file "/home/aultac/scavenger_week3.tar.gz" to your home directory
+      and untar it to get all handout files.
+2.  Put your solution in the "week3" directory you created in week 1.
+3.  Copy your Makefile and scavenger.c from your solution of last week into 
+    your week3 directory to modify for this week.
+Makefile:
+  - create an executable named "scavenger_3"
+  - has a "clean" target that will delete the executable and object files
+  - must use CC, CFLAGS, and OUTPUT variables
+  - must compile each source file separately, and link them together
+  - must use SRCS, HDRS, and OBJS variables
+
+scavenger.c:
+  - use the same command-line options from last week (don't modify 
+    that part of your code)
+  - if you didn't do it last week, write a usage(char *progname) function
+    to print the correct usage message to the screen and exit.
+  - create two new files: packets.c and packets.h
+  - define a packet structure, typedef it as a "packet", and put
+    it in your packets.h file.  The structure you define MUST look 
+    like this:
+
+    typedef struct packet_struct {
+      int packet_num;      /* put the packet number here                */
+      char one_bit_1;      /* put first bit of packet here              */
+      char one_bit_2;      /* put second bit of packet here             */
+      char one_bit_3;      /* put third bit of packet here              */
+      char one_bit_4;      /* put fourth bit of packet here             */
+      char four_bits;      /* put next four bits of packet here         */
+      char one_byte;       /* put next 8 bits (one byte) of packet here */
+      short two_bytes;     /* put next 2 bytes of packet here           */
+      int four_bytes;      /* put next 4 bytes of packet here           */
+    } packet;
+    
+  - put the following functions in packets.c, and their definitions in
+    packets.h:
+    parse_packet(FILE *in, packet *p):  This function will read exactly
+        one line from the input file.  It will put the first number on the
+        line into the "packet_num" field of the packet.  It will then read
+        the next 4-bit hex character, and put each of the bits from that
+        into the four fields one_bit_1, one_bit_2, one_bit_3, and 
+        one_bit_4.  The next 4-bit hex character will go into four_bits.
+        the next two 4-bit hex characeters should be read as a single 
+        byte, and put into the one_byte field.  And so on.
+    print_packet(FILE *log, packet *p):  This function will print a
+        formatted output of the packet pointed to by p to the log file.
+
+  - The final format of your printing functions must look exactly like the
+    following (you will find an exact solution log file in the solution_log
+    from the handout files):
+
+    *****************************************************************
+    * Packet Number 0
+    *       Bit 1: 0x0
+    *       Bit 2: 0x1
+    *       Bit 3: 0x0
+    *       Bit 4: 0x0
+    *   Four Bits: 0x5
+    *    One Byte: 0x00
+    *   Two Bytes: 0x002c
+    *  Four Bytes: 0xf27b0000
+    *****************************************************************
+
+  - your scavenger.c file must use the parse_packet and print_packet
+    functions, and therefore must #include "packets.h".  Also, your
+    packets.h file must have the function prototypes for those functions.
+
+HINT
+  It will be EXTREMELY helpful to you in this assignment, and in later
+assignments, if you take the time right now to write 4 simple functions:
+int read4(FILE *in);
+int read8(FILE *in);
+int read16(FILE *in);
+int read32(FILE *in);
+  I think you can guess from the names what they do.  To make writing
+them a bit easier, you might recognize that read32 can use read16, and
+read16 can use read8.
+ 
+
+EVALUATION
+  I will run your program using the file tracefile.txt that I provide you,
+and I will test that your output matches that of the solution_log.
+The main sequence of commands that will be run to evalutate your file will be:
+
+scavenger_2 -file log tracefile.txt
+diff log solution_log
+
+  I will also read your source code and make comments where you could do something
+better, or where you have done something wrong.  I will try to help you develop good
+coding style this way.
+
+
+SUBMISSION
+  Create a tarball of your week3 directory named "<your_username>_week3.tar.gz".
+For instance, my username is aultac, so I would make a file named aultac_week3.tar.gz
+Copy this tarball on msee140lnx10 to the directory 
+/home/aultac/submissions/<your_username>/
+by the due date listed at the top of this document.
+
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "Exponential of what number?"
+read num
+echo "To what power?"
+read power
+echo "How many digits?"
+read digits
+n=1
+c=1
+while [ $c -le $power ]
+do
+	n=$[(n*num)%(10**digits)]
+	c=$[c+1]
+done
+echo $n

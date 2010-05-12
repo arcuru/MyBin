@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "First path"
+read input1
+echo "Second path"
+read input2
+f=$(awk '{ print $1 }' $input1)
+g=$(awk '{ print $1 }' $input2)
+if [ $g == $f ]
+then
+	echo "Good"
+else
+	echo "Bad"
+fi

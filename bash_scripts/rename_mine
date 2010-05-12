@@ -1,0 +1,7 @@
+#!/bin/bash
+
+c=1
+while [ $c -le 250 ]
+do
+	mv "$c".cc "$c".c
+done

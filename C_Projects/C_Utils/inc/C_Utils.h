@@ -23,6 +23,7 @@ int Length_int64(int64);
 int LengthBin_int(int);
 int LengthBin_uns64(uns64);
 int* Clear(int*, int);
+void RandomizeArray(int*, int);
 int GetMicrosecondClock();
 float GetMillisecondClock();
 float GetSecondClock();

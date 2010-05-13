@@ -1,5 +1,6 @@
 #include "C_Utils.h"
 #include <sys/time.h>
+#include <stdlib.h>
 
 //Returns number of digits of inputted number in base 10
 
@@ -64,6 +65,26 @@ int* Clear(int* list, int length)
         list[i] = 0;
     }
     return list;
+}
+
+void RandomizeArray(int d[], int arraySize)
+{
+    // Populate with random values
+    static int seeded = 0;
+    static unsigned long heuristic_sequence = 0;
+    if (!seeded) {
+        // Seed the random number generator with time of day
+        struct timeval tv;
+        gettimeofday(&tv, 0);
+        heuristic_sequence++;   // Always make sure different than last time.
+        int seed = (tv.tv_sec^tv.tv_usec^(heuristic_sequence << 8)) & 0x7fffffff;
+        srand48(seed);
+        seeded = 1;
+    }
+    int i;
+    for (i = 0; i < arraySize; ++i) {
+        d[i] = (int)(drand48() * 1000.0);
+    }
 }
 
 //Returns current time in microseconds

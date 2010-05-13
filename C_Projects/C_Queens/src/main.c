@@ -208,7 +208,7 @@ int main() {
 //			--currentCol;
 //		}
 //	}
-	solution=N_Queens(14);
+	solution=N_Queens(13);
 	time(&t2);
 	printResults(&t1, &t2);
 	printf("Found %d distinct solutions", solution);

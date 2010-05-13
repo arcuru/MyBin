@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="C_Euler" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/C_Euler" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/C_Euler" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="inc" />
+			<Add directory="../C_NumberTheory/inc" />
+			<Add directory="../C_Primes/inc" />
+			<Add directory="../C_Utils/inc" />
+			<Add directory="../C_Sudoku/inc" />
+			<Add directory="../C_Sort/inc" />
+		</Compiler>
+		<Linker>
+			<Add library="../C_Sudoku/libC_Sudoku.a" />
+			<Add library="../C_NumberTheory/libC_NumberTheory.a" />
+			<Add library="../C_Primes/libC_Primes.a" />
+			<Add library="../C_Sudoku/libC_Sudoku.a" />
+			<Add library="../C_Utils/libC_Utils.a" />
+			<Add library="../C_Sort/libC_Sort.a" />
+			<Add library="pthread" />
+		</Linker>
+		<Unit filename="inc/C_Euler.h" />
+		<Unit filename="inc/Euler_List.h" />
+		<Unit filename="src/1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/10.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/108.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/112.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/119.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/12.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/122.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/124.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/125.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/14.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/145.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/15.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/17.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/179.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/187.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/19.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/191.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/204.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/206.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/21.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/211.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/214.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/229.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/23.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/231.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/234.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/24.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/26.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/27.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/28.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/29.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/30.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/31.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/33.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/34.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/35.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/36.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/37.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/38.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/39.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/40.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/41.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/43.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/44.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/45.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/46.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/47.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/48.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/49.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/50.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/51.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/52.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/55.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/58.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/59.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/6.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/60.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/69.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/7.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/70.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/72.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/74.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/75.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/76.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/77.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/78.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/81.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/85.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/87.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/89.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/9.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/92.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/94.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/95.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/96.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/97.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/99.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,23 @@
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\bin\Debug\Calculator.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\bin\Debug\Calculator.pdb
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\bin\Debug\Calculator.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.Form1.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.Resources.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.vbproj.GenerateResource.Cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.pdb
+C:\Users\Patty\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.exe
+C:\Users\Patty\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.xml
+C:\Users\Patty\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.pdb
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.exe
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.xml
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.pdb
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\bin\Debug\Calculator.exe
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\bin\Debug\Calculator.pdb
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\bin\Debug\Calculator.xml
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.Form1.resources
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.Resources.resources
+C:\Users\Patty\Documents\My Dropbox\bin\Visual Studio 2008\Projects\Calculator\Calculator\obj\Debug\Calculator.vbproj.GenerateResource.Cache

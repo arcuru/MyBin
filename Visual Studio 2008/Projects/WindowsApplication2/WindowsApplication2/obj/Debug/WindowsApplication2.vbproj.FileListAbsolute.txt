@@ -1,0 +1,10 @@
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\bin\Debug\WindowsApplication2.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\bin\Debug\WindowsApplication2.pdb
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\bin\Debug\WindowsApplication2.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.Form1.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.Resources.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.vbproj.GenerateResource.Cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.pdb

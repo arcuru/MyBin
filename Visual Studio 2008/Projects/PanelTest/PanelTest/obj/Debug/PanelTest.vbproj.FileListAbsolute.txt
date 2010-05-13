@@ -1,0 +1,10 @@
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\bin\Debug\PanelTest.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\bin\Debug\PanelTest.pdb
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\bin\Debug\PanelTest.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\PanelTest.Form1.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\PanelTest.Resources.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\PanelTest.vbproj.GenerateResource.Cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\PanelTest.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\PanelTest.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\PanelTest\PanelTest\obj\Debug\PanelTest.pdb

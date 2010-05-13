@@ -11,7 +11,7 @@
 //Returns a pointer to a length 81 array with the solved puzzle
 
 typedef struct {
-    int* body;
+    short* body;
     int value;
 } puzzle_struct;
 
@@ -60,7 +60,7 @@ int* SudokuSolver(int* puzzle)
     //do init stuff, fixes issue with running multiple times
     guess = 0;
     guesslimit = 1;
-    int* bitpuzzle = (int*) malloc(sizeof (int) * 81);
+    short* bitpuzzle = (short*) malloc(sizeof (short) * 81);
     int r, c;
     for (r = 0; r < 9; r++)
         for (c = 0; c < 9; c++) {
@@ -120,7 +120,7 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
             while (tmp) {
                 puzzle_struct* guessing = (puzzle_struct*) (malloc) (
                                               sizeof (puzzle_struct));
-                guessing->body = (int*) malloc(sizeof (int) * 81);
+                guessing->body = (short*) malloc(sizeof (short) * 81);
                 for (n = 0; n < 81; ++n)
                     guessing->body[n] = puz->body[n];
                 guessing->body[i] = ISOLATE_1(tmp);

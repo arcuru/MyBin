@@ -1,0 +1,10 @@
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloWorld.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloWorld.pdb
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\bin\Debug\HelloWorld.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.Resources.resources
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.vbproj.GenerateResource.Cache
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.exe
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.xml
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.pdb
+C:\Users\Patty\Documents\Visual Studio 2008\Projects\HelloWorld\HelloWorld\obj\Debug\HelloWorld.Form1.resources

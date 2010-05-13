@@ -1,4 +1,12 @@
+
+# Exclude basic object files and libraries
 *.o
-Debug
-Release
-*.layout
+*.a
+
+# Exclude binaries generated from C files
+C_Projects/*/bin/Debug/*
+C_Projects/*/bin/Release/*
+
+# Exclude codeblocks extra files
+C_Projects/*/*.depend
+C_Projects/*/*.layout

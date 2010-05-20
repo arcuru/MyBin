@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <linux/bitops.h>
 
 #define true 1
 #define false 0
@@ -218,10 +219,10 @@ int main()
 //			--currentCol;
 //		}
 //	}
-    solution=N_Queens(15);
+    solution=N_Queens(14);
     time(&t2);
     printResults(&t1, &t2);
-    printf("Found %d distinct solutions", solution);
+    printf("Found %d distinct solutions\n", solution);
     return 0;
 }
 

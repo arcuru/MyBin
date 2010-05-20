@@ -1,5 +1,6 @@
 #ifndef NUMBERTHEORY_C_H
 #define NUMBERTHEORY_C_H
+#include <stdint.h>
 /*
 #include <stdlib.h>
 #include <math.h>
@@ -11,7 +12,7 @@
 
 int* EulersTotient(int);
 int GCD(int, int);
-int Power(int,int);
+int64_t Power(int64_t,int64_t);
 double intpow(double,int);
 int Factorial(int);
 

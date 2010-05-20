@@ -45,9 +45,8 @@ int GCD(int m, int n)
     return 0;
 }
 
-//Written in Wordpad, needs testing
 //Returns a^b
-int Power(int a, int b)
+int64_t Power(int64_t a, int64_t b)
 {
     if (b < 0)
         return -1;

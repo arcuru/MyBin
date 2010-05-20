@@ -2,25 +2,31 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="C_Sandbox" />
+		<Option title="C_Primes_Threaded" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/C_Sandbox" prefix_auto="1" extension_auto="1" />
+				<Option output="libC_Primes_Threaded" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wall" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/C_Sandbox" prefix_auto="1" extension_auto="1" />
+				<Option output="libC_Primes_Threaded" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wall" />
 					<Add option="-O2" />
 				</Compiler>
 				<Linker>
@@ -29,31 +35,22 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
-			<Add directory="../C_NumberTheory/inc" />
-			<Add directory="../C_Utils/inc" />
-			<Add directory="../C_Sort/inc" />
-			<Add directory="../C_Sudoku/inc" />
+			<Add directory="inc" />
 			<Add directory="../C_Primes/inc" />
-			<Add directory="../C_Primes_Threaded/inc" />
 		</Compiler>
 		<Linker>
 			<Add library="../C_Primes/libC_Primes.a" />
-			<Add library="../C_NumberTheory/libC_NumberTheory.a" />
-			<Add library="../C_Sort/libC_Sort.a" />
-			<Add library="../C_Sudoku/libC_Sudoku.a" />
-			<Add library="../C_Utils/libC_Utils.a" />
 			<Add library="pthread" />
-			<Add library="../C_Primes_Threaded/libC_Primes_Threaded.a" />
 		</Linker>
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
+		<Unit filename="inc/C_Primes_Threaded.h" />
+		<Unit filename="src/C_Primes_Threaded.c">
+			<Option compilerVar="CPP" />
 		</Unit>
 		<Extensions>
-			<code_completion />
 			<envvars />
-			<debugger />
+			<code_completion />
 			<lib_finder disable_auto="1" />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

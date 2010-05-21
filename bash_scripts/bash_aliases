@@ -7,6 +7,7 @@ alias temp='acpi -t'
 alias tarballpack='tar cvzf $1 $2'
 alias tarballunpack='tar xzvf'
 alias maxbright='sudo setpci -s 00:02.0 f4.b=ff'
+alias dwmcompile='cd ~/bin/dwm; makepkg -efi --skipinteg; cd -'
 
 #	Mounting Samba share
 alias umountsamba='sudo umount /media/Raid1'

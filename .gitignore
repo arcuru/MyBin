@@ -16,3 +16,6 @@ C_Projects/*/bin/Release/*
 # Exclude codeblocks extra files
 C_Projects/*/*.depend
 C_Projects/*/*.layout
+
+# Exclude the Sandbox
+C_Projects/Sandbox/*

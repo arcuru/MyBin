@@ -9,6 +9,7 @@
 #define int64 long long
 #endif
 
+typedef enum {FALSE, TRUE} bool;
 #ifndef TRUE
 #define TRUE 1
 #endif

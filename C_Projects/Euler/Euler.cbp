@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="94" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -30,6 +31,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-fopenmp" />
 			<Add directory="inc" />
 			<Add directory="../NumberTheory/inc" />
 			<Add directory="../Primes/inc" />
@@ -41,10 +43,9 @@
 			<Add library="../Sudoku/libSudoku.a" />
 			<Add library="../NumberTheory/libNumberTheory.a" />
 			<Add library="../Primes/libPrimes.a" />
-			<Add library="../Sudoku/libSudoku.a" />
 			<Add library="../Utils/libUtils.a" />
 			<Add library="../Sort/libSort.a" />
-			<Add library="pthread" />
+			<Add library="gomp" />
 		</Linker>
 		<Unit filename="inc/Euler.h" />
 		<Unit filename="inc/Euler_List.h" />

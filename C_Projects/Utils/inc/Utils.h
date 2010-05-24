@@ -10,13 +10,6 @@
 #endif
 
 typedef enum {FALSE, TRUE} bool;
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
 
 int Length_int(int);
 int Length_uns64(uns64);

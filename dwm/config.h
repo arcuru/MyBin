@@ -51,11 +51,12 @@ static const char *codeblocks[] = { "codeblocks", NULL };
 static const char *chromium[] = { "chromium", NULL };
 static const char *thunderbird[] = { "thunderbird", NULL };
 static const char *xscreensaverlock[] = { "xscreensaver-command", "-lock", NULL };
-static const char *virtualbox[] = { "VirtualBox", "--startvm Windows", NULL };
+static const char *virtualbox[] = { "VirtualBox", "--startvm", "Windows", NULL };
 static const char *exaile[] = { "exaile", NULL };
 static const char *exailen[] = { "exaile", "-n", NULL };
 static const char *exailep[] = { "exaile", "-p", NULL };
 static const char *exailet[] = { "exaile", "-t", NULL };
+static const char *emelfm2[] = { "emelfm2", NULL };
 
 
 
@@ -71,6 +72,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_n,      spawn,          {.v = exailen } },
 	{ MODKEY|ShiftMask,             XK_n,      spawn,          {.v = exailep } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = exailet } },
+	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = emelfm2 } },
 
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },

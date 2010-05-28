@@ -14,7 +14,7 @@ int Length_int(int n)
     return digits;
 }
 
-int Length_uns64(uns64 n)
+int Length_uns64(uint64_t n)
 {
     int digits = 0;
     while (n) {
@@ -24,7 +24,7 @@ int Length_uns64(uns64 n)
     return digits;
 }
 
-int Length_int64(int64 n)
+int Length_int64(int64_t n)
 {
     int digits = 0;
     while (n) {
@@ -46,7 +46,7 @@ int LengthBin_int(int n)
     return digits;
 }
 
-int LengthBin_uns64(uns64 n)
+int LengthBin_uns64(uint64_t n)
 {
     int digits = 0;
     while (n) {
@@ -58,20 +58,18 @@ int LengthBin_uns64(uns64 n)
 
 //Sets a list of given length to 0's
 
-int* Clear(int* list, int length)
+void Clear(int* list, int length)
 {
-    int i;
-    for (i = 0; i < length; i++) {
-        list[i] = 0;
-    }
-    return list;
+    while (length--)
+        *list++=0;
+    return;
 }
 
 void RandomizeArray(int d[], int arraySize)
 {
     // Populate with random values
     static int seeded = 0;
-    static unsigned long heuristic_sequence = 0;
+    static uint32_t heuristic_sequence = 0;
     if (!seeded) {
         // Seed the random number generator with time of day
         struct timeval tv;

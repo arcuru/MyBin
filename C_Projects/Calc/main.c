@@ -5,6 +5,7 @@
 #include <NumberTheory.h>
 
 #define PRINT(x)    printf("%d\n",(x));
+#define MAXLINE     100
 
 int64_t Compute_Value(char **,char endvalue);
 int64_t calcOp(int64_t a, int64_t b, char op);
@@ -13,13 +14,16 @@ int64_t getInt(char**);
 int main(int argc, char *argv[])
 {
     if (argc<2) {
-        printf("Usage: %s Expression",argv[0]);
+        printf("Usage: %s Expression\n",argv[0]);
         return 1;
     }
-    int tmp;
+    FILE *fp;
+    if ((fp = fopen(argv[1],"r")) == NULL) {
+        printf("Can't open file %s\n",argv[1]);
+        return 2;
+    }
     char *p;
-    for (tmp=1; tmp<argc; tmp++) {
-        p=argv[tmp];
+    while (fgets(p,MAXLINE,fp)!=NULL) {
         printf("%s = ",p);
         printf("%ld\n",Compute_Value(&p,'\0'));
     }
@@ -31,7 +35,7 @@ int64_t Compute_Value(char **p,char endvalue)
     int64_t a=0,b=0;
     int filling_a=1,isBValid=0;
     char op='\0';
-    while (**p != endvalue || **p != '\0') {
+    while (**p != endvalue && **p != '\0') {
         if (isdigit(**p)) {
             if (filling_a==1) {
                 a=getInt(p);
@@ -44,7 +48,7 @@ int64_t Compute_Value(char **p,char endvalue)
             (*p)++;
             if (filling_a==1) {
                 a=Compute_Value(p,')');
-                filling_a=0;
+                sfilling_a=0;
             } else {
                 b=Compute_Value(p,')');
                 isBValid=1;

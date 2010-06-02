@@ -254,8 +254,7 @@ int NextPrime(int end_of_list, unsigned char* list) {
 		current_bitval=0;
 		current_bit=1;
 	}
-	printf("%d\t%d\t%d\n", current_byte, current_bitval, current_bit);
-	exit(0);
+//	printf("%d\t%d\t%d\n", current_byte, current_bitval, current_bit);
 	return 0;
 }
 

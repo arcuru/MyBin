@@ -8,7 +8,7 @@ int64 Euler_10()
     int n = 1;
     uns64 total = NextPrime(N, list);
     while (n > 0) {
-        n = NextPrime(N, (void *)0);
+        n = NextPrime(N, (void *)0);//(void*)0 = NULL, this avoids including stdio.h
         total += n;
     }
     return (int64) total;

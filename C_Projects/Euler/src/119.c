@@ -22,7 +22,7 @@ int64 Euler_119()
     for (n = 1; n < 55; n++) {
         top *= 2;
     }
-    for (n = 2; n < (Length_int(top)*9); n++) {
+    for (n = 2; n < (Length_int64(top)*9); n++) {
         int64 current = (int64) n;
         while (current * n > current) {
             current *= n;

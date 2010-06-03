@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const char font[]            = "-*-*-medium-*-*-*-14-*-*-*-*-*-*-*";
+static const char font[]            = "-*-terminus-*-*-*-*-14-*-*-*-*-*-*-*";
 static const char normbordercolor[] = "#000000";
 static const char normbgcolor[]     = "#cccccc";
 static const char normfgcolor[]     = "#000000";

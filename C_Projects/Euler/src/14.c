@@ -2,12 +2,12 @@
 
 int64 Euler_14()
 {
-    int longest = 0;
-    int longval = 0;
-    int length;
-    int count = 999999;
-    while (count > 500000) {
-        length = 0;
+	int maxval = 10000000;
+    int longest = 0, longval = 0;
+    int count;
+#pragma omp parallel for
+	for (count = maxval-1; count > maxval/2; count-=2) {
+        int length = 0;
         uns64 series = count;
         while (series != 1) {
             if (series % 2 == 0) {
@@ -21,7 +21,6 @@ int64 Euler_14()
             longest = length;
             longval = count;
         }
-        count -= 2;
     }
     return longval;
 }

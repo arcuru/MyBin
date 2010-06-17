@@ -1,4 +1,4 @@
-CC=clang
+CC=gcc
 CFLAGS=-Wall -Wextra -fopenmp 
 INCLUDE_DIR=-I./inc \
 			-I../Utils/inc \
@@ -75,6 +75,7 @@ SOURCES=./src/main.c \
 		./src/59.c \
 		./src/5.c \
 		./src/60.c \
+		./src/62.c \
 		./src/69.c \
 		./src/6.c \
 		./src/70.c \

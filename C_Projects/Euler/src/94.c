@@ -1,5 +1,4 @@
 #include "Euler.h"
-#include <pthread.h>
 #include <math.h>
 
 //static void *Thread(void *in)

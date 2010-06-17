@@ -101,10 +101,7 @@ int64 Euler_61	()
 {
     return 0;
 }
-int64 Euler_62	()
-{
-    return 0;
-}
+int64 Euler_62	() ;
 int64 Euler_63	()
 {
     return 0;

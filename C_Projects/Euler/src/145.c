@@ -25,13 +25,12 @@ int64 Euler_145()
 {
     int i;
     int count = 0;
+#pragma omp parallel for
     for (i = 1; i < 100000000; i++) {
         int h = flip(i);
-        if (h < i)
-            continue;
-        if (check(h + i)) {
-            count++;
-        }
+        if (h >= i)
+        	if (check(h + i))
+		    count++;
     }
     return (int64) (count << 1);
 }

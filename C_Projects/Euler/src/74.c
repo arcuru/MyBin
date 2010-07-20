@@ -19,6 +19,7 @@ int64 Euler_74()
     for (i = 0; i < 10; i++)
         array[i] = Factorial(i);
     int total = 0;
+#pragma omp parallel for
     for (i = 1; i < 1000000; i++) {
         int dex;
         list[0] = i;

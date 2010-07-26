@@ -34,9 +34,9 @@ alias transferdirece='scp -r $1 pjackson6@ecelinsrv1.ece.gatech.edu:$2'
 #alias publish5='sudo cp -r /home/patty/public_html/week5/* /var/www/week5/'
 
 #	Upgrading with bauerbill & pacman
-alias upgrade='sudo bauerbill -Syu --rebase --aur --build-as patty'
-alias install='sudo bauerbill -S --aur --build-as patty'
-alias remove='sudo pacman -Rs'
+alias u='sudo bauerbill -Syu --rebase --aur --build-as patty'
+alias i='sudo bauerbill -S --aur --build-as patty'
+alias r='sudo pacman -Rs'
 alias clean='rm -rf /tmp/bauerbill'
 alias search='bauerbill -Ss --aur'
 
@@ -56,5 +56,3 @@ alias gmp++='g++ $1 -lgmpxx -lgmp'
 #	Usable with pulseaudio
 #alias audio='killall pulseaudio; sudo start pulseaudio'
 
-alias bghide='feh --bg-scale ~/Dropbox/Photos/Wallpapers/yep.jpg'
-alias bgreturn='feh --bg-scale ~/Dropbox/Photos/Wallpapers/sexy-market-for-headphones-1280x800.jpg'

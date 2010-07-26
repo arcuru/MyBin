@@ -59,6 +59,7 @@ static const char *exailet[] = { "exaile", "-t", NULL };
 static const char *emelfm2[] = { "emelfm2", NULL };
 static const char *googlecal[] = { "chromium", "--app=https://calendar.google.com", NULL };
 static const char *hulu[] = { "chromium", "--app=http://www.hulu.com" , NULL };
+static const char *office[] = { "soffice", NULL };
 
 
 
@@ -76,7 +77,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      spawn,          {.v = exailet } },
 	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = emelfm2 } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = googlecal } },
-	{ MODKEY,                       XK_h,      spawn,          {.v = hulu } },
+	{ MODKEY|ShiftMask,             XK_h,      spawn,          {.v = hulu } },
+	{ MODKEY,                       XK_o,      spawn,          {.v = office } },
 
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },

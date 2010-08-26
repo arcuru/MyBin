@@ -47,15 +47,15 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
-static const char *codeblocks[] = { "codeblocks", NULL };
 static const char *browser[] = { "surf", "google.com", NULL };
+static const char *browser2[] = { "chromium", NULL };
 static const char *thunderbird[] = { "thunderbird", NULL };
 static const char *slock[] = { "slock", NULL };
 static const char *virtualbox[] = { "VirtualBox", "--startvm", "Windows", NULL };
-static const char *exaile[] = { "exaile", NULL };
-static const char *exailen[] = { "exaile", "-n", NULL };
-static const char *exailep[] = { "exaile", "-p", NULL };
-static const char *exailet[] = { "exaile", "-t", NULL };
+static const char *music[] = { "urxvtc", "-e", "ncmpcpp", NULL };
+static const char *musicn[] = { "ncmpcpp", "next", NULL };
+static const char *musicp[] = { "ncmpcpp", "prev", NULL };
+static const char *musict[] = { "ncmpcpp", "toggle", NULL };
 static const char *emelfm2[] = { "emelfm2", NULL };
 static const char *googlecal[] = { "chromium", "--app=https://calendar.google.com", NULL };
 static const char *hulu[] = { "chromium", "--app=http://www.hulu.com" , NULL };
@@ -66,15 +66,15 @@ static const char *office[] = { "soffice", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_c,      spawn,          {.v = codeblocks } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = browser } },
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = browser2 } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = thunderbird } },
 	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = slock } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = virtualbox } },
-	{ MODKEY|ShiftMask,             XK_m,      spawn,          {.v = exaile } },
-	{ MODKEY,                       XK_n,      spawn,          {.v = exailen } },
-	{ MODKEY|ShiftMask,             XK_n,      spawn,          {.v = exailep } },
-	{ MODKEY,                       XK_b,      spawn,          {.v = exailet } },
+	{ MODKEY|ShiftMask,             XK_m,      spawn,          {.v = music } },
+	{ MODKEY,                       XK_n,      spawn,          {.v = musicn } },
+	{ MODKEY|ShiftMask,             XK_n,      spawn,          {.v = musicp } },
+	{ MODKEY,                       XK_b,      spawn,          {.v = musict } },
 	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = emelfm2 } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = googlecal } },
 	{ MODKEY|ShiftMask,             XK_h,      spawn,          {.v = hulu } },

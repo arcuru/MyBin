@@ -2,10 +2,10 @@
 
 /* appearance */
 static const char font[]            = "-*-terminus-*-*-*-*-14-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#000000";
+static const char normbordercolor[] = "#0066ff";
 static const char normbgcolor[]     = "#cccccc";
 static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#0066ff";
+static const char selbordercolor[]  = "#000000";
 static const char selbgcolor[]      = "#0066ff";
 static const char selfgcolor[]      = "#ffffff";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */

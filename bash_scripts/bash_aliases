@@ -1,7 +1,7 @@
 #Must edit ~/.bashrc to reference this file for aliases
 
 #	Overwriting basic commands
-alias ls='ls -ph --color=auto'
+alias ls='ls -ph'
 alias rm='rm -I'
 alias temp='acpi -t'
 alias tarballpack='tar cvzf $1 $2'

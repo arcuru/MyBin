@@ -47,9 +47,8 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
-static const char *browser[] = { "surf", "google.com", NULL };
-static const char *browser2[] = { "chromium", NULL };
-static const char *thunderbird[] = { "thunderbird", NULL };
+static const char *browser[] = { "chromium", NULL };
+static const char *email[] = { "chromium", "--app=https://mail.google.com", NULL };
 static const char *slock[] = { "slock", NULL };
 static const char *virtualbox[] = { "VirtualBox", "--startvm", "Windows", NULL };
 static const char *music[] = { "urxvtc", "-e", "ncmpcpp", NULL };
@@ -67,8 +66,7 @@ static const char *office[] = { "soffice", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_w,      spawn,          {.v = browser } },
-	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = browser2 } },
-	{ MODKEY,                       XK_e,      spawn,          {.v = thunderbird } },
+	{ MODKEY,                       XK_e,      spawn,          {.v = email } },
 	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = slock } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = virtualbox } },
 	{ MODKEY|ShiftMask,             XK_m,      spawn,          {.v = music } },

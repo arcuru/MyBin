@@ -57,7 +57,7 @@ static const char *musicp[] = { "ncmpcpp", "prev", NULL };
 static const char *musict[] = { "ncmpcpp", "toggle", NULL };
 static const char *emelfm2[] = { "emelfm2", NULL };
 static const char *googlecal[] = { "chromium", "--app=https://calendar.google.com", NULL };
-static const char *hulu[] = { "chromium", "--app=http://www.hulu.com" , NULL };
+static const char *hulu[] = { "huludesktop" , NULL };
 static const char *office[] = { "soffice", NULL };
 
 

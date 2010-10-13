@@ -8,10 +8,9 @@ alias tarballpack='tar cvzf $1 $2'
 alias tarballunpack='tar xzvf'
 alias maxbright='sudo setpci -s 00:02.0 f4.b=ff'
 alias dwmcompile='cd ~/bin/dwm; makepkg -efi --skipinteg; cd -'
-alias m='mplayer'
-alias mdvd='mplayer dvd://1'
-alias mdvdf='mplayer dvd://1 -dvd-device'
-alias s='sudo pm-suspend'
+alias m='smplayer'
+alias sus='sudo pm-suspend'
+alias s='screen'
 
 #	Mounting Samba share
 alias umountsamba='sudo umount /media/Raid1'

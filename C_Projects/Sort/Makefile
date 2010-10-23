@@ -1,4 +1,4 @@
-CC=clang
+CC=gcc
 CFLAGS=-Wall -Wextra
 AR=ar
 INCLUDE_DIR=-I./inc

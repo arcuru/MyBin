@@ -6,8 +6,8 @@
 int64 Euler_229()
 {
     //printf("USES 1GB MEMORY\nARE YOU SURE YOU WANT TO?\nEDIT FILE TO CONTINUE\n");
-    return 0;
-    uns64 N = 2000000000;
+    //const int memsize
+    uns64 N =10000000; //2000000000;
     unsigned char* list = (unsigned char*) calloc((N + 1) >> 1,
                           sizeof(unsigned char));
     if (!list) {
@@ -23,7 +23,9 @@ int64 Euler_229()
         tmpx = x * x;
         while (1) {
             uns64 tmpy = y * y;
-            y++;
+	    y++;
+
+	    /* x^2 + y^2 */
             if (tmpx + tmpy > N)
                 break;
             tmp = tmpx + tmpy;
@@ -31,6 +33,8 @@ int64 Euler_229()
             if (tmp & 1)
                 shift = 4;
             list[tmp >> 1] |= 1 << shift;
+
+	    /* x^2 + 2 * y^2 */
             if (tmpx + (tmpy << 1) > N)
                 continue;
             tmp = tmpx + (tmpy << 1);
@@ -38,6 +42,8 @@ int64 Euler_229()
             if (tmp & 1)
                 shift = 4;
             list[tmp >> 1] |= 2 << shift;
+
+	    /* x^2 + 3 * y^2 */
             if (tmpx + (tmpy * 3) > N)
                 continue;
             tmp = tmpx + (tmpy * 3);
@@ -45,6 +51,8 @@ int64 Euler_229()
             if (tmp & 1)
                 shift = 4;
             list[tmp >> 1] |= 4 << shift;
+
+	    /* x^2 + 7 * y^2 */
             if (tmpx + (tmpy * 7) > N)
                 continue;
             tmp = tmpx + (tmpy * 7);
@@ -52,6 +60,7 @@ int64 Euler_229()
             if (tmp & 1)
                 shift = 4;
             list[tmp >> 1] |= 8 << shift;
+
         }
     }
     int count = 0;

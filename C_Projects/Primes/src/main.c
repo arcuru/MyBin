@@ -387,7 +387,7 @@ int isPrimeE(int n, unsigned char* primes) {
 			return TRUE;
 		return FALSE;
 	}
-	if (!(n & 1))
+	if (!(n & 1) || (n%3 == 0))
 		return FALSE;
 	switch (n % 30) {
 	case 1:

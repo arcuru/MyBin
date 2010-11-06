@@ -124,28 +124,20 @@ void printResults(time_t* pt1, time_t* pt2)
     double secs;
     int hours, mins, intsecs;
 
-    //printf("End: \t%s", ctime(pt2));
     secs = difftime(*pt2, *pt1);
     intsecs = (int) secs;
-    printf("Calculations took %d second%s.\n", intsecs, (intsecs == 1 ? ""
-            : "s"));
 
     /* Print hours, minutes, seconds */
     hours = intsecs / 3600;
     intsecs -= hours * 3600;
     mins = intsecs / 60;
     intsecs -= mins * 60;
-    if (hours > 0 || mins > 0) {
-        printf("Equals ");
-        if (hours > 0) {
-            printf("%d hour%s, ", hours, (hours == 1) ? "" : "s");
-        }
-        if (mins > 0) {
-            printf("%d minute%s and ", mins, (mins == 1) ? "" : "s");
-        }
-        printf("%d second%s.\n", intsecs, (intsecs == 1 ? "" : "s"));
-
-    }
+    printf("Calculations took ");
+    if (hours > 0)
+	printf("%d hour%s, ", hours, (hours == 1) ? "" : "s");
+    if (mins > 0 || hours > 0)
+	printf("%d minute%s and ", mins, (mins == 1) ? "" : "s");
+    printf("%d second%s.\n", intsecs, (intsecs == 1 ? "" : "s"));
 }
 
 //Faster Version
@@ -198,11 +190,21 @@ int N_Queens(int n)
 }
 
 // Main program here.
-int main()
+int main(int argc, char *argv[])
 {
-    time_t t1, t2;
-    time(&t1);
-    int solution = 0;
+    if (argc == 0)
+	return 0;
+    int i;
+    for (i=1; i<argc; i++)
+    {
+	time_t t1, t2;
+	time(&t1);
+	int solution = N_Queens(atoi(argv[i]));
+	time(&t2);
+	printf("\n%d sided board\n", atoi(argv[i]));
+	printResults(&t1, &t2);
+	printf("Found %d distinct solutions\n", solution);
+    }
 //	int i;
 //	for (i = 0; i < nCols; i++) {
 //		queenRow[i] = -1;
@@ -218,10 +220,6 @@ int main()
 //			--currentCol;
 //		}
 //	}
-    solution=N_Queens(14);
-    time(&t2);
-    printResults(&t1, &t2);
-    printf("Found %d distinct solutions\n", solution);
     return 0;
 }
 

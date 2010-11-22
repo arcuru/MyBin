@@ -11,6 +11,8 @@ alias dwmcompile='cd ~/bin/dwm; makepkg -efi --skipinteg; cd -'
 alias m='smplayer'
 alias sus='sudo pm-suspend'
 alias s='screen'
+alias monitor-vga='xrandr --output LVDS1 --off --output VGA1 --auto'
+alias monitor-eee='xrandr --output LVDS1 --auto --output VGA1 --off'
 
 #	Mounting Samba share
 alias umountsamba='sudo umount /media/Raid1'

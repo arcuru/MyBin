@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 
+// Currently does not work
 int64 Euler_229()
 {
     //printf("USES 1GB MEMORY\nARE YOU SURE YOU WANT TO?\nEDIT FILE TO CONTINUE\n");
@@ -24,7 +25,7 @@ int64 Euler_229()
     for (low = 0; low <= N; low += memsize, high += memsize) {
 	if (high > N)
 	    high = N;
-	for (x = ; x * x <= high; x++) {
+	for (x = 1; x * x <= high; x++) {
 	    tmpx = x * x;
 	    int index;
 	    for (index = 0; index < 4; index++) {

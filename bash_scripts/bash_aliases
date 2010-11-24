@@ -14,9 +14,6 @@ alias s='screen'
 alias monitor-vga='xrandr --output LVDS1 --off --output VGA1 --auto'
 alias monitor-eee='xrandr --output LVDS1 --auto --output VGA1 --off'
 
-#	Mounting Samba share
-alias umountsamba='sudo umount /media/Raid1'
-
 #	Connecting to GT places
 alias connectacme='ssh pjackson6@acme.gatech.edu'
 alias retrieveacme='scp pjackson6@acme.gatech.edu:$1 $2'
@@ -44,20 +41,4 @@ alias i='sudo bauerbill -S --aur --build-as patty'
 alias r='sudo pacman -Rs'
 alias clean='rm -rf /tmp/bauerbill'
 alias search='bauerbill -Ss --aur'
-
-
-#	Upgrading with apt-get
-#alias update='sudo apt-get update && sudo apt-get upgrade'
-#alias upgrade='sudo apt-get upgrade'
-#alias dist-upgrade='sudo apt-get dist-upgrade'
-#alias clean='sudo apt-get clean && sudo apt-get autoremove'
-#alias check='sudo apt-get check'
-
-#	Compiling
-#alias gcc='gcc $1 -lm' #-lm lets sqrt be used
-alias gmp='gcc $1 -lgmp'
-alias gmp++='g++ $1 -lgmpxx -lgmp'
-
-#	Usable with pulseaudio
-#alias audio='killall pulseaudio; sudo start pulseaudio'
 

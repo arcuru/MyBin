@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -Wextra
 INCLUDE_DIR=-I./inc -I../Primes/inc
 AR=ar
-LIBS=../Primes/libPrimes.a
+LIBS=-lm ../Primes/libPrimes.a
 SOURCES=./src/main.c
 ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.c=.o)

@@ -14,7 +14,6 @@ def Euler_12(divisors=500):
 			root += 1
 		if count > divisors:
 			return tri
-		print(tri)
 
 	raise ValueError('range too small')
 

@@ -48,7 +48,7 @@ int64_t Compute_Value(char **p,char endvalue)
             (*p)++;
             if (filling_a==1) {
                 a=Compute_Value(p,')');
-                sfilling_a=0;
+                filling_a=0;
             } else {
                 b=Compute_Value(p,')');
                 isBValid=1;

@@ -18,6 +18,7 @@ C_Projects/Queens/Queens
 C_Projects/Goldbach/Goldbach
 
 # Exclude codeblocks extra files
+*.cbp
 C_Projects/*/*.depend
 C_Projects/*/*.layout
 

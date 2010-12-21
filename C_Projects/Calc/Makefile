@@ -21,5 +21,5 @@ $(OBJECTS): $(SOURCES)
 clean:
 	rm -rf $(OBJECTS) $(TARGET)
 
-test:
+test: all
 	./$(TARGET) tests/*

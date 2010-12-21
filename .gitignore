@@ -23,5 +23,8 @@ C_Projects/Calc/Calc
 C_Projects/*/*.depend
 C_Projects/*/*.layout
 
+# Exclude eclipse extra files
+*project
+
 # Exclude the Sandbox
 C_Projects/Sandbox/*

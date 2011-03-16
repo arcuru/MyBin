@@ -4,7 +4,7 @@ def Euler_9(limit=1000):
     '''
     for a in range(1,limit):
         for b in range(a,limit):
-            if (a*a + b*b == (limit-a-b)*(limit-a-b)):
+            if (a**2 + b**2 == (limit-a-b)**2):
                 return a*b*(limit-a-b)
 
     raise ValueError('No answer for input value')

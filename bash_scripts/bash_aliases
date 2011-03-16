@@ -14,6 +14,7 @@ alias s='screen'
 alias monitor-vga='xrandr --output LVDS1 --off --output VGA1 --auto'
 alias monitor-eee='xrandr --output LVDS1 --auto --output VGA1 --off'
 alias pandora='adobe-air /opt/pandora/pandora_2_0_2.air &'
+alias vp='vim -u ~/.vimrc-p'
 
 #	Connecting to GT places
 alias connectacme='ssh pjackson6@acme.gatech.edu'

@@ -15,8 +15,8 @@ def Euler_14(maxx=1000000):
             retval += 1
         return retval
 
-    clist = [collatz(x) for x in range(500000,maxx)]
-    return clist.index(reduce(lambda i,j: max(i,j), clist)) + 500000
+    clist = [collatz(x) for x in range(maxx//2,maxx)]
+    return clist.index(reduce(lambda i,j: max(i,j), clist)) + maxx//2
 
 if __name__ == '__main__':
     print(Euler_14())

@@ -8,10 +8,7 @@ def Euler_14(maxx=1000000):
         '''
         retval = 0
         while x is not 1:
-            if (x%2 is 0):
-                x //= 2
-            else:
-                x = 3*x + 1
+            x = 3*x + 1 if x%2 else x//2
             retval += 1
         return retval
 

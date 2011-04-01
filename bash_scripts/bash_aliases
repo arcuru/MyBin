@@ -38,9 +38,13 @@ alias transferdirece='scp -r $1 pjackson6@ecelinsrv1.ece.gatech.edu:$2'
 #alias publish5='sudo cp -r /home/patty/public_html/week5/* /var/www/week5/'
 
 #	Upgrading with bauerbill & pacman
-alias u='sudo bauerbill -Syu --rebase --aur --build-as patty'
-alias i='sudo bauerbill -S --aur --build-as patty'
+#alias u='sudo bauerbill -Syu --rebase --aur --build-as patty'
+#alias i='sudo bauerbill -S --aur --build-as patty'
 alias r='sudo pacman -Rs'
-alias clean='rm -rf /tmp/bauerbill'
-alias search='bauerbill -Ss --aur'
+#alias clean='rm -rf /tmp/bauerbill'
+#alias search='bauerbill -Ss --aur'
+
+#   Upgrading with yaourt
+alias u='yaourt -Syua'
+alias i='yaourt -S'
 

@@ -1,7 +1,5 @@
 #include <stdlib.h>
 
-static int current = 0;
-
 typedef struct TN {
     int value;
     int count;
@@ -27,6 +25,7 @@ static void FreeTree(TreeNode* n) {
 }
 
 static void SaveTree(TreeNode* n, int* sorted) {
+	static int current = 0;
     if (n->leftChild != NULL)
         SaveTree(n->leftChild, sorted);
     int i;
@@ -37,24 +36,26 @@ static void SaveTree(TreeNode* n, int* sorted) {
 }
 
 static void Insert(TreeNode* n, int num) {
-    if (num == n->value)
-        ++n->count;
-    else if (num > n->value) {
-        if (n->rightChild == NULL) {
-            TreeNode* tree = MakeTree(num);
-            n->rightChild = tree;
-            return;
-        }
-        Insert(n->rightChild, num);
-    } else if (num < n->value) {
-        if (n->leftChild == NULL) {
-            TreeNode* tree = MakeTree(num);
-            n->leftChild = tree;
-            return;
-        }
-        Insert(n->leftChild, num);
-    }
-    return;
+	while (1) {
+		if (num == n->value) {
+			++n->count;
+			return;
+		} else if (num > n->value) {
+			if (n->rightChild == NULL) {
+				TreeNode* tree = MakeTree(num);
+				n->rightChild = tree;
+				return;
+			}
+			n = n->rightChild;
+		} else if (num < n->value) {
+			if (n->leftChild == NULL) {
+				TreeNode* tree = MakeTree(num);
+				n->leftChild = tree;
+				return;
+			}
+			n = n->leftChild;
+		}
+	}
 }
 
 int* InsertionSortBinary(int* d, int n) {
@@ -62,7 +63,6 @@ int* InsertionSortBinary(int* d, int n) {
     int i;
     for (i = 1; i < n; i++)
         Insert(tree, d[i]);
-    current = 0;
     SaveTree(tree, d);
     FreeTree(tree);
     return d;

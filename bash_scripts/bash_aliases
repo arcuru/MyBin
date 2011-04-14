@@ -15,6 +15,7 @@ alias monitor-vga='xrandr --output LVDS1 --off --output VGA1 --auto'
 alias monitor-eee='xrandr --output LVDS1 --auto --output VGA1 --off'
 alias monitor-dual='xrandr --output LVDS1 --auto --output VGA1 --auto; xrandr --output VGA1 --right-of LVDS1'
 alias vp='vim -u ~/.vimrc-p'
+alias kindle='wine C:\\Program\ Files\ \(x86\)\\Amazon\\Kindle\ For\ PC\\KindleForPC.exe'
 
 #	Connecting to GT places
 alias connectacme='ssh pjackson6@acme.gatech.edu'

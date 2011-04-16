@@ -17,7 +17,7 @@ class PrimesIter:
                 if prime**2 > tmp:
                     self.plist.append(tmp)
                     return tmp
-                if prime*(tmp//prime) == tmp:
+                if tmp%prime is 0:
                     break
         raise StopIteration
 

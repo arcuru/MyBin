@@ -4,7 +4,7 @@ def Euler_104():
 	'''
 	# a is lower fib number, b is higher fib number
 	# index is the fibonacci index of b
-	
+
 	(a, b, index) = (gmpy.mpz(1), gmpy.mpz(1), 2)
 	while True:
 		(a, b, index) = (b, a + b, index + 1)

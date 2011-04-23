@@ -2,17 +2,20 @@ class Primes:
 	''' This class provides numerous functions for prime numbers
 	'''
 
-	def __init__(self):
+	def __init__(self, num=0):
 		self.maxPrime = 0
 		self.pSieve2 = []
+		self.default = num
 		self.plist = []
 		return
 
-	def sieve(self, num):
+	def sieve(self, num=-1):
 		''' Create a data structure with all the primes up to num
 			The data structure that stores this is internal and
 			subject to change
 		'''
+		if num is -1:
+			num = self.default
 		if self.maxPrime >= num:
 			return
 		oldMax, self.maxPrime = self.maxPrime, num
@@ -34,9 +37,11 @@ class Primes:
 					self.pSieve2[x] = False
 		return
 
-	def pList(self, num):
+	def pList(self, num=-1):
 		''' Generate a list of prime numbers
 		'''
+		if num is -1:
+			num = self.default
 		if self.maxPrime < num:
 			self.sieve(num)
 		if len(self.plist) is 0:
@@ -49,21 +54,21 @@ class Primes:
 				if self.isPrime(lowVal):
 					self.plist.append(lowVal)
 				lowVal += 6
-		for x in range(lowVal, num+1,6):
+		for x in range(lowVal, num+1, 6):
 			if self.isPrime(x-2):
 				self.plist.append(x-2)
 			if self.isPrime(x):
 				self.plist.append(x)
-		if x+4 <= num:
-			if self.isPrime(x+4):
-				self.plist.append(x+4)
+		for x in range(self.plist[-1]+1, num+1, 1):
+			if self.isPrime(x):
+				self.plist.append(x)
 		return self.plist
 
 	def isPrime(self,num):
 		''' Test if a single input number is prime
 		'''
 		if num <= self.maxPrime:
-			if num%2 is 0:
+			if num % 2 is 0:
 				return True if num is 2 else False
 			if num <= self.maxPrime:
 				return self.pSieve2[num//2]

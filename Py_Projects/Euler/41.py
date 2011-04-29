@@ -3,10 +3,9 @@ def Euler_41():
 	'''
 	# 8 and 9 digits don't work, since sum is multiple of 3
 	from itertools import permutations
-	from primes import Primes
-	p = Primes()
+	from primes import isPrime
 	for x in sorted([int(''.join(list(x))) for x in permutations('7654321')], reverse=True):
-		if p.isPrime(x):
+		if isPrime(x):
 			return x
 	raise ValueError
 

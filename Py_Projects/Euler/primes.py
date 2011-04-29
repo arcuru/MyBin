@@ -71,7 +71,6 @@ class Primes:
 			self.pSieve2[0] = False # set 1 as not prime
 		else:
 			self.pSieve2.extend([True for i in range(oldMax//2, listEnd+1)])
-			print(len(self.pSieve2))
 		for ind in range(1,listEnd):
 			lowVal = 2 * (ind**2 + ind)
 			if lowVal > listEnd:

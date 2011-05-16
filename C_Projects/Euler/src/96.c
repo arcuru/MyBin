@@ -12,14 +12,13 @@ int64 Euler_96()
         return 0;
     char line[16];
     int total = 0;
-    char* abc;
     int i;
     for (i = 0; i < 50; i++) {
-        abc = fgets(line, sizeof(line), data);
+        fgets(line, sizeof(line), data);
         int* puzzle = (int*) (malloc)(sizeof(int) * 81);
         int n;
         for (n = 0; n < 9; n++) {
-            abc = fgets(line, sizeof(line), data);
+            fgets(line, sizeof(line), data);
             int s;
             for (s = 0; s < 9; s++)
                 puzzle[SUDOKU_INDEX(n,s)] = (int) (line[s] - '0');

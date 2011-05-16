@@ -31,9 +31,8 @@ int64 Euler_52()
     while (1 == 1) {
         while (num <= bignum / 6) {
             num++;
-            int a[10], b;
+            int a[10];
             arrayVal(num, a);
-            b = 0;
             arrayVal(num * 2, d);
             if (isEq(a, d))
                 continue;

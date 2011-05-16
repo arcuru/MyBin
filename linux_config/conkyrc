@@ -1,0 +1,9 @@
+background no
+out_to_console yes
+update_interval 2
+total_run_times 0
+use_spacer none
+#$if_mpd_playing $mpd_artist - $mpd_title ($mpd_elapsed/$mpd_length) :: 
+TEXT
+${cpu cpu1}% / ${cpu cpu2}% :: $memperc% :: $battery_percent% / $battery_time :: ${time %a %b %d %I:%M%P}
+

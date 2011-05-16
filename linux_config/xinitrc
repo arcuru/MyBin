@@ -1,0 +1,15 @@
+#Generic setup stuff
+urxvtd &
+(sleep 300s && dropboxd) &
+#mpd &
+
+if [ $(tty) = /dev/tty1 ]; then
+	
+	sh ~/.fehbg &
+
+	#dwm stuff
+	conky | while read -r; do xsetroot -name "$REPLY"; done &
+	while true; do
+		dwm 2> ~/.dwm.log
+	done
+fi

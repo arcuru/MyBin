@@ -75,6 +75,8 @@ set mouse=a         " Enable the use of the mouse.
 
 set scrolloff=3		" Keep 3 lines below and above cursor
 
+set foldmethod=syntax "Enable folding based on syntax
+
 set nocp
 filetype plugin indent on
 syntax on

@@ -17,6 +17,7 @@ C_Projects/Euler/Euler
 C_Projects/Queens/Queens
 C_Projects/Goldbach/Goldbach
 C_Projects/Calc/Calc
+C_Projects/GTK_Pong/GTK_Pong
 
 # Exclude codeblocks extra files
 *.cbp

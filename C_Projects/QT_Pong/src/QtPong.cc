@@ -21,7 +21,7 @@ bool ColorBitCompare(ColorBit a, ColorBit b) {
     return true;
 }
 
-QtPong::QtPong(QApplication& input) : app(input), bg(0), screen(0), ball(0), ballname("Sphere64.png"), sw(512), sh(512) {
+QtPong::QtPong(QApplication& input) : app(input), bg(0), screen(0), ball(0), ballname("data/Sphere64.png"), sw(512), sh(512) {
 }
 
 QtPong::~QtPong() {

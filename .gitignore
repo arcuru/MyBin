@@ -18,6 +18,7 @@ C_Projects/Queens/Queens
 C_Projects/Goldbach/Goldbach
 C_Projects/Calc/Calc
 C_Projects/GTK_Pong/GTK_Pong
+C_Projects/Sudoku_Solver/Sudoku_Solver
 
 # Exclude codeblocks extra files
 *.cbp

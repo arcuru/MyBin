@@ -1,4 +1,4 @@
-#include "Sudoku_old.h"
+#include "Sudoku.h"
 #include "Utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +23,7 @@ static int GetValue(int*);
 static int guess;
 static int guesslimit;
 
-int* SudokuSolver_Old(int* puzzle) {
+int* SudokuSolver(int* puzzle) {
 	//do init stuff, fixes issue with running multiple times
 	guess = 0;
 	guesslimit = 1;
@@ -43,10 +43,10 @@ static int* SolvingIt(int* puzzle) {
 		//printf("1: %d\n", GetValue(puzzle));
 		Reduction(puzzle, GetValue(puzzle));
 		//printf("2: %d\n", GetValue(puzzle));
-		if (CheckSudoku_Old(puzzle))
+		if (CheckSudoku(puzzle))
 			return puzzle;
 
-		//PrintSudoku_Old(puzzle);
+		//PrintSudoku(puzzle);
 		puzzleValue=GetValue(puzzle);
 		while(TRUE){
 			LonelyNum(puzzle);
@@ -56,15 +56,15 @@ static int* SolvingIt(int* puzzle) {
 				puzzleValue=GetValue(puzzle);
 		}
 		//printf("3: %d\n", GetValue(puzzle));
-		//PrintSudoku_Old(puzzle);
+		//PrintSudoku(puzzle);
 		//return NULL;
 		Reduction(puzzle, GetValue(puzzle));
-		if (CheckSudoku_Old(puzzle))
+		if (CheckSudoku(puzzle))
 			return puzzle;
 		Twos(puzzle);
 		puzzleValue = GetValue(puzzle);
 	}
-	if (CheckSudoku_Old(puzzle) || guess >= guesslimit)
+	if (CheckSudoku(puzzle) || guess >= guesslimit)
 		return puzzle;
 	int s, i;
 	for (s = 2; s < 10; s++) {
@@ -81,7 +81,7 @@ static int* SolvingIt(int* puzzle) {
 				guess++;
 				guessing = SolvingIt(guessing);
 				guess--;
-				if (CheckSudoku_Old(guessing)) {
+				if (CheckSudoku(guessing)) {
 					puzzle = guessing;
 					return puzzle;
 				}
@@ -90,12 +90,12 @@ static int* SolvingIt(int* puzzle) {
 			free(guessing);
 		}
 	}
-	if (guess == 0 && !CheckSudoku_Old(puzzle)) {
+	if (guess == 0 && !CheckSudoku(puzzle)) {
 		guesslimit++;
 		puzzle = SolvingIt(puzzle);
 		return puzzle;
 	}
-	if (!CheckSudoku_Old(puzzle))
+	if (!CheckSudoku(puzzle))
 		return NULL;
 	return puzzle;
 }
@@ -124,8 +124,8 @@ static int* LonelyNum(int* puzzle) {
 	int* colList = (int*) (malloc)(sizeof(int) * 20);
 	int a, b, i;
 	for (a = 0; a < 9; a++) {
-		rowList = Clear(rowList, 20);
-		colList = Clear(colList, 20);
+		Clear(rowList, 20);
+		Clear(colList, 20);
 		for (b = 0; b < 9; b++) {
 			rowList = NumFill(rowList, puzzle[SUDOKU_INDEX(a,b)], (a * 10) + b);
 			colList = NumFill(colList, puzzle[SUDOKU_INDEX(b,a)], (b * 10) + a);
@@ -284,7 +284,7 @@ static int* NumFill(int* list, int num, int pos) {
 
 //Checks if puzzle is finished
 //according to basic rules
-int CheckSudoku_Old(int* puzzle) {
+int CheckSudoku(int* puzzle) {
 	if (puzzle==NULL)
 		return FALSE;
 	if (GetValue(puzzle) != 81)
@@ -325,7 +325,7 @@ static int GetValue(int* puzzle) {
 }
 
 //Prints the puzzle
-void PrintSudoku_Old(int* puzzle) {
+void PrintSudoku(int* puzzle) {
 	int value = GetValue(puzzle);
 	printf("Old Solver\n");
 	int r, c;

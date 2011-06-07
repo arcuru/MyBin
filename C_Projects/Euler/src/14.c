@@ -2,7 +2,7 @@
 
 int64 Euler_14()
 {
-	int maxval = 10000000;
+	int maxval = 1000000;
     int longest = 0, longval = 0;
     int count;
 #pragma omp parallel for

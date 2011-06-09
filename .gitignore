@@ -4,6 +4,8 @@
 *.a
 *.tar.gz
 *.tar.xz
+*__pycache*
+*.pyc
 a.out
 
 # Exclude dwm files

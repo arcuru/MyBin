@@ -6,13 +6,13 @@ INCLUDE_DIR=-I./inc \
 			-I../NumberTheory/inc \
 			-I../Sort/inc \
 			-I../Sudoku/inc
-AR=ar
-LIBS=-lgomp -lm \
-	 ../Utils/libUtils.a \
+MYLIBS=../Utils/libUtils.a \
 	 ../Primes/libPrimes.a \
 	 ../NumberTheory/libNumberTheory.a \
 	 ../Sort/libSort.a \
 	 ../Sudoku/libSudoku.a
+LIBS=-lgomp -lm $(MYLIBS)
+HEADERS=./inc/Euler.h
 SOURCES=./src/main.c \
 		./src/108.c \
 		./src/10.c \
@@ -98,19 +98,16 @@ SOURCES=./src/main.c \
 		./src/97.c \
 		./src/99.c \
 		./src/9.c 
-ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.c=.o)
 TARGET=Euler
 
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) $(MYLIBS)
 	$(CC) -o $(TARGET) $(OBJECTS) $(LIBS)
 
-$(OBJECTS): $(SOURCES)
-
-.c.o:
-	$(CC) $(CFLAGS) $(INCLUDE_DIR) -c $< -o $@
+%.o: %.c $(HEADERS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(INCLUDE_DIR)
 
 clean:
 	rm -rf $(OBJECTS) $(TARGET)

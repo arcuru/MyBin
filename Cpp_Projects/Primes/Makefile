@@ -1,0 +1,34 @@
+CC=clang++
+CFLAGS=-Wall -Wextra -O3
+INCLUDE_DIR=-I./inc
+AR=ar
+LIBS=
+SOURCES=./src/main.cc
+ASOBJECTS=$(ASSOURCES:.s=.o)
+OBJECTS=$(SOURCES:.c=.o)
+TARGET=libPrimes.a
+
+TESTSOURCES=./src/test.cc
+TESTASOBJECTS=$(TESTASSOURCES:.s=.o)
+TESTOBJECTS=$(TESTSOURCES:.c=.o)
+TEST=Test
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(AR) rcs $(TARGET) $(OBJECTS)
+
+$(OBJECTS): $(SOURCES)
+
+.c.o:
+	$(CC) $(CFLAGS) $(INCLUDE_DIR) -c $< -o $@
+
+test: $(TEST)
+
+$(TEST): $(TESTOBJECTS) $(OBJECTS)
+	$(AR) rcs $(TEST) $(TESTOBJECTS) $(OBJECTS)
+
+$(TESTOBJECTS): $(TESTSOURCES) $(SOURCES)
+
+clean:
+	rm -rf $(OBJECTS) $(TARGET) $(TESTOBJECTS) $(TEST)

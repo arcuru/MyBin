@@ -4,6 +4,7 @@
 *.a
 *.tar.gz
 *.tar.xz
+*.swp
 a.out
 
 # Exclude dwm files

@@ -1,17 +1,17 @@
 CC=gcc
 CFLAGS=-Wall -Wextra
-INCLUDE_DIR=-I./inc -I../NumberTheory/inc
+INCLUDE_DIR=-I./inc -I../Utils/inc
 AR=ar
-LIBS=-lm ../NumberTheory/libNumberTheory.a
+LIBS=
 SOURCES=./src/main.c
 ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.c=.o)
-TARGET=Calc
+TARGET=libSudoku.a
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) -o $(TARGET) $(OBJECTS) $(LIBS)
+	$(AR) rcs $(TARGET) $(OBJECTS)
 
 $(OBJECTS): $(SOURCES)
 
@@ -20,6 +20,3 @@ $(OBJECTS): $(SOURCES)
 
 clean:
 	rm -rf $(OBJECTS) $(TARGET)
-
-test: all
-	./$(TARGET) tests/*

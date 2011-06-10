@@ -1,6 +1,5 @@
 #include "Sudoku.h"
 #include "Utils.h"
-//#include "Sudoku_old.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +31,6 @@ int main(int argc, char* argv[])
     int c = 0;
     int i, solved = 0, puzzleid = 1; //puzzleid=linenumber=id for debugging
     int* puzzle = (int*) malloc(81 * sizeof (int));
-    //int* puzzle2 = (int*) malloc(81 * sizeof(int));
     float start, end, tmpstart, tmpend, max = 0;
     int maxprob = 0;
     start = GetSecondClock();
@@ -50,7 +48,6 @@ int main(int argc, char* argv[])
             exit(1);
         }
         //PrintSudoku(puzzle);
-        //memcpy(puzzle2, puzzle, 81 * sizeof(int));
         tmpstart = GetSecondClock();
         puzzle = SudokuSolver(puzzle);
         tmpend = GetSecondClock();
@@ -59,10 +56,6 @@ int main(int argc, char* argv[])
             maxprob = puzzleid;
         }
         //PrintSudoku(puzzle);
-        //printf("Old\n");
-        //puzzle2=SudokuSolver_Old(puzzle2);
-        //PrintSudoku_Old(puzzle2);
-        //printf("separate\n");
         if (CheckSudoku(puzzle) == TRUE) {
             //Puzzle solved correctly
             ++solved;

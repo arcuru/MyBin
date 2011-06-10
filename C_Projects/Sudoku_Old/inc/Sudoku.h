@@ -1,5 +1,5 @@
-#ifndef SUDOKU_Old_H
-#define SUDOKU_Old_H
+#ifndef SUDOKU_H
+#define SUDOKU_H
 /*
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,15 +11,15 @@
 
 //Solves an input puzzle defined by array of length 81
 //placement is defined according to SUDOKU_INDEX(r,c)
-int* SudokuSolver_Old(int*);
+int* SudokuSolver(int*);
 
 //Prints out sudoku puzzle defined by array of length 81
 //placement is defined according to SUDOKU_INDEX(r,c)
-void PrintSudoku_Old(int*);
+void PrintSudoku(int*);
 
 //Checks if puzzle is finished
 //according to basic rules
 //returns 1 if correct, 0 if wrong
-int CheckSudoku_Old(int*);
+int CheckSudoku(int*);
 
 #endif

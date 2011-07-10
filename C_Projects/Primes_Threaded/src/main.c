@@ -25,7 +25,7 @@
 					/*pthread_mutex_unlock(marky_mutex);*/
 					//If these locks weren't necessary it'd be viable
 
-struct SieveEratosthenesStruct {
+typedef struct SieveEratosthenesStruct {
 	int sqrtEnd;
 	unsigned char* primes;
 	int threadid;
@@ -33,7 +33,7 @@ struct SieveEratosthenesStruct {
 	pthread_mutex_t *grabby_mutex;
 	pthread_mutex_t *marky_mutex;
 	int* currentPos;
-};
+} SieveEratosthenesStruct;
 
 static void *SieveEratosthenesThread(void* input) {
 	SieveEratosthenesStruct* SEStruct = (SieveEratosthenesStruct*) input;
@@ -208,13 +208,13 @@ unsigned char* SieveEratosthenesThreaded(int N) {
 	return prime;
 }
 
-struct primeListStruct {
+typedef struct primeListStruct {
 	unsigned char* primes;
 	int* list;
 	int* index;
 	int primeEnd;
 	int threadid;
-};
+} primeListStruct;
 
 #define pLhelp(x)	list[count]=x; count++; break;
 static void *primeListThread(void* input) {
@@ -321,12 +321,12 @@ int* primeListEThreaded_inc(int N, unsigned char* prime) {
 	return list;
 }
 
-struct primeIndexStruct {
+typedef struct primeIndexStruct {
 	unsigned char* primes;
 	unsigned char* list;
 	int primeEnd;
 	int threadid;
-};
+} primeIndexStruct;
 
 #define pILhelp(x)	list[x]=1; break;
 static void *primeIndexThread(void* input) {

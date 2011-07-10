@@ -336,9 +336,9 @@ int* primeFactorsE_inc(int N, int* primes) {
 	return list;
 }
 
-uns64* primeFactorsE_uns64(uns64 N) {
+uint64_t* primeFactorsE_u64(uint64_t N) {
 	int* primes = primeListE(1000000);
-	uns64* list = (uns64*) calloc(64, sizeof(uns64));
+	uint64_t* list = (uint64_t*) calloc(64, sizeof(uint64_t));
 	int n;
 	int s = 0;
 	for (n = 0; N > 1 && primes[n]; n++) {
@@ -451,7 +451,7 @@ int isPrime(int n) {
 	return TRUE;
 }
 
-int isPrime_uns64(uns64 n) {
+int isPrime_u64(uint64_t n) {
 	if (n < 10) {
 		if (n < 2)
 			return FALSE;
@@ -469,7 +469,7 @@ int isPrime_uns64(uns64 n) {
 		return FALSE;
 	if (!(n % 5))
 		return FALSE;
-	uns64 f = 7;
+	uint64_t f = 7;
 	while (f * f <= n) {
 		if (!(n % f))
 			return FALSE;

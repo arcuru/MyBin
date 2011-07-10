@@ -1,8 +1,6 @@
 #ifndef PRIMES_H
 #define PRIMES_H
-#ifndef uns64
-#define uns64 unsigned long long
-#endif
+#include <stdint.h>
 
 /*
  * Sieve of Eratosthenes
@@ -46,7 +44,7 @@ unsigned char* primeIndexListE_inc(int, unsigned char*);
  */
 int* primeFactorsE(int);
 int* primeFactorsE_inc(int, int*);
-uns64* primeFactorsE_uns64(uns64);
+uint64_t* primeFactorsE_u64(uint64_t);
 
 /*
  * Prime Check
@@ -62,7 +60,7 @@ int isPrimeE(int, unsigned char*);
  * Returns true if the input is a prime
  */
 int isPrime(int);
-int isPrime_uns64(uns64);
+int isPrime_u64(uint64_t);
 
 #ifndef TRUE
 #define TRUE 1

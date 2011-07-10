@@ -23,9 +23,9 @@ int* BubbleSort(int* d, int size)
     return d;
 }
 
-int64* BubbleSort_int64(int64* d, int size)
+int64_t* BubbleSort_s64(int64_t* d, int size)
 {
-    int64 tmp;
+    int64_t tmp;
     int k;
     int i = 1;
     while (i < size) {

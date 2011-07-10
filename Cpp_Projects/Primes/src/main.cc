@@ -61,21 +61,21 @@ bool Primes::isPrime(int n)
 	if ( n < maxVal && pSieve != NULL) {
 		switch (n % 30) {
 			case 1:
-				return !(pSieve[n / 30] & 1);
+				return !(pSieve[n / 30] & 0x01);
 			case 7:
-				return !(pSieve[n / 30] & 2);
+				return !(pSieve[n / 30] & 0x02);
 			case 11:
-				return !(pSieve[n / 30] & 4);
+				return !(pSieve[n / 30] & 0x04);
 			case 13:
-				return !(pSieve[n / 30] & 8);
+				return !(pSieve[n / 30] & 0x08);
 			case 17:
-				return !(pSieve[n / 30] & 16);
+				return !(pSieve[n / 30] & 0x10);
 			case 19:
-				return !(pSieve[n / 30] & 32);
+				return !(pSieve[n / 30] & 0x20);
 			case 23:
-				return !(pSieve[n / 30] & 64);
+				return !(pSieve[n / 30] & 0x40);
 			case 29:
-				return !(pSieve[n / 30] & 128);
+				return !(pSieve[n / 30] & 0x80);
 			}
 	}
 	int f = 7;
@@ -120,14 +120,14 @@ int* Primes::getList(int end)
 					}										\
 					kk=0;									\
 					switch(mod) {							\
-						case 1:	kk=1;	break;				\
-						case 7:	kk=2;	break;				\
-						case 11:	kk=4;	break;			\
-						case 13:	kk=8;	break;			\
-						case 17:	kk=16;	break;			\
-						case 19:	kk=32;	break;			\
-						case 23:	kk=64;	break;			\
-						case 29:	kk=128;	break;			\
+						case 1:		kk=0x01;	break;		\
+						case 7:		kk=0x02;	break;		\
+						case 11:	kk=0x04;	break;		\
+						case 13:	kk=0x08;	break;		\
+						case 17:	kk=0x10;	break;		\
+						case 19:	kk=0x20;	break;		\
+						case 23:	kk=0x40;	break;		\
+						case 29:	kk=0x80;	break;		\
 					}										\
 					primes[n] |= kk;
 
@@ -140,66 +140,66 @@ static uint8_t* SieveEratosthenes(int N)
 	if (!primes) {
 		return NULL;
 	}
-	int n, s, j, num, num1, num2, num4, num6;
+	int n, s, num, num1, num2, num4, num6;
 	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
 	int incr2, incr4, incr6, s30;
 	uint8_t k, kk;
 	primes[0] |= 1;
 	for (n = 0, num1 = 0; n <= sqrtEnd; num1 += 30, n++) {
-		for (j = 0, k = 1; k; j++, k += k) {
+		for (k = 1; k; k += k) {
 			if (!(primes[n] & k)) {
 				num = num1;
-				switch (j) {//mod=(num^2)%30; mod2=(num*2)%30; mod22=(mod2*2)%30;
-				case 0:
+				switch (k) {//mod=(num^2)%30; mod2=(num*2)%30; mod22=(mod2*2)%30;
+				case 0x01:
 					mod = 1;
 					mod2 = 2;
 					mod22 = 4;
 					mod23 = 6;
 					num += 1;
 					break;
-				case 1:
+				case 0x02:
 					mod = 19;
 					mod2 = 14;
 					mod22 = 28;
 					mod23 = 12;
 					num += 7;
 					break;
-				case 2:
+				case 0x04:
 					mod = 1;
 					mod2 = 22;
 					mod22 = 14;
 					mod23 = 6;
 					num += 11;
 					break;
-				case 3:
+				case 0x08:
 					mod = 19;
 					mod2 = 26;
 					mod22 = 22;
 					mod23 = 18;
 					num += 13;
 					break;
-				case 4:
+				case 0x10:
 					mod = 19;
 					mod2 = 4;
 					mod22 = 8;
 					mod23 = 12;
 					num += 17;
 					break;
-				case 5:
+				case 0x20:
 					mod = 1;
 					mod2 = 8;
 					mod22 = 16;
 					mod23 = 24;
 					num += 19;
 					break;
-				case 6:
+				case 0x40:
 					mod = 19;
 					mod2 = 16;
 					mod22 = 2;
 					mod23 = 18;
 					num += 23;
 					break;
-				case 7:
+				case 0x80:
 					mod = 1;
 					mod2 = 28;
 					mod22 = 26;
@@ -217,29 +217,29 @@ static uint8_t* SieveEratosthenes(int N)
 				incr4 = num4 / 30;
 				incr6 = num6 / 30;
 				s30 = s / 30;
-				switch (j)do {
-					case 0: mark(mod,s30); s+=num6;
+				switch (k)do {
+					case 0x01: mark(mod,s30); s+=num6;
 					if (s>=N) break;
 					s30+=incr6; mod+=mod23;
-					case 1: mark(mod,s30); s+=num4;
+					case 0x02: mark(mod,s30); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 2: mark(mod,s30); s+=num2;
+					case 0x04: mark(mod,s30); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
-					case 3: mark(mod,s30); s+=num4;
+					case 0x08: mark(mod,s30); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 4: mark(mod,s30); s+=num2;
+					case 0x10: mark(mod,s30); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
-					case 5: mark(mod,s30); s+=num4;
+					case 0x20: mark(mod,s30); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 6: mark(mod,s30); s+=num6;
+					case 0x40: mark(mod,s30); s+=num6;
 					if (s>=N) break;
 					s30+=incr6; mod+=mod23;
-					case 7: mark(mod,s30); s+=num2;
+					case 0x80: mark(mod,s30); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
 				}while(1);
@@ -256,11 +256,11 @@ static uint8_t* SieveEratosthenes(int N)
 static int* getPList(int N, uint8_t* prime)
 {
 	int primeEnd = N / 30;
-	int n, k;
+	int n;
 	uint8_t s;
 	int top = 3;
 	for (n = 0; n <= primeEnd; n++) //Counts primes
-		for (k = 0, s = 1; s; k++, s += s)
+		for (s = 1; s; s += s)
 			if (!(prime[n] & s))
 				top++;
 
@@ -273,24 +273,24 @@ static int* getPList(int N, uint8_t* prime)
 	list[1] = 3;
 	list[2] = 5;
 	for (n = 0; n <= primeEnd; n++) {
-		for (k = 0, s = 1; s; k++, s += s) {
+		for (s = 1; s; s += s) {
 			if (!(prime[n] & s)) {
-				switch (k) {
-				case 0:
+				switch (s) {
+				case 0x01:
 					pLhelp(n*30+1)
-				case 1:
+				case 0x02:
 					pLhelp(n*30+7)
-				case 2:
+				case 0x04:
 					pLhelp(n*30+11)
-				case 3:
+				case 0x08:
 					pLhelp(n*30+13)
-				case 4:
+				case 0x10:
 					pLhelp(n*30+17)
-				case 5:
+				case 0x20:
 					pLhelp(n*30+19)
-				case 6:
+				case 0x40:
 					pLhelp(n*30+23)
-				case 7:
+				case 0x80:
 					pLhelp(n*30+29)
 				}
 			}

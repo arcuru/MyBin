@@ -1,4 +1,4 @@
-CC=clang++
+CC=g++
 CFLAGS=-std=c++0x -Wall -Wextra -O3
 INCLUDE_DIR=-I./inc
 AR=ar

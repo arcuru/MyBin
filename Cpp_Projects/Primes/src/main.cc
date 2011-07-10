@@ -1,5 +1,6 @@
 #include "Primes.h"
 #include <cmath>
+#include <cstdint>
 
 #ifndef NULL
 #define NULL 0
@@ -10,8 +11,8 @@
 #include <iostream>
 #endif
 
-static unsigned char* SieveEratosthenes(int N);
-static int* getPList(int N, unsigned char* primes);
+static uint8_t* SieveEratosthenes(int N);
+static int* getPList(int N, uint8_t* primes);
 
 Primes::Primes()
 {
@@ -130,19 +131,19 @@ int* Primes::getList(int end)
 					}										\
 					primes[n] |= kk;
 
-static unsigned char* SieveEratosthenes(int N)
+static uint8_t* SieveEratosthenes(int N)
 {
 	int SQRTN = (int) sqrt(N);
 	int sqrtEnd = SQRTN / 30;
 	int primeEnd = N / 30;
-	unsigned char* primes = new unsigned char[primeEnd + 1];
+	uint8_t* primes = new uint8_t[primeEnd + 1];
 	if (!primes) {
 		return NULL;
 	}
 	int n, s, j, num, num1, num2, num4, num6;
 	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
 	int incr2, incr4, incr6, s30;
-	unsigned char k, kk;
+	uint8_t k, kk;
 	primes[0] |= 1;
 	for (n = 0, num1 = 0; n <= sqrtEnd; num1 += 30, n++) {
 		for (j = 0, k = 1; k; j++, k += k) {
@@ -252,11 +253,11 @@ static unsigned char* SieveEratosthenes(int N)
 //Index 0 starts off with 2
 //Fills an extra place with value of 0 for terminator
 #define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
-static int* getPList(int N, unsigned char* prime)
+static int* getPList(int N, uint8_t* prime)
 {
 	int primeEnd = N / 30;
 	int n, k;
-	unsigned char s;
+	uint8_t s;
 	int top = 3;
 	for (n = 0; n <= primeEnd; n++) //Counts primes
 		for (k = 0, s = 1; s; k++, s += s)

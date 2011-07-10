@@ -6,9 +6,6 @@
 #include <math.h>
 #include <stdio.h>
 */
-#ifndef uns64
-#define uns64 unsigned long long
-#endif
 
 int* EulersTotient(int);
 int GCD(int, int);

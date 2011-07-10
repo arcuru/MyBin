@@ -1,11 +1,9 @@
 #ifndef SORT_H_
 #define SORT_H_
-#ifndef int64
-#define int64 long long int
-#endif
+#include <stdint.h>
 
 int* BubbleSort(int*, int);
-int64* BubbleSort_int64(int64*, int);
+int64_t* BubbleSort_s64(int64_t*, int);
 int* ParallelBubbleSort(int*, int, int*);
 int* InsertionSortBinary(int*, int);
 

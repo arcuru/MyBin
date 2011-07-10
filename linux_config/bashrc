@@ -7,6 +7,9 @@ PS1='\[\033[1;32m\]\W/\[\033[0m\] '
 #	Enable Tab completion with sudo
 complete -cf sudo
 
+#	Set system-wide editor to vim
+export EDITOR=vim
+
 #	Overwriting basic commands
 alias ls='ls -ph --color=auto'
 alias rm='rm -I'

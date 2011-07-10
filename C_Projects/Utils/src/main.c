@@ -14,7 +14,7 @@ int Length_int(int n)
     return digits;
 }
 
-int Length_uns64(uint64_t n)
+int Length_u64(uint64_t n)
 {
     int digits = 0;
     while (n) {
@@ -24,7 +24,7 @@ int Length_uns64(uint64_t n)
     return digits;
 }
 
-int Length_int64(int64_t n)
+int Length_s64(int64_t n)
 {
     int digits = 0;
     while (n) {
@@ -46,7 +46,7 @@ int LengthBin_int(int n)
     return digits;
 }
 
-int LengthBin_uns64(uint64_t n)
+int LengthBin_u64(uint64_t n)
 {
     int digits = 0;
     while (n) {

@@ -3,14 +3,6 @@
 
 #include <stdint.h>
 
-#ifndef uns64
-#define uns64 uint64_t
-#endif
-
-#ifndef int64
-#define int64 int64_t
-#endif
-
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -20,10 +12,10 @@
 #endif
 
 int Length_int(int);
-int Length_uns64(uint64_t);
-int Length_int64(int64_t);
+int Length_u64(uint64_t);
+int Length_s64(int64_t);
 int LengthBin_int(int);
-int LengthBin_uns64(uint64_t);
+int LengthBin_u64(uint64_t);
 void Clear(int*, int);
 void RandomizeArray(int*, int);
 int GetMicrosecondClock();

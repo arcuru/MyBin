@@ -11,7 +11,7 @@ MYLIBS=../Utils/libUtils.a \
 	 ../NumberTheory/libNumberTheory.a \
 	 ../Sort/libSort.a \
 	 ../Sudoku/libSudoku.a
-LIBS=-lgomp -lm $(MYLIBS)
+LIBS=-pthread -lgomp -lm $(MYLIBS)
 HEADERS=./inc/Euler.h
 SOURCES=./src/main.c \
 		./src/108.c \

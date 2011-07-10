@@ -37,13 +37,13 @@ static int doit(int n)
     return 0;
 }
 
-int64 Euler_41()
+int64_t Euler_41()
 {
     for (length = 7; length > 1; length--) {
         int tmp;
         tmp = doit(length);
         if (isPrime(tmp))
-            return (int64) tmp;
+            return (int64_t) tmp;
     }
     return 0;
 }

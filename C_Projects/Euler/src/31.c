@@ -14,7 +14,7 @@ static int total(int a, int b, int c, int d, int e, int f)
     return (100 * a) + (50 * b) + (20 * c) + (10 * d) + (5 * e) + (2 * f);
 }
 
-int64 Euler_31()
+int64_t Euler_31()
 {
     int num, a, b, c, d, e, f;
     a = 0;
@@ -69,5 +69,5 @@ int64 Euler_31()
         }
         b = 0;
     }
-    return (int64) num;
+    return (int64_t) num;
 }

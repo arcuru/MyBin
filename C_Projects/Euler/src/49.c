@@ -23,7 +23,7 @@ int isPerm(int a, int b)
     return TRUE;
 }
 
-int64 Euler_49()
+int64_t Euler_49()
 {
     unsigned char* primelist = SieveEratosthenes(10000);
     int a,b;
@@ -34,14 +34,14 @@ int64 Euler_49()
             if (!isPrimeE(b,primelist))
                 continue;
             if (isPerm(a,b) && isPrimeE(b+b-a,primelist) && isPerm(a,b+b-a)) {
-                int64 ans=a;
+                int64_t ans=a;
                 ans*=10000;
                 ans+=b;
                 ans*=10000;
                 ans+=b+b-a;
-                return (int64)ans;
+                return (int64_t)ans;
             }
         }
     }
-    return (int64) 0;
+    return (int64_t) 0;
 }

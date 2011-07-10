@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_6()
+int64_t Euler_6()
 {
     int sumsq=0;
     int sqsum=0;
@@ -10,5 +10,5 @@ int64 Euler_6()
         sqsum=sqsum+count;
     }
     sqsum=sqsum*sqsum;
-    return (int64)(sqsum-sumsq);
+    return (int64_t)(sqsum-sumsq);
 }

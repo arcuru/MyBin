@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <math.h>
 
-int64 Euler_30()
+int64_t Euler_30()
 {
     int count = 2;
     int totalcount = 0;
@@ -17,5 +17,5 @@ int64 Euler_30()
         }
         count++;
     }
-    return (int64) totalcount;
+    return (int64_t) totalcount;
 }

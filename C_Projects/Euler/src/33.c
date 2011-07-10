@@ -33,7 +33,7 @@ static double canceller(int c, int d)
     return 1;
 }
 
-int64 Euler_33()
+int64_t Euler_33()
 {
     int num, den, prodnum, prodden;
     prodnum = 1;
@@ -52,5 +52,5 @@ int64 Euler_33()
             }
         }
     }
-    return (int64) (prodden / GCD(prodnum, prodden));
+    return (int64_t) (prodden / GCD(prodnum, prodden));
 }

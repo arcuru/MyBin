@@ -2,7 +2,7 @@
 #include "Primes.h"
 
 static int Number[8];
-static int64 g_min = 1000000;
+static int64_t g_min = 1000000;
 static unsigned char* Primes;
 static int Array[8];
 
@@ -52,7 +52,7 @@ static void Check()
         if (val == 10) {
             if (count == 2) {
                 if (min < g_min)
-                    g_min = (int64) min;
+                    g_min = (int64_t) min;
                 return;
             } else {
                 //printf("more than 8\n");
@@ -103,7 +103,7 @@ static void Rec(int index)
     Number[index] = 0;
 }
 
-int64 Euler_51()
+int64_t Euler_51()
 {
     int n;
     for (n = 0; n < 8; n++)

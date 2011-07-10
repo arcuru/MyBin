@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int64 Euler_59()
+int64_t Euler_59()
 {
     int i = 0;
     char filepath[100];
@@ -21,7 +21,7 @@ int64 Euler_59()
             break;
     }
     int decode[3];
-    int64 total=0;
+    int64_t total=0;
     int print = FALSE;
     for (decode[0] = 'a'; decode[0] <= 'z'; decode[0]++) {
         for (decode[1] = 'a'; decode[1] <= 'z'; decode[1]++) {
@@ -50,5 +50,5 @@ int64 Euler_59()
     }
     free(A);
     fclose(code);
-    return (int64)total;
+    return (int64_t)total;
 }

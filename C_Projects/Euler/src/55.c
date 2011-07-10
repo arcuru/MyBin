@@ -1,8 +1,8 @@
 #include "Euler.h"
 
-static uns64 flip(uns64 n)
+static uint64_t flip(uint64_t n)
 {
-    uns64 out = 0;
+    uint64_t out = 0;
     while (n > 0) {
         out *= 10;
         out += n % 10;
@@ -11,12 +11,12 @@ static uns64 flip(uns64 n)
     return out;
 }
 
-int64 Euler_55()
+int64_t Euler_55()
 {
     int i, dex;
     int count = 0;
     for (i = 1; i < 10000; i++) {
-        uns64 n = i;
+        uint64_t n = i;
         int g = 0;
         for (dex = 0; dex < 50; dex++) {
 
@@ -29,6 +29,6 @@ int64 Euler_55()
         if (!g)
             count++;
     }
-    return (int64) count;
+    return (int64_t) count;
 }
 

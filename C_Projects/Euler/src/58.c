@@ -13,7 +13,7 @@
 
 //Right and down produces only odd # squares
 //Precalculates initial 3x3 grid
-int64 Euler_58()
+int64_t Euler_58()
 {
     double primenum = 3;
     double totalnum = 5;
@@ -39,5 +39,5 @@ int64 Euler_58()
             primenum++;
         }
     }
-    return (int64) sidelength;
+    return (int64_t) sidelength;
 }

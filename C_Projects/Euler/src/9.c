@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_9()
+int64_t Euler_9()
 {
     int a, b, c;
     a = 1;
@@ -11,7 +11,7 @@ int64 Euler_9()
         {
             if (a * a + b * b == c * c)
             {
-                return (int64) (a*b*c);
+                return (int64_t) (a*b*c);
             }
             b++;
         }

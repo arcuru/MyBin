@@ -2,11 +2,11 @@
 #include "NumberTheory.h"
 #include "Primes.h"
 
-int64 Euler_214()
+int64_t Euler_214()
 {
     int N = 40000000;
     int* list = EulersTotient(N);
-    uns64 count = 0;
+    uint64_t count = 0;
     int n,s;
     for (n = 3; n <= N; n+=2) {
         if (list[n] != n-1) continue;
@@ -19,5 +19,5 @@ int64 Euler_214()
             }
         }
     }
-    return (int64)count;
+    return (int64_t)count;
 }

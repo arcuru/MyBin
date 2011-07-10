@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_17()
+int64_t Euler_17()
 {
     int count=1;
     int letters=0;
@@ -54,5 +54,5 @@ int64 Euler_17()
         }
         count++;
     }
-    return (int64)letters;
+    return (int64_t)letters;
 }

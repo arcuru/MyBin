@@ -26,7 +26,7 @@ static int isPerm(int n, int p)
     return 1;
 }
 
-int64 Euler_70()
+int64_t Euler_70()
 {
     int N = 10000000;
     int* list = EulersTotient(N);
@@ -43,6 +43,6 @@ int64 Euler_70()
         }
     }
     free(list);
-    return (int64) minN;
+    return (int64_t) minN;
 }
 

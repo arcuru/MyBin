@@ -28,13 +28,13 @@ static int incrNum(int* num, int size)
     return size;
 }
 
-int64 Euler_125()
+int64_t Euler_125()
 {
     int N = 100000000;
     int SQRTN = (int) sqrt(N);
     int* SQarray = (int*) malloc(sizeof (int) * SQRTN);
     int* num = (int*) calloc(12, sizeof (int));
-    int64 total = 0;
+    int64_t total = 0;
     int n;
     for (n = 0; n <= SQRTN; n++) {
         SQarray[n] = n * n;

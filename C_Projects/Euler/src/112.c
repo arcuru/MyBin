@@ -26,7 +26,7 @@ static int isBouncy(int n)
     return 0;
 }
 
-int64 Euler_112()
+int64_t Euler_112()
 {
     int i, total = 0;
     for (i = 1; 1; i++) {
@@ -35,7 +35,7 @@ int64 Euler_112()
         }
         if (i % 100 == 0) {
             if ((i / 100) * 99 == total) {
-                return (int64) i;
+                return (int64_t) i;
             }
         }
     }

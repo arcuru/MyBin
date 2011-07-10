@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include "Primes.h"
 
-int64 Euler_27()
+int64_t Euler_27()
 {
     unsigned char* prime = primeIndexListE(1000000);
     int a, b, value, c, count, mvab = 0, maxcount = 0;
@@ -25,5 +25,5 @@ int64 Euler_27()
             }
         }
     }
-    return (int64) mvab;
+    return (int64_t) mvab;
 }

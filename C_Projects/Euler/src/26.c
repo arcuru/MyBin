@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_26()
+int64_t Euler_26()
 {
     int n, i, len = 0, maxlen = 0, maxn = 0;
     for (n = 2; n <= 1000; n++) {
@@ -19,5 +19,5 @@ int64 Euler_26()
             maxlen = len;
         }
     }
-    return (int64) maxn;
+    return (int64_t) maxn;
 }

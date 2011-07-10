@@ -22,7 +22,7 @@ static void BubbleSort(int* d, int n, int* thek)
     }
 }
 
-int64 Euler_124()
+int64_t Euler_124()
 {
     int N = 100000;
     int* rad = (int*) (malloc) (sizeof (int) * (N + 1));
@@ -45,7 +45,7 @@ int64 Euler_124()
     for (i = 0; i <= N; i++)
         k[i] = i;
     BubbleSort(rad, N + 1, k);
-    return (int64) k[10000];
+    return (int64_t) k[10000];
 }
 
 

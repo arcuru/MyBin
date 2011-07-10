@@ -3,7 +3,7 @@
 #include "Utils.h"
 #include <math.h>
 
-int64 Euler_37()
+int64_t Euler_37()
 {
     unsigned char* prime = SieveEratosthenes(1000000);
     int candidate=11;
@@ -32,5 +32,5 @@ int64 Euler_37()
         }
         candidate+=2;
     }
-    return (int64)sum;
+    return (int64_t)sum;
 }

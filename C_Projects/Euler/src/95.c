@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <stdlib.h>
 
-int64 Euler_95()
+int64_t Euler_95()
 {
     int N = 1000000;
     int* sums = (int*) calloc(N + 1, sizeof(int));
@@ -32,6 +32,6 @@ int64 Euler_95()
         }
     }
     free(sums);
-    return (int64) min;
+    return (int64_t) min;
 }
 

@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_108()
+int64_t Euler_108()
 {
     int size = 0;
     double y, n;
@@ -19,5 +19,5 @@ int64 Euler_108()
             den++;
         }
     }
-    return (int64) n;
+    return (int64_t) n;
 }

@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-static int check(uns64 n)
+static int check(uint64_t n)
 {
     while (n > 0) {
         if ((n % 10) % 2 == 0)
@@ -21,7 +21,7 @@ static int flip(int n)
     return out;
 }
 
-int64 Euler_145()
+int64_t Euler_145()
 {
     int i;
     int count = 0;
@@ -32,6 +32,6 @@ int64 Euler_145()
         	if (check(h + i))
 		    count++;
     }
-    return (int64) (count << 1);
+    return (int64_t) (count << 1);
 }
 

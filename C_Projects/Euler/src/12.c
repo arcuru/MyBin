@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_12()
+int64_t Euler_12()
 {
     int tri=0;
     int divisors=0;
@@ -17,5 +17,5 @@ int64 Euler_12()
         }
         count++;
     }
-    return (int64)tri;
+    return (int64_t)tri;
 }

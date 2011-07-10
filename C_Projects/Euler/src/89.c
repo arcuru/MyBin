@@ -69,7 +69,7 @@ static int getvalue(char* line)
     return total;
 }
 
-int64 Euler_89()
+int64_t Euler_89()
 {
     char filepath[100];
     snprintf(filepath, sizeof(filepath), "%s89.txt", EULER_DATA_PATH);
@@ -87,5 +87,5 @@ int64 Euler_89()
         saved += length - size;
     }
     fclose(data);
-    return (int64) saved;
+    return (int64_t) saved;
 }

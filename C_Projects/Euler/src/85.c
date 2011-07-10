@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <stdlib.h>
 
-int64 Euler_85()
+int64_t Euler_85()
 {
     int lowarea = 2000000;
     int lowtotal = 1000000000;
@@ -25,5 +25,5 @@ int64 Euler_85()
             }
         }
     }
-    return (int64) lowarea;
+    return (int64_t) lowarea;
 }

@@ -2,7 +2,7 @@
 #include "Primes.h"
 #include <stdlib.h>
 
-int64 Euler_187()
+int64_t Euler_187()
 {
     int N = 100000000;
     int N2 = N >> 1;
@@ -20,5 +20,5 @@ int64 Euler_187()
         n++;
     }
     free(primes);
-    return (int64) total;
+    return (int64_t) total;
 }

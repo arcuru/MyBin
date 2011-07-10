@@ -1,11 +1,11 @@
 #include "Euler.h"
 #include <stdio.h>
 
-static uns64 total = 0;
+static uint64_t total = 0;
 static int array[11];
-static uns64 number = 0;
+static uint64_t number = 0;
 
-static void check(uns64 n)
+static void check(uint64_t n)
 {
     int primes[7];
     primes[0] = 2;
@@ -53,7 +53,7 @@ static void doit(int n)
 
 
 
-int64 Euler_43()
+int64_t Euler_43()
 {
     doit(10);
     return total;

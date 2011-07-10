@@ -23,7 +23,7 @@ static int isEq(int* a, int* d)
     return 0;
 }
 
-int64 Euler_52()
+int64_t Euler_52()
 {
     int d[10];
     int num = 1000;
@@ -53,7 +53,7 @@ int64 Euler_52()
             if (isEq(a, d))
                 continue;
 
-            return (int64) num;
+            return (int64_t) num;
         }
         num = bignum;
         bignum *= 10;

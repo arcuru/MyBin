@@ -3,19 +3,19 @@
 #include <stdlib.h>
 #include <math.h>
 
-int64 Euler_234()
+int64_t Euler_234()
 {
-    uns64 N = 999966663333ll;
+    uint64_t N = 999966663333ll;
     int primetop = (int)(sqrt(N)+500);
     int* primeList=primeListE(primetop);
-    uns64 total=0;
+    uint64_t total=0;
     int index=0;
-    uns64 lps=0;
-    uns64 ups=primeList[index++];
-    uns64 lps2=0;
-    uns64 ups2=ups*ups;
-    uns64 tmp1=lps2;
-    uns64 tmp2=ups2;
+    uint64_t lps=0;
+    uint64_t ups=primeList[index++];
+    uint64_t lps2=0;
+    uint64_t ups2=ups*ups;
+    uint64_t tmp1=lps2;
+    uint64_t tmp2=ups2;
     while ( lps2 <= N ) {
         lps=ups;
         ups=primeList[index++];
@@ -37,5 +37,5 @@ int64 Euler_234()
         }
     }
 
-    return (int64)total;
+    return (int64_t)total;
 }

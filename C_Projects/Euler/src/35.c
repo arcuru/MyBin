@@ -11,7 +11,7 @@ static int rotate(int n, int len)
     return n;
 }
 
-int64 Euler_35()
+int64_t Euler_35()
 {
     int N = 1000000;
     unsigned char* prime = SieveEratosthenes(N);
@@ -33,6 +33,6 @@ int64 Euler_35()
         }
         count++;
     }
-    return (int64) count;
+    return (int64_t) count;
 }
 

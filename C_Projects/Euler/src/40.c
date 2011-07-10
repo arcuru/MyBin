@@ -2,7 +2,7 @@
 #include "Utils.h"
 #include <math.h>
 
-int64 Euler_40()
+int64_t Euler_40()
 {
     short array[1000010];
     int i;
@@ -20,5 +20,5 @@ int64 Euler_40()
     for (i=1; i<=1000000; i*=10) {
         product*=array[i];
     }
-    return (int64)product;
+    return (int64_t)product;
 }

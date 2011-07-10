@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_21()
+int64_t Euler_21()
 {
     int N = 10000;
 
@@ -21,6 +21,6 @@ int64 Euler_21()
             sums[n] = N + 1;
         }
     }
-    return (int64) total;
+    return (int64_t) total;
 }
 

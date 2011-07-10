@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 //Sum of Prime Factors of 20000000!/(15000000!*5000000!)
-int64 Euler_231()
+int64_t Euler_231()
 {
     unsigned char* totallist = SieveEratosthenes(20000000);
     int* primes = primeListE_inc(20000000, totallist);
@@ -55,12 +55,12 @@ int64 Euler_231()
             }
         }
     }
-    uns64 total = 0;
+    uint64_t total = 0;
     for (n = 0; n <= 20000000; n++) {
         total += factors[n] * n;
     }
     free(factors);
     free(low);
     free(high);
-    return (int64) total;
+    return (int64_t) total;
 }

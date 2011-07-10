@@ -17,7 +17,7 @@ static int sumFac(int n)
     return sum;
 }
 
-int64 Euler_34()
+int64_t Euler_34()
 {
     int p = 3;
     int total = 0;
@@ -26,5 +26,5 @@ int64 Euler_34()
             total += p;
         p++;
     }
-    return (int64) total;
+    return (int64_t) total;
 }

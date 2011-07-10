@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <stdlib.h>
 
-int64 Euler_39()
+int64_t Euler_39()
 {
     int a, b, c, check, csq, val, maxval = 0, maxcount = 0;
     int* plist = (int*) malloc(sizeof(int) * 1000);
@@ -34,5 +34,5 @@ int64 Euler_39()
         }
     }
     free(plist);
-    return (int64) maxval;
+    return (int64_t) maxval;
 }

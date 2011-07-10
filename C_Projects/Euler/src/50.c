@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include "Primes.h"
 
-int64 Euler_50()
+int64_t Euler_50()
 {
     int N = 1000000;
     unsigned char* primes = SieveEratosthenes(N);
@@ -21,6 +21,6 @@ int64 Euler_50()
             top++;
         }
     }
-    return (int64) total;
+    return (int64_t) total;
 }
 

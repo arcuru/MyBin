@@ -4,24 +4,24 @@
 #include <math.h>
 
 // Currently does not work
-int64 Euler_229()
+int64_t Euler_229()
 {
     //printf("USES 1GB MEMORY\nARE YOU SURE YOU WANT TO?\nEDIT FILE TO CONTINUE\n");
-    const uns64 memsize = (1 << 20);
-    uns64 N = 10000000; //2000000000;
+    const uint64_t memsize = (1 << 20);
+    uint64_t N = 10000000; //2000000000;
     unsigned char* list = (unsigned char*) calloc((memsize + 1) >> 1,
                           sizeof(unsigned char));
     if (!list) {
         printf("Memory Fail\n");
         return 0;
     }
-    uns64 x, y;
-    uns64 tmp;
+    uint64_t x, y;
+    uint64_t tmp;
     int shift;
     int count = 0;
-    uns64 tmpx;
+    uint64_t tmpx;
     int vals[4] = {1, 2, 3, 7};
-    uns64 low, high = memsize;
+    uint64_t low, high = memsize;
     for (low = 0; low <= N; low += memsize, high += memsize) {
 	if (high > N)
 	    high = N;
@@ -50,7 +50,7 @@ int64 Euler_229()
 	    
 
 	    while (1) {
-		uns64 tmpy = y * y;
+		uint64_t tmpy = y * y;
 		y++;
 
 		tmp = tmpx + tmpy;
@@ -110,5 +110,5 @@ int64 Euler_229()
 	}
     }
     free(list);
-    return (int64) count;
+    return (int64_t) count;
 }

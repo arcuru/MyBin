@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_5() {
+int64_t Euler_5() {
 	int count = 0;
 	while (1) {
 		count += 2 * 2 * 2 * 2 * 3 * 3 * 5 * 7 * 11 * 13 * 17 * 19;
@@ -12,7 +12,7 @@ int64 Euler_5() {
 			++num;
 		}
 		if (num == 21) {
-			return (int64) count;
+			return (int64_t) count;
 		}
 	}
 }

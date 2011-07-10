@@ -20,13 +20,13 @@ static void rec(int current, int exp, int* prime, char* list)
     }
 }
 
-int64 Euler_87()
+int64_t Euler_87()
 {
     char* list = (char*) (malloc)(sizeof(char) * 50000001);
     int N = 50000000;
     int* prime = primeListE((int) sqrt(N));
     rec(0, 2, prime, list);
     free(prime);
-    return (int64) count;
+    return (int64_t) count;
 }
 

@@ -1,14 +1,14 @@
 #include "Euler.h"
 #include "NumberTheory.h"
 
-int64 Euler_24()
+int64_t Euler_24()
 {
     int digits = 10;
     int place = 1000000;
     int list[digits];
     int array[digits];
     int count = 0;
-    uns64 out = 0;
+    uint64_t out = 0;
     int i;
     for (i = 0; i < digits; i++) {
         int dex = 0;
@@ -27,5 +27,5 @@ int64 Euler_24()
             list[q] = list[q + 1];
         }
     }
-    return (int64) out;
+    return (int64_t) out;
 }

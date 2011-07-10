@@ -52,12 +52,12 @@ static void rec(int* list, int place, int* primelist, int index)
     return;
 }
 
-int64 Euler_60()
+int64_t Euler_60()
 {
     unsigned char* primes = SieveEratosthenes(N * N);
     int* primelist = primeListE_inc(N, primes);
     PIndex = primeIndexListE_inc(N * N, primes);
     int list[6];
     rec(list, 1, primelist, 0);
-    return (int64) min; //13	5197	5701	6733	8389
+    return (int64_t) min; //13	5197	5701	6733	8389
 }

@@ -24,7 +24,7 @@ static void rec(int currentIndex, int k, int* list)
     return;
 }
 
-int64 Euler_122()
+int64_t Euler_122()
 {
     int* list = (int*) calloc(sizeof(int), 200);
     list[0] = 0;
@@ -41,5 +41,5 @@ int64 Euler_122()
         //printf("%d\n", min);
     }
 
-    return (int64) total;
+    return (int64_t) total;
 }

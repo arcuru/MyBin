@@ -6,7 +6,7 @@
 #define NULL 0
 #endif
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -114,7 +114,7 @@ int* Primes::getList(int end)
 	return pList;
 }
 
-#define	mark(mod,n)	while(mod>30) {							\
+#define	mark(mod,n)	if(mod>30) {							\
 						mod-=30;							\
 						n+=1;								\
 					}										\
@@ -138,6 +138,9 @@ static uint8_t* SieveEratosthenes(int N)
 	int primeEnd = N / 30;
 	uint8_t* primes = new uint8_t[primeEnd + 1];
 	if (!primes) {
+#ifdef DEBUG
+		std::cout << "Could not allocate " << primeEnd+1 << " bytes." << std::endl;
+#endif
 		return NULL;
 	}
 	int n, s, num, num1, num2, num4, num6;

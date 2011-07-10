@@ -28,7 +28,7 @@ static int isPandigital(int a, int b, int c)
     return 1;
 }
 
-int64 Euler_32()
+int64_t Euler_32()
 {
 
     int a, b, c, alist[50], dex, sum;
@@ -57,5 +57,5 @@ int64 Euler_32()
             sum += alist[dex];
         }
     }
-    return (int64) sum;
+    return (int64_t) sum;
 }

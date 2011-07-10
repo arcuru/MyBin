@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_14()
+int64_t Euler_14()
 {
 	int maxval = 1000000;
     int longest = 0, longval = 0;
@@ -8,7 +8,7 @@ int64 Euler_14()
 #pragma omp parallel for
 	for (count = maxval-1; count > maxval/2; count-=2) {
         int length = 0;
-        uns64 series = count;
+        uint64_t series = count;
         while (series != 1) {
             if (series % 2 == 0) {
                 series = series / 2;

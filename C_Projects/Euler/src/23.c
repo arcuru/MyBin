@@ -16,7 +16,7 @@ static int isAbundant(int num)
     return 0;
 }
 
-int64 Euler_23()
+int64_t Euler_23()
 {
     int limit = 28123;
     int list[20000];
@@ -46,5 +46,5 @@ int64 Euler_23()
         }
         queen++;
     }
-    return (int64) sum;
+    return (int64_t) sum;
 }

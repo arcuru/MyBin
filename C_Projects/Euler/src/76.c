@@ -14,8 +14,8 @@ void rec(int n, int step)
     return;
 }
 
-int64 Euler_76()
+int64_t Euler_76()
 {
     rec(0, 1);
-    return (int64) count;
+    return (int64_t) count;
 }

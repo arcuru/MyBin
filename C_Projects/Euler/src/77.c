@@ -14,7 +14,7 @@ static void rec(int currentTotal, int smallestIndex, int* primes, int n)
     return;
 }
 
-int64 Euler_77()
+int64_t Euler_77()
 {
     int* primes = primeListE(1000000);
     int n;
@@ -25,5 +25,5 @@ int64 Euler_77()
             break;
     }
 
-    return (int64) n;
+    return (int64_t) n;
 }

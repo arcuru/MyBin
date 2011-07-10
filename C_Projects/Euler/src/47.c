@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include "Primes.h"
 
-int64 Euler_47()
+int64_t Euler_47()
 {
     int num=2000000;
     int count=1;
@@ -48,7 +48,7 @@ int64 Euler_47()
         }
         if ( jim >= 4 ) {
             if ( anslist[jim-4] == (counter-3) ) {
-                return (int64)(counter-3);
+                return (int64_t)(counter-3);
             }
         }
     }

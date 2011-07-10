@@ -11,7 +11,7 @@ static int check(int n, int* list)
     return 0;
 }
 
-int64 Euler_74()
+int64_t Euler_74()
 {
     int array[10];
     int list[60];
@@ -38,6 +38,6 @@ int64 Euler_74()
             total++;
         Clear(list, 60);
     }
-    return (int64) total;
+    return (int64_t) total;
 }
 

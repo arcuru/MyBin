@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <stdlib.h>
 
-int64 Euler_341()
+int64_t Euler_341()
 {
 	int limit = 1000000;
 	short* clist = (short*)malloc(sizeof(short)*50000000);
@@ -12,9 +12,9 @@ int64 Euler_341()
 	int j = 2;
 	int jcount = 1;
 	int s = 0;
-	int64 base = 1;
-	int64 base3 = base * base * base;
-	int64 n = limit * limit * limit;
+	int64_t base = 1;
+	int64_t base3 = base * base * base;
+	int64_t n = limit * limit * limit;
 	printf("%lld\n",n);
 	while (base < limit) {
 		i++;
@@ -28,7 +28,7 @@ int64 Euler_341()
 			if (j > 65000) {
 				puts("Too big\n");
 				printf("%lld\n",base);
-				return (int64)base;
+				return (int64_t)base;
 			}
 			clist[i+1]=j;
 			jcount++;
@@ -39,7 +39,7 @@ int64 Euler_341()
 			}
 		}
 	}
-	return (int64)s;
+	return (int64_t)s;
 }
 /*
 def Euler_341(limit=10**3):

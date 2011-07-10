@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <stdio.h>
 
-static int64 count;
+static int64_t count;
 static int current;
 
 static void rec(int n, int step)
@@ -16,7 +16,7 @@ static void rec(int n, int step)
     return;
 }
 
-int64 Euler_78()
+int64_t Euler_78()
 {
     return 0;
     count = 1;
@@ -26,5 +26,5 @@ int64 Euler_78()
         printf("%d\t%lld\n", current, count);
     }
 
-    return (int64) current;
+    return (int64_t) current;
 }

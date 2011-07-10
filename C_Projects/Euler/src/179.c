@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int64 Euler_179()
+int64_t Euler_179()
 {
     int N = 10000000;
     short* list = (short*) malloc(sizeof(short) * (N+1));//chars don't work
@@ -28,5 +28,5 @@ int64 Euler_179()
         i++;
     }
     free(list);
-    return (int64) count;
+    return (int64_t) count;
 }

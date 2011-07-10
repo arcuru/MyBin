@@ -3,7 +3,7 @@
 #include <math.h>
 typedef long double ld;
 
-int64 Euler_99()
+int64_t Euler_99()
 {
     char array[20];
     char filepath[100];
@@ -36,5 +36,5 @@ int64 Euler_99()
         line++;
     }
     fclose(data);
-    return (int64) ans;
+    return (int64_t) ans;
 }

@@ -1,15 +1,15 @@
 #include "Euler.h"
 #include <stdlib.h>
 
-int64 Euler_15()
+int64_t Euler_15()
 {
     int grid = 20;
-    int64* array1 = (int64*) calloc(grid + 1, sizeof (int64));
+    int64_t* array1 = (int64_t*) calloc(grid + 1, sizeof (int64_t));
     array1[0] = 1;
     int count = 1;
     int index = 0;
     int check = 0;
-    int64* array2 = (int64*) calloc(grid + 1, sizeof (int64));
+    int64_t* array2 = (int64_t*) calloc(grid + 1, sizeof (int64_t));
     while (count <= grid) {
         count++;
         check = 0;
@@ -48,8 +48,8 @@ int64 Euler_15()
         }
         count--;
     }
-    int64 ans = array1[0];
+    int64_t ans = array1[0];
     //free(array1);
     //free(array2);
-    return (int64) ans;
+    return (int64_t) ans;
 }

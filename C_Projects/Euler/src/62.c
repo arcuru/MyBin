@@ -7,7 +7,7 @@
  * binsearch()
  * 	Searches a sorted list of length n for argument x
  */
-static int64 binsearch(int64 x, int64 list[], int n)
+static int64_t binsearch(int64_t x, int64_t list[], int n)
 {
 	int low, high, mid;
 	low=0;
@@ -33,9 +33,9 @@ static void swap(char* a, char* b)
 }
 
 static const int max = 100000;//2642245;//Covers all cubes under 2^64
-static int64 *cubelist;
+static int64_t *cubelist;
 static int count=0;
-static int64 storedlist[10];
+static int64_t storedlist[10];
 
 
 static void reverse(char s[])
@@ -49,7 +49,7 @@ static void reverse(char s[])
 	}
 }
 
-static void i64toa(int64 n, char s[])
+static void i64toa(int64_t n, char s[])
 {
 	int i=0;
 	do {
@@ -71,7 +71,7 @@ static void perm(char list[], int k, int length)
 {
 	if (k==length)
 	{
-		int64 num = a64toi(list);
+		int64_t num = a64toi(list);
 		if (binsearch(num,cubelist,max)!=-1) {
 			int i=0;
 			int skip=0;
@@ -97,10 +97,10 @@ static void perm(char list[], int k, int length)
 	}
 }
 
-int64 Euler_62()
+int64_t Euler_62()
 {
-	cubelist = (int64 *) malloc(sizeof(int64)*(max+1));
-	int64 i;
+	cubelist = (int64_t *) malloc(sizeof(int64_t)*(max+1));
+	int64_t i;
 	char numstring[25];
 	for (i=0;i<=max;i++)
 		cubelist[i]=i*i*i;

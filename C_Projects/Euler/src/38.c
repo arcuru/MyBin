@@ -5,7 +5,7 @@
 // 0 - Multiple at 1 place
 // 1 - Works
 // 2 - Keep going
-static int helper(int64 n)
+static int helper(int64_t n)
 {
     int i, ans = 1;
     int array[10];
@@ -25,12 +25,12 @@ static int helper(int64 n)
     return ans;
 }
 
-int64 Euler_38()
+int64_t Euler_38()
 {
     int i;
-    int64 max = 0;//918273645;
+    int64_t max = 0;//918273645;
     for (i = 1; i <= 9876; i++) {
-        int64 total = 0;
+        int64_t total = 0;
         int q;
         for (q = 1; helper(total) == 2; q++) {
             int n = q * i;
@@ -42,5 +42,5 @@ int64 Euler_38()
                 max = total;
         }
     }
-    return (int64) max;
+    return (int64_t) max;
 }

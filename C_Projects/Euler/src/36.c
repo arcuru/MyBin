@@ -49,7 +49,7 @@ static void base2(int n)
     }
 }
 
-int64 Euler_36()
+int64_t Euler_36()
 {
     int sum = 0;
     int i;
@@ -60,5 +60,5 @@ int64 Euler_36()
         }
         g1 = 0;
     }
-    return (int64) sum;
+    return (int64_t) sum;
 }

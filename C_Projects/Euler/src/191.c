@@ -2,7 +2,7 @@
 
 static char Late = 0;
 static int List = 0;
-static int64 count = 0;
+static int64_t count = 0;
 
 //Absent = 1
 //On Time = 0
@@ -34,7 +34,7 @@ static void rec(int index)
     return;
 }
 
-int64 Euler_191()
+int64_t Euler_191()
 {
     rec(0);
     return count;

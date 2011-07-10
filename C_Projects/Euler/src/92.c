@@ -10,7 +10,7 @@ static int next(int n)
     return out;
 }
 
-int64 Euler_92()
+int64_t Euler_92()
 {
     int top = 10000000;
     int array[568];
@@ -34,5 +34,5 @@ int64 Euler_92()
             count++;
         }
     }
-    return (int64) count;
+    return (int64_t) count;
 }

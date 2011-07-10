@@ -3,22 +3,22 @@
 
 //static void *Thread(void *in)
 //{
-//    int64 total = 0;
+//    int64_t total = 0;
 //    int *spec = (int *)in;
 //    int a;
 //    for (a = 3 ;; a += 2) {
 //        int c = a+*spec;
-//        int64 p = ((a * 2) + c) / 2;
+//        int64_t p = ((a * 2) + c) / 2;
 //        if (p * 2 > 1000000000) {
 //            pthread_exit((void*) total);
 //        }
-//        int64 t = sqrt(p) * sqrt(p - c);
+//        int64_t t = sqrt(p) * sqrt(p - c);
 //        if (t * t == p * (p - c))
 //            total += (p * 2);
 //    }
 //}
 //
-//int64 Euler_94()
+//int64_t Euler_94()
 //{
 //    pthread_t thread1, thread2;
 //    pthread_attr_t attr;
@@ -33,20 +33,20 @@
 //    void *tmptotal;
 //    if (pthread_join(thread1, &tmptotal))
 //        return 0;
-//    int64 total = (int64) tmptotal;
+//    int64_t total = (int64_t) tmptotal;
 //    if (pthread_join(thread2, &tmptotal))
 //        return 0;
-//    total += (int64) tmptotal;
-//    return (int64) total;
+//    total += (int64_t) tmptotal;
+//    return (int64_t) total;
 //}
 
-int64 Euler_94()
+int64_t Euler_94()
 {
     int i;
-    int64 answer=0;
+    int64_t answer=0;
 #pragma omp parallel for
     for (i=-1; i<=1; i+=2) {
-        int64 t,p;
+        int64_t t,p;
         int a,c;
         for (a = 3 ;(a*3)+i<=1000000000; a += 2) {
             c = a+i;

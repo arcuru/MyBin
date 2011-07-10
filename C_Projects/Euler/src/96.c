@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int64 Euler_96()
+int64_t Euler_96()
 {
     char filepath[100];
     snprintf(filepath, sizeof(filepath), "%s96.txt", EULER_DATA_PATH);
@@ -30,5 +30,5 @@ int64 Euler_96()
         //PrintSudoku(puzzle);
     }
     fclose(data);
-    return (int64) total;
+    return (int64_t) total;
 }

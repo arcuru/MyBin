@@ -19,7 +19,7 @@ static int Palindrome(int num)
     return 1;
 }
 
-int64 Euler_4()
+int64_t Euler_4()
 {
 	int a, b, ans=0;
 	for (a=999; a; a--) {
@@ -31,5 +31,5 @@ int64 Euler_4()
             }
         }
     }
-    return (int64) ans;
+    return (int64_t) ans;
 }

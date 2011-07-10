@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <math.h>
 
-int64 Euler_211()
+int64_t Euler_211()
 {
-    uns64 N = 64000000;
-    uns64* list = (uns64*) calloc(N, sizeof (uns64));
+    uint64_t N = 64000000;
+    uint64_t* list = (uint64_t*) calloc(N, sizeof (uint64_t));
     if (!list)
         return 0;
-    uns64 n, s, q;
+    uint64_t n, s, q;
     for (n = 1; n < N; n++) {
         s = n;
         q = n * n;
@@ -17,11 +17,11 @@ int64 Euler_211()
             s += n;
         }
     }
-    uns64 total = 0;
+    uint64_t total = 0;
     for (n = 1; n < N; n++) {
         if ((double) (int) sqrt(list[n]) == sqrt(list[n]))
             total += n;
     }
     free(list);
-    return (int64) total;
+    return (int64_t) total;
 }

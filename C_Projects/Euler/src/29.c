@@ -63,7 +63,7 @@ static int PrimeFactorCheck(int a, int b) //TRUE if it matches something else
     return FALSE;
 }
 
-int64 Euler_29()
+int64_t Euler_29()
 {
     makeArray();
     int count = 0;
@@ -95,5 +95,5 @@ int64 Euler_29()
             }
         }
     }
-    return (int64) count;
+    return (int64_t) count;
 }

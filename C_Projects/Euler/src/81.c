@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include <stdio.h>
 
-int64 Euler_81()
+int64_t Euler_81()
 {
     int array[80][80];
     char filepath[100];
@@ -39,5 +39,5 @@ int64 Euler_81()
         }
     }
     fclose(in);
-    return (int64) array[79][79];
+    return (int64_t) array[79][79];
 }

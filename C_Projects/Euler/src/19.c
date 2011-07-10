@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_19()
+int64_t Euler_19()
 {
     int day = 1;
     int weekday = 3;
@@ -47,5 +47,5 @@ int64 Euler_19()
             count++;
         }
     }
-    return (int64) count;
+    return (int64_t) count;
 }

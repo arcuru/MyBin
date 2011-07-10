@@ -5,14 +5,14 @@
 #include <stdio.h>
 
 static void Fill_Euler_FunctionArray();
-static int64 (*Euler[301])() = {NULL};
+static int64_t (*Euler[301])() = {NULL};
 static int suppress_time=FALSE;
 
 static void Euler_Compute_Ans(int number)
 {
     float start, end;
     start = GetSecondClock();
-    int64 ans= Euler[number]();
+    int64_t ans= Euler[number]();
     end = GetSecondClock();
     if (ans != 0) {
         float time = end - start;

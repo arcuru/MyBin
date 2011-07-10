@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int64 Euler_69()
+int64_t Euler_69()
 {
     int N = 1000000;
     int* list = EulersTotient(N);
@@ -18,5 +18,5 @@ int64 Euler_69()
         }
     }
     free(list);
-    return (int64) maxN;
+    return (int64_t) maxN;
 }

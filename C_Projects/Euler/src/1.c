@@ -1,6 +1,6 @@
 #include "Euler.h"
 
-int64 Euler_1()
+int64_t Euler_1()
 {
     int count;
     int sum = 0;
@@ -8,5 +8,5 @@ int64 Euler_1()
         if ((count % 3 == 0) || (count % 5 == 0))
             sum += count;
     }
-    return (int64) sum;
+    return (int64_t) sum;
 }

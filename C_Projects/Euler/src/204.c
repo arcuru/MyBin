@@ -4,7 +4,7 @@
 static int* list;
 static int total = 1;
 
-static void rec(int64 current, int n, int N)
+static void rec(int64_t current, int n, int N)
 {
     int i;
     for (i = n; list[i]; i++) {
@@ -17,12 +17,12 @@ static void rec(int64 current, int n, int N)
     total++;
 }
 
-int64 Euler_204()
+int64_t Euler_204()
 {
     int N = 1000000000;
     int type = 100;
     list = primeListE(type);
     rec(1, 0, N);
-    return (int64) total;
+    return (int64_t) total;
 }
 

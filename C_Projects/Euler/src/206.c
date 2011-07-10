@@ -1,8 +1,8 @@
 #include "Euler.h"
 
-static int works(uns64 n)
+static int works(uint64_t n)
 {
-    int64 test = (n * n) / 100;
+    int64_t test = (n * n) / 100;
     int out = TRUE;
     int i;
     for (i = 8; i > 0 && out; i--) {
@@ -12,14 +12,14 @@ static int works(uns64 n)
     return out;
 }
 
-int64 Euler_206()
+int64_t Euler_206()
 {
-    uns64 top = 138902662;
-    uns64 bot = 101010101;
-    uns64 ans = 0;
+    uint64_t top = 138902662;
+    uint64_t bot = 101010101;
+    uint64_t ans = 0;
     while (top % 10)
         top--;
-    uns64 i;
+    uint64_t i;
     for (i = top - 10; i > bot; i -= 10) {
         if (works(i + 3)) {
             ans = i + 3;
@@ -30,5 +30,5 @@ int64 Euler_206()
             break;
         }
     }
-    return (int64) ans * 10;
+    return (int64_t) ans * 10;
 }

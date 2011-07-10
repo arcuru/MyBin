@@ -1,7 +1,7 @@
 #include "Euler.h"
 #include "Primes.h"
 
-int64 Euler_46() {
+int64_t Euler_46() {
 
 
 	int top = 10000;
@@ -19,7 +19,7 @@ int64 Euler_46() {
 		}
 		if (2 * sq * sq >= num) {
 //			printf("%d\n",num);
-			return (int64) num;
+			return (int64_t) num;
 		}
 	}
 	return 1;
@@ -55,7 +55,7 @@ int64 Euler_46() {
 //				check++;
 //			}
 //			if (truth == 1) {
-//				//return (int64) num;
+//				//return (int64_t) num;
 //				printf("%d\n",num);
 //			}
 //			num += 2;

@@ -7,12 +7,7 @@
 #include <math.h>
 #include <time.h>
 */
-#ifndef uns64
-#define uns64 unsigned long long
-#endif
-#ifndef int64
-#define int64 long long int
-#endif
+#include <stdint.h>
 
 #define EULER_DATA_PATH "data/"
 

@@ -11,7 +11,7 @@ static int isPent(int n)
     return 0;
 }
 
-int64 Euler_44()
+int64_t Euler_44()
 {
     int pent1 = 1;
     int limit = 10000;
@@ -23,7 +23,7 @@ int64 Euler_44()
             int diff = fabs(p1 - p2);
             int sum = p1 + p2;
             if (isPent(diff) && isPent(sum))
-                return (int64) diff;
+                return (int64_t) diff;
             pent2++;
         }
         pent1++;

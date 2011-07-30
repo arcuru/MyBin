@@ -107,7 +107,7 @@ int64_t Euler_62()
 	for (i=1000;i<=max;i++) {
 		count=0;
 		i64toa(i*i*i,numstring);
-		printf("%lld\n",i);
+		printf("%jd\n",i);
 		perm(numstring,0,strlen(numstring)-1);
 		if (count==5)
 			return i*i*i;

@@ -23,7 +23,7 @@ int64_t Euler_78()
     for (current = 10; count % 1000000 != 0; current++) {
         count = 1;
         rec(0, 1);
-        printf("%d\t%lld\n", current, count);
+        printf("%d\t%jd\n", current, count);
     }
 
     return (int64_t) current;

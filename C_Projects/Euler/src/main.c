@@ -20,7 +20,7 @@ static void Euler_Compute_Ans(int number)
             time *= -1;
         if (suppress_time)
             time=0;
-        printf("%d:\t%.3f\t%lld\n", number, time, ans);
+        printf("%d:\t%.3f\t%jd\n", number, time, ans);
     }
     return;
 }

@@ -81,3 +81,6 @@ set nocp
 filetype plugin indent on
 syntax on
 
+let g:clang_complete_copen=1
+map <F2> :call g:ClangUpdateQuickFix() <CR>
+

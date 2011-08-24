@@ -37,6 +37,6 @@ alias r='sudo pacman -Rs'
 #alias search='bauerbill -Ss --aur'
 
 #   Upgrading with yaourt
-alias u='yaourt -Syua'
-alias i='yaourt -S'
+alias u='yaourt -Syua --noconfirm'
+alias i='yaourt -S --noconfirm'
 

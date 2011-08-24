@@ -1,7 +1,6 @@
 #Generic setup stuff
-urxvtd &
 (sleep 300s && dropboxd) &
-#mpd &
+sudo setpci -s 00:02.0 f4.b=ff
 
 if [ $(tty) = /dev/tty1 ]; then
 	

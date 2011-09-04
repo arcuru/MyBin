@@ -37,7 +37,7 @@ int64_t Euler_75()
                 b++;
             }
         }
-        printf("%lld\n", a);
+        printf("%jd\n", a);
     }
     int64_t count = 0;
     for (n = 1; n <= TOP; n++)

@@ -9,10 +9,6 @@
 *.swp
 a.out
 
-# Exclude dwm files
-dwm/*
-!dwm/config.h
-
 # Exclude binaries generated from C files
 C_Projects/*/bin/Debug/*
 C_Projects/*/bin/Release/*

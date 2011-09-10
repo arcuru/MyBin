@@ -13,10 +13,10 @@ class Timer
 		~Timer ();                            /* destructor       */
 
 		/* ====================  ACCESSORS     ======================================= */
-		timeval get_StartTime() const;
-		timeval get_EndTime() const;
-		void set_StartTime(timeval value);
-		void set_EndTime(timeval value);
+		inline timeval get_StartTime() const;
+		inline timeval get_EndTime() const;
+		inline void set_StartTime(timeval value);
+		inline void set_EndTime(timeval value);
 		
 		double get_Time() const;
 

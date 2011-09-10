@@ -6,10 +6,6 @@
  */
 #define PRIMES_NTHREADS 2
 
-#ifndef uns64
-	#define uns64 unsigned long long
-#endif
-
 /*
  * Threaded
  *

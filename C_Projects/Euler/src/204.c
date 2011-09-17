@@ -1,5 +1,6 @@
 #include "Euler.h"
 #include "Primes.h"
+#include "stdlib.h"
 
 static int* list;
 static int total = 1;
@@ -23,6 +24,7 @@ int64_t Euler_204()
     int type = 100;
     list = primeListE(type);
     rec(1, 0, N);
-    return (int64_t) total;
+    free(list);
+	return (int64_t) total;
 }
 

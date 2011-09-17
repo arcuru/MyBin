@@ -43,5 +43,6 @@ int64_t Euler_119()
             count++;
         }
     }
+    free(list);
     return tmp;
 }

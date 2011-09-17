@@ -59,6 +59,8 @@ int64_t Euler_231()
     for (n = 0; n <= 20000000; n++) {
         total += factors[n] * n;
     }
+    free(totallist);
+    free(primes);
     free(factors);
     free(low);
     free(high);

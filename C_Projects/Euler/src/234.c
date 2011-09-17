@@ -36,6 +36,6 @@ int64_t Euler_234()
             tmp2-=ups;
         }
     }
-
+    free(primeList);
     return (int64_t)total;
 }

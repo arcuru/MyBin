@@ -45,7 +45,11 @@ int64_t Euler_124()
     for (i = 0; i <= N; i++)
         k[i] = i;
     BubbleSort(rad, N + 1, k);
-    return (int64_t) k[10000];
+    int64_t ret = k[10000];
+    free(rad);
+    free(k);
+    free(primes);
+    return (int64_t) ret;
 }
 
 

@@ -275,7 +275,7 @@ static int* getPList(int N, uint8_t* prime)
 	list[0] = 2;
 	list[1] = 3;
 	list[2] = 5;
-	for (n = 0; n <= primeEnd; n++) {
+	for (n = 0; n < primeEnd; n++) {
 		for (s = 1; s; s += s) {
 			if (!(prime[n] & s)) {
 				switch (s) {

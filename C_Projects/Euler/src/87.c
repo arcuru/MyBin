@@ -3,30 +3,43 @@
 #include <stdlib.h>
 #include <math.h>
 
-static int count = 0;
-
-static void rec(int current, int exp, int* prime, char* list)
-{
-    if (exp > 4)
-        return;
-    int i;
-    for (i = 0; (current + pow(prime[i], exp)) < 50000000 && prime[i]; i++) {
-        if (exp == 4 && !list[(int) (current + pow(prime[i], exp))]) {
-            count++;
-            list[(int) (current + pow(prime[i], exp))] = 1;
-            continue;
-        }
-        rec(current + pow(prime[i], exp), exp + 1, prime, list);
-    }
-}
-
 int64_t Euler_87()
 {
-    char* list = (char*) (malloc)(sizeof(char) * 50000001);
-    int N = 50000000;
-    int* prime = primeListE((int) sqrt(N));
-    rec(0, 2, prime, list);
-    free(prime);
-    return (int64_t) count;
+	int a, b, bb, c, cc;
+	int N = 50000000;
+	int total = 0;
+	int count = 0;
+	char* list = (char*) (calloc)(sizeof(char), N + 1);
+	int* prime = primeListE((int) sqrt(N));
+	for (a=0; prime[a]!=0; a++) {
+		total = pow(prime[a], 2);
+		if (total >= N)
+			break;
+		for (b=0; prime[b]!=0; b++) {
+			bb = pow(prime[b], 3);
+			total += bb;
+			if (total >= N) {
+				total -= bb;
+				break;
+			}
+			for (c=0; prime[c]!=0; c++) {
+				cc = pow(prime[c], 4);
+				total += cc;
+				if (total >= N) {
+					total -= cc;
+					break;
+				}
+				if (0 == list[total]) {
+					count++;
+					list[total] = 1;
+				}
+				total -= cc;
+			}
+			total -= bb;
+		}
+	}
+	free(prime);
+	free(list);
+	return (int64_t) count;
 }
 

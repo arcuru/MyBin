@@ -13,9 +13,9 @@ int64_t Euler_96()
     char line[16];
     int total = 0;
     int i;
+    int* puzzle = (int*) (malloc)(sizeof(int) * 81);
     for (i = 0; i < 50; i++) {
         fgets(line, sizeof(line), data);
-        int* puzzle = (int*) (malloc)(sizeof(int) * 81);
         int n;
         for (n = 0; n < 9; n++) {
             fgets(line, sizeof(line), data);
@@ -29,6 +29,7 @@ int64_t Euler_96()
         total += (puzzle[0] * 100) + (puzzle[1] * 10) + puzzle[2];
         //PrintSudoku(puzzle);
     }
+    free(puzzle);
     fclose(data);
     return (int64_t) total;
 }

@@ -2,6 +2,7 @@
 #include "Primes.h"
 #include "Utils.h"
 #include <math.h>
+#include <stdlib.h>
 
 static int min = 1000000000;
 static int minlist[6];
@@ -59,5 +60,6 @@ int64_t Euler_60()
     PIndex = primeIndexListE_inc(N * N, primes);
     int list[6];
     rec(list, 1, primelist, 0);
+	free(PIndex);
     return (int64_t) min; //13	5197	5701	6733	8389
 }

@@ -1,5 +1,6 @@
 #include "Euler.h"
 #include "Primes.h"
+#include <stdlib.h>
 
 static int Number[8];
 static int64_t g_min = 1000000;
@@ -110,5 +111,6 @@ int64_t Euler_51()
         Number[n] = 0;
     Primes = primeIndexListE(1000000);
     Rec(2);
+	free(Primes);
     return g_min;
 }

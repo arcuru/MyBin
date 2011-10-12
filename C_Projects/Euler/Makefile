@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -fopenmp 
+CFLAGS=-Wall -Wextra -fopenmp -g
 INCLUDE_DIR=-I./inc \
 			-I../Utils/inc \
 			-I../Primes/inc \

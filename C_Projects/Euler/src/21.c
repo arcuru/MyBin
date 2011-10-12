@@ -6,7 +6,7 @@ int64_t Euler_21()
 
     int sums[N + 1];
     long n, s;
-    for (n = 1; n <= N; n++)
+    for (n = 0; n <= N; n++)
         sums[n] = 0;
     for (n = 1; n <= N; n++)
         for (s = 2; s * n <= N; s++)

@@ -28,7 +28,11 @@ int64_t Euler_23()
             place++;
         }
     }
-    int total[28123];
+	list[place] = 0;
+    int total[limit+1];
+	int i;
+	for (i = 0; i <= limit; i++)
+		total[i] = 0;
     int index = 0;
     while (list[index]) {
         int dex = index;

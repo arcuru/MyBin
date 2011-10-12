@@ -99,6 +99,7 @@ static void perm(char list[], int k, int length)
 
 int64_t Euler_62()
 {
+	return 0;
 	cubelist = (int64_t *) malloc(sizeof(int64_t)*(max+1));
 	int64_t i;
 	char numstring[25];

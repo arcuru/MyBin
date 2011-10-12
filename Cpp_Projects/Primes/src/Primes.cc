@@ -12,7 +12,7 @@
 #endif
 
 static uint8_t* SieveEratosthenes(int N);
-static int* getPList(int N, uint8_t* primes);
+static int* getPList(int N, const uint8_t* primes);
 
 Primes::Primes()
 {
@@ -39,7 +39,7 @@ void Primes::init(int n)
 	return;
 }
 
-bool Primes::isPrime(int n)
+bool Primes::isPrime(int n) const
 {
 	if (n < 10) {
 		if (n < 2)
@@ -256,7 +256,7 @@ static uint8_t* SieveEratosthenes(int N)
 //Index 0 starts off with 2
 //Fills an extra place with value of 0 for terminator
 #define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
-static int* getPList(int N, uint8_t* prime)
+static int* getPList(int N, const uint8_t* prime)
 {
 	int primeEnd = N / 30;
 	int n;

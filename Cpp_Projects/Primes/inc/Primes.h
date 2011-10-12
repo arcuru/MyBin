@@ -8,7 +8,7 @@ class Primes
 		Primes(int n);
 		~Primes();
 		void init(int n);
-		bool isPrime(int n);
+		bool isPrime(int n) const;
 		int* getList(int end = -1);
 
 	private:

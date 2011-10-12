@@ -66,7 +66,7 @@ inline void Timer::set_EndTime ( timeval value )
 double Timer::get_Time ( ) const
 {
 	double out = (EndTime.tv_sec - StartTime.tv_sec);
-	out += (EndTime.tv_usec - StartTime.tv_usec) / 1000000;
+	out += (double)(EndTime.tv_usec - StartTime.tv_usec) / 1000000.0;
 	return out;
 }
 

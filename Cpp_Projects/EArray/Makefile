@@ -1,9 +1,9 @@
 CC=g++
-CFLAGS=-Wall -Wextra -O3
+CFLAGS=-std=c++0x -Wall -Wextra -O3
 INCLUDE_DIR=-I./inc
 AR=ar
 LIBS=
-SOURCES=./src/main.cc ./src/test.cc
+SOURCES= ./src/test.cc
 ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.cc=.o)
 TARGET=Test

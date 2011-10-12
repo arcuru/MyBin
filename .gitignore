@@ -8,6 +8,8 @@
 *.pyc
 *.swp
 a.out
+docs
+Test
 
 # Exclude binaries generated from C files
 C_Projects/*/bin/Debug/*

@@ -46,6 +46,6 @@ class EArray
 		int length;						//!< Length of the saved array
 };
 
-#include "../src/main.cc"
+#include "../src/EArray.cc"
 
 #endif /* EARRAY_H */

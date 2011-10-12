@@ -3,7 +3,7 @@ CFLAGS=-Wall -Wextra
 INCLUDE_DIR=-I./inc
 AR=ar
 LIBS=
-SOURCES=./src/main.c
+SOURCES=./src/nqueens.c
 ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.c=.o)
 TARGET=Queens

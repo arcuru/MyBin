@@ -1,7 +1,9 @@
-// Implementation of the eight queens problem
-// Patrick Jackson
+/*!	\file main.c
+ * 	\brief NQueens solution
+ *
+ * 	A command line solution to the NQueens problem.
+ */
 
-//#include "cs1372.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -16,18 +18,27 @@ int Board[nRows][nCols];
 int queenRow[nCols]; //Each place in the array denotes a column,
 //the value stored is the row of the Queen
 
-// isLegal - Return true if a queen can legally be placed on a row, column
+/*!	
+ *	\brief		Is legal
+ *
+ *	Checks if a queen can legally be placed on the board
+ *
+ *	\param row	Row of the potential place
+ *	\param col	Column of the potential place
+ *	\return		Whether or not this is a legal move
+ *
+ */
 int isLegal(int row, int col)
 {
-//	if (Board[row][col] == 0) {
-//		return true;
-//	}
-//	return false;
     return Board[row][col]==0 ? true : false;
 }
 
-// PrintBoard - Print the board (presumably a solution) in the format
-//              given in the assignment description.
+/*!	
+ *	\brief		Print Board
+ *
+ * 	Print the board out to the console
+ *
+ */
 void PrintBoard()
 {
     static int solution = 0;
@@ -48,6 +59,17 @@ void PrintBoard()
 // Queen - Places/Removes Queen
 // Marks each place on the board like spokes from the queen
 // Looks long but is more efficient doing each continuos line
+/*!
+ * 	\brief		N Queens
+ *
+ * 	Recursively solves the N Queens problem by creating each solution 
+ * 	using #Board
+ *
+ * 	\param row	Row to place the queen
+ * 	\param col	Column to place the queen
+ * 	\param in	Something else
+ *
+ */
 void Queen(int row, int col, int in)
 {
     int plus = -1;
@@ -84,7 +106,14 @@ void Queen(int row, int col, int in)
         Board[row][col] = 0;
 }
 
-// Place - Place a queen on a given row,column
+/*!
+ * 	\brief		Place queen
+ *
+ * 	Places the queen in the current column
+ *
+ * 	\param row	Row to place the queen
+ *
+ */
 void Place(int row)
 {
     queenRow[currentCol] = row;
@@ -92,7 +121,12 @@ void Place(int row)
     currentCol++;
 }
 
-// Remove - Remove the queen from currentCol
+/*!
+ * 	\brief		Remove queen
+ *
+ * 	Removes the queen from the current column
+ *
+ */
 void Remove()
 {
     int row = queenRow[currentCol];
@@ -101,8 +135,13 @@ void Remove()
     queenRow[currentCol] = -1;
 }
 
-// ProcessColumn - Find next legal location in the specified column, place
-//                 queen there, and advance to next column.
+/*!
+ * 	\brief		Process Column
+ *
+ * 	Find the next legal location in the specified column, place a queen
+ * 	there, and advance to the next column
+ *
+ */
 int ProcessColumn()
 {
     int row = queenRow[currentCol] + 1;
@@ -119,6 +158,15 @@ int ProcessColumn()
     return false;
 }
 
+/*!
+ * 	\brief		Print Results
+ *
+ * 	Prints the timing results to the console
+ *
+ * 	\param pt1	Time struct from the start of calculations
+ * 	\param pt2	Time struct from the end of calculations
+ *
+ */
 void printResults(time_t* pt1, time_t* pt2)
 {
     double secs;
@@ -140,7 +188,15 @@ void printResults(time_t* pt1, time_t* pt2)
     printf("%d second%s.\n", intsecs, (intsecs == 1 ? "" : "s"));
 }
 
-//Faster Version
+/*!
+ * 	\brief		N Queens
+ *
+ * 	Self contained solution to the N Queens problem
+ *
+ * 	\param n	Side length of the board to solve
+ * 	\return		Number of solutions to the input board
+ *
+ */
 int N_Queens(int n)
 {
     int bit, maxbit = 1 << n;
@@ -189,7 +245,15 @@ int N_Queens(int n)
     return count;
 }
 
-// Main program here.
+/*!
+ * 	\brief		Main
+ *
+ * 	Read input, times the calculation, and prints to console
+ *
+ * 	\param argc	Number of command line arguments
+ * 	\param argv	List of command line arguments
+ * 	\return		Program success
+ */
 int main(int argc, char *argv[])
 {
     if (argc == 0)

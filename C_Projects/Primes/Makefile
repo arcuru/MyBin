@@ -3,7 +3,7 @@ CFLAGS=-Wall -Wextra -O3
 INCLUDE_DIR=-I./inc
 AR=ar
 LIBS=
-SOURCES=./src/main.c
+SOURCES=./src/Primes.c
 ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.c=.o)
 TARGET=libPrimes.a

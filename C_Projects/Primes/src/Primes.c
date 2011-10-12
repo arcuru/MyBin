@@ -146,7 +146,7 @@ int* primeListE(int N) {
 }
 
 #define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
-int* primeListE_inc(int N, unsigned char* prime) {
+int* primeListE_inc(int N, const unsigned char* prime) {
 	int primeEnd = N / 30;
 	int n, k;
 	unsigned char s;
@@ -199,14 +199,14 @@ int* primeListE_inc(int N, unsigned char* prime) {
 //List is in the form from SieveEratosthenes
 //Null should be passed as the list for all but the first call
 #define NPhelp(x)	if (x>saved_eol) return 0; ++current_bitval;current_bit+=current_bit;return x;
-int NextPrime(int end_of_list, unsigned char* list) {
+int NextPrime(int end_of_list, const unsigned char* list) {
 	static int saved_eol = 0;
 	static int primeEnd = 0;
 	if (saved_eol != end_of_list) {
 		saved_eol = end_of_list;
 		primeEnd = saved_eol / 30;
 	}
-	static unsigned char* saved_list = NULL;
+	static const unsigned char* saved_list = NULL;
 	static int current_byte = 0, current_bitval = 0, last_prime = 0;
 	static char current_bit = 1;
 	if (list != NULL) {
@@ -265,7 +265,7 @@ unsigned char* primeIndexListE(int N) {
 }
 
 #define pILhelp(x)	list[x]=1; break;
-unsigned char* primeIndexListE_inc(int N, unsigned char* prime) {
+unsigned char* primeIndexListE_inc(int N, const unsigned char* prime) {
 	unsigned char* list = (unsigned char*) calloc(N + 1, sizeof(char));
 	if (!list) {
 		printf("Memory Fail\n");
@@ -311,7 +311,7 @@ int* primeFactorsE(int N) {
 	return primeFactorsE_inc(N, primeListE((int) sqrt(N) + 1));
 }
 
-int* primeFactorsE_inc(int N, int* primes) {
+int* primeFactorsE_inc(int N, const int* primes) {
 	int* list = (int*) calloc(32, sizeof(int));
 	if (isPrime(N)){
         list[0]=N;
@@ -381,7 +381,7 @@ uint64_t* primeFactorsE_u64(uint64_t N) {
 //Must be within range of input list
 //Returns TRUE if prime, FALSE if not
 
-int isPrimeE(int n, unsigned char* primes) {
+int isPrimeE(int n, const unsigned char* primes) {
 	if (n <= 6) {
 		if (n == 2 || n == 3 || n == 5)
 			return TRUE;

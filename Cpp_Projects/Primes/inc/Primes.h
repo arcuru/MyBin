@@ -1,13 +1,14 @@
 #ifndef PRIMES_H
 #define PRIMES_H
 
+#include <cstdint>
+
 class Primes
 {
 	public:
 		Primes();
 		Primes(int n);
 		~Primes();
-		void init(int n);
 		bool isPrime(int n) const;
 		int* getList(int end = -1);
 
@@ -15,7 +16,7 @@ class Primes
 		int maxVal;
 		int maxList;
 		int* pList;
-		unsigned char* pSieve;
+		uint8_t* pSieve;
 };
 
 #endif /* PRIMES_H */

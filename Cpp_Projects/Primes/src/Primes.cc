@@ -1,6 +1,5 @@
 #include "Primes.h"
 #include <cmath>
-#include <cstdint>
 
 #ifndef NULL
 #define NULL 0
@@ -16,27 +15,23 @@ static int* getPList(int N, const uint8_t* primes);
 
 Primes::Primes()
 {
-	init(0);
+	maxVal = maxList = 0;
+	pList = NULL;
+	pSieve = NULL;
 }
 
 Primes::Primes(int n)
 {
-	init(n);
+	pSieve = SieveEratosthenes(n);
+	maxVal = n;
+	maxList = 0;
+	pList = NULL;
 }
 
 Primes::~Primes()
 {
-	delete[] pSieve;
-	delete[] pList;
-}
-
-void Primes::init(int n)
-{
-	maxList = 0;
-	pList = NULL;
-	pSieve = SieveEratosthenes(n);
-	maxVal = n;
-	return;
+	free(pSieve);
+	free(pList);
 }
 
 bool Primes::isPrime(int n) const
@@ -136,7 +131,7 @@ static uint8_t* SieveEratosthenes(int N)
 	int SQRTN = (int) sqrt(N);
 	int sqrtEnd = (SQRTN / 30) + 1;
 	int primeEnd = (N / 30) + 1;
-	uint8_t* primes = new uint8_t[primeEnd + 1];
+	uint8_t* primes = (uint8_t*) calloc(primeEnd + 1, sizeof(uint8_t));
 	if (!primes) {
 #ifdef DEBUG
 		std::cout << "Could not allocate " << primeEnd+1 << " bytes." << std::endl;
@@ -267,7 +262,7 @@ static int* getPList(int N, const uint8_t* prime)
 			if (!(prime[n] & s))
 				top++;
 
-	int* list = new int[top];
+	int* list = (int*) calloc(top, sizeof(int));
 	if (!list) {
 		return NULL;
 	}

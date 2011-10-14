@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++0x -Wall -Wextra -O3
+CFLAGS=-std=c++0x -Wall -Wextra -O3 -g
 INCLUDE_DIR=-I./inc
 AR=ar
 LIBS=

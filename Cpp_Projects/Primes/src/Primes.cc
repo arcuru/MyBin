@@ -10,9 +10,6 @@
 #include <iostream>
 #endif
 
-static uint8_t* SieveEratosthenes(int N);
-static int* getPList(int N, const uint8_t* primes);
-
 Primes::Primes()
 {
 	maxVal = maxList = 0;
@@ -22,7 +19,7 @@ Primes::Primes()
 
 Primes::Primes(int n)
 {
-	pSieve = SieveEratosthenes(n);
+	pSieve = SieveOfEratosthenes(n);
 	maxVal = n;
 	maxList = 0;
 	pList = NULL;
@@ -104,7 +101,7 @@ int* Primes::getList(int end)
 		return pList;
 	else if (end > maxVal)
 		return NULL;
-	pList = getPList(end, pSieve);
+	pList = SE_List(end, pSieve);
 	maxList = end;
 	return pList;
 }
@@ -126,7 +123,7 @@ int* Primes::getList(int end)
 					}										\
 					primes[n] |= kk;
 
-static uint8_t* SieveEratosthenes(int N)
+uint8_t* Primes::SieveOfEratosthenes(int N) const
 {
 	int SQRTN = (int) sqrt(N);
 	int sqrtEnd = (SQRTN / 30) + 1;
@@ -251,7 +248,7 @@ static uint8_t* SieveEratosthenes(int N)
 //Index 0 starts off with 2
 //Fills an extra place with value of 0 for terminator
 #define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
-static int* getPList(int N, const uint8_t* prime)
+int* Primes::SE_List(int N, const uint8_t* prime) const
 {
 	int primeEnd = (N / 30) + 1;
 	int n;
@@ -297,6 +294,7 @@ static int* getPList(int N, const uint8_t* prime)
 	list[count] = 0;
 	return list;
 }
+
 /*
 //The first time it is called it returns the first prime in the list
 //Each subsequent time it returns the next prime in the list
@@ -482,3 +480,43 @@ uns64* primeFactorsE_uns64(uns64 N) {
 	return list;
 }
 */
+
+uint8_t* Primes::SieveOfSundarem(int N) const
+{
+	// i+j+2ij marked off as 1<=i<=j and i+j+2ij<=n, k are numbers left, 2k+1 are prime
+	int n = N/2;
+	uint8_t* primes = (uint8_t*) calloc(n+1, sizeof(uint8_t));
+	int tmp;
+	for (int i = 1; i < n/4; i++) {
+		for (int j = i; j <= (n-i)/(2*i+1); j++) {
+			tmp = i + j + 2*(i * j);
+			if (tmp > n)
+				break;
+			primes[tmp] = 1;
+		}
+	}
+	return primes;
+}
+
+int* Primes::SS_List(int N, const uint8_t* primes) const
+{
+	int n = N/2;
+	int top = 1;
+	for (int i = 0; i < n; i++) {
+		if (0 == primes[i])
+			top++;
+	}
+	int* list = (int*) malloc((top+1) * sizeof(int));
+	if (!list) {
+		return NULL;
+	}
+	int current = 0;
+	list[current++] = 2;
+	for (int k = 1; k < n; k++) {
+		if (0 == primes[k])
+			list[current++] = 2*k + 1;
+	}
+	list[current] = 0;
+	return list;
+}
+

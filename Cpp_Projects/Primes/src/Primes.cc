@@ -134,8 +134,8 @@ int* Primes::getList(int end)
 static uint8_t* SieveEratosthenes(int N)
 {
 	int SQRTN = (int) sqrt(N);
-	int sqrtEnd = SQRTN / 30;
-	int primeEnd = N / 30;
+	int sqrtEnd = (SQRTN / 30) + 1;
+	int primeEnd = (N / 30) + 1;
 	uint8_t* primes = new uint8_t[primeEnd + 1];
 	if (!primes) {
 #ifdef DEBUG
@@ -258,7 +258,7 @@ static uint8_t* SieveEratosthenes(int N)
 #define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
 static int* getPList(int N, const uint8_t* prime)
 {
-	int primeEnd = N / 30;
+	int primeEnd = (N / 30) + 1;
 	int n;
 	uint8_t s;
 	int top = 3;

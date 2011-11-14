@@ -164,6 +164,9 @@ void display(void)
 	// Calculate mandelbrot window
 	mandelbrot_compute(&window);
 
+	// Correct for 1 pixel discrepency
+	glTranslatef(1, 0, 0);
+
 	// Iterate over calculated image and display points
 	glBegin( GL_POINTS );
 	for (int r = 0; r < window.height; r++) {
@@ -184,7 +187,12 @@ void display(void)
 void init()
 {
 	// Set bg color
+#ifdef DEBUG
+	// Draw red bg to check for missed pixels
+	glClearColor(1.0, 0.0, 0.0, 1.0);
+#else
 	glClearColor(1.0, 1.0, 1.0, 1.0);
+#endif
 	glShadeModel(GL_FLAT);
 
 	// Initialize default palette

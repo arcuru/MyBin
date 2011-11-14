@@ -62,7 +62,7 @@ MBWindow window;  //!< Struct holding the properties of the current window
  *  @param max_iter Maximum number of iterations to run
  *  @return The number of iterations left until reaching the max
  */
-unsigned int iterate_point(double a, double b, unsigned int max_iter)
+unsigned short iterate_point(double a, double b, unsigned int max_iter)
 {
 /* Using the Complex class
 	Complex c(a, b);
@@ -141,14 +141,16 @@ void display(void)
 	// Set the viewing transformation
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
+/* All of this is unnecessary, just draw at each individual pixel
 	// Center the origin on the screen
-	glTranslatef( ((double)window.width) / 2.0, ((double)window.height) / 2.0, 0);
+	glTranslated( ((double)window.width) / 2.0, ((double)window.height) / 2.0, 0);
 	
 	// Scale image to fill the whole screen
 	double scaleX = ((double)window.width) / (window.XMax - window.XMin);
 	double scaleY = ((double)window.height) / (window.YMax - window.YMin);
 	double min_Scale = (scaleX < scaleY) ? scaleX : scaleY;
-	glScalef(min_Scale, min_Scale, 0.0);
+	min_Scale *= ((double)511) / 512;
+	glScaled(min_Scale, min_Scale, 0.0);
 
 	// Size of one pixel
 	double dx = 1.0 / ((double) window.width) * (window.XMax - window.XMin);
@@ -157,24 +159,17 @@ void display(void)
 	double midy = ((double)(window.YMin + window.YMax)) / 2.0;
 	midx *= -1;
 	midy *= -1;
-	glTranslatef(midx, midy, 0);
-
+	glTranslated(midx, midy, 0);
+*/
 	// Calculate mandelbrot window
 	mandelbrot_compute(&window);
 
 	// Iterate over calculated image and display points
 	glBegin( GL_POINTS );
-	double real, imag;
-	unsigned int iters;
 	for (int r = 0; r < window.height; r++) {
-		imag = (((double) r) / ((double) window.height - 1)) * (window.YMax - window.YMin) + window.YMin;
 		for (int c = 0; c < window.width; c++) {
-			real = (((double) c) / ((double) window.width - 1)) * (window.XMax - window.XMin) + window.XMin;
-			int tmp = 3 * window.Iters[window.width * r + c];
-			if (tmp < 0 || tmp > 3*maxIt)
-				cout << tmp << endl;
 			glColor3fv(&window.palette[3 * window.Iters[window.width * r + c]]);
-			glVertex2f(real, imag);
+			glVertex2d(c, r);
 		}
 	}
 	glEnd();
@@ -264,6 +259,15 @@ void mouse(int button, int state, int x, int y)
 		w.YMax = (((double)window.height - firsty) / ((double) window.height)) * (window.YMax - window.YMin) + window.YMin;
 		w.XMin = (((double)firstx) / ((double) window.width)) * (window.XMax - window.XMin) + window.XMin;
 		w.XMax = (((double)x) / ((double) window.width)) * (window.XMax - window.XMin) + window.XMin;
+		
+		// Ugly hack to keep it square
+		double dx = w.XMax - w.XMin;
+		double dy = w.YMax - w.YMin;
+		double min = (dx < dy) ? dx : dy;
+		w.XMax = w.XMin + min;
+		w.YMax = w.YMin + min;
+		
+
 		w.width = window.width;
 		w.height = window.height;
 		w.maxIters = window.maxIters;

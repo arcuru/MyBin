@@ -10,7 +10,7 @@ CFLAGS = -g
 
 #CXX = /Developer/usr/bin/g++-4.0
 #CC  = /Developer/usr/bin/gcc-4.0
-# CXX = /usr/bin/g++
+CXX = /usr/bin/mpic++
 # CC  = /usr/bin/gcc
 
 MBSet:	MBSet.o complex.o

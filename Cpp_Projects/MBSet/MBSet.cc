@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <pthread.h>
+#include <mpi.h>
 
 #include <GL/glut.h>
 #include <GL/glext.h>
@@ -38,7 +39,7 @@ int click_XMin;
 int click_XMax;
 int click_YMin;
 int click_YMax;
-int      maxIt = 2000;     //!< Max iterations for the set computations
+int maxIt = 2000;     //!< Max iterations for the set computations
 
 //GLfloat palette[5][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}, {0.5, 0.5, 0.5}, {1.0, 1.0, 1.0}}; 
 GLfloat* default_palette;
@@ -58,6 +59,9 @@ struct MBWindow {
 
 MBWindow window_list[100]; //!< List containing all the drawn windows
 size_t window = 0;  //!< Index of current working window
+pthread_mutex_t calc_mutex;
+pthread_cond_t calc_cond;
+pthread_barrier_t calc_barrier;
 
 /** Iterate Point
  *  returns the number of iterations below max_iter that it took to reach
@@ -96,6 +100,149 @@ unsigned short iterate_point(double a, double b, unsigned int max_iter)
 	} while ( --max_iter );
 
 	return max_iter;
+}
+
+/** MPI Slave
+ *  runs as a process not on the head node, waits for signal from rank 0,
+ *  computes values, then sends back data
+ */
+void mpi_slave()
+{
+	// Get vital information about mpi settings
+	int numtasks, rank;
+	MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
+	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+
+	// Remove rank 0 from the number of tasks
+	numtasks--;
+	rank--;
+#ifdef DEBUG
+	cout << "Rank " << rank << " started." << endl;
+#endif
+
+	// Allocate space for receiving data from rank 0 process
+	MBWindow* w = (MBWindow*) malloc(sizeof(MBWindow));
+	MPI_Status status;
+	int rc;
+	while ( 1 ) {
+		// Block on wait for information
+		rc = MPI_Recv(w, sizeof(MBWindow), MPI_BYTE, 0,
+				0, MPI_COMM_WORLD, &status);
+#ifdef DEBUG
+		cout << "Rank " << rank << " received data. Beginning Calculations." << endl;
+#endif
+		if (rc != MPI_SUCCESS) {
+			cout << "Rank " << rank << " recv from 0 failed, rc " << rc << endl;
+			MPI_Finalize();
+			exit(1);
+		}
+
+		// Figure out number of rows and starting row for calculations
+		int height = w->height / numtasks;
+		if (0 != (w->height % numtasks))
+			height++;
+		int start = height * rank;
+		if (rank == numtasks) { // Scale last task down to not overshoot end
+			height = w->height - start;
+		}
+
+		// Allocate space
+		unsigned short* iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * height);
+		size_t index = 0;
+
+		// Run through the calculations
+		double imag, real;
+		for (int r = start; r < start+height; r++) {
+			imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
+			for (int c = 0; c < w->width; c++) {
+				real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
+				iters[index++] = iterate_point(real, imag, maxIt);
+			}
+		}
+
+		// Send back to rank 0
+		rc = MPI_Send(iters, sizeof(unsigned short) * w->width * height, MPI_BYTE, 0,
+				0, MPI_COMM_WORLD);
+		if (rc != MPI_SUCCESS) {
+			cout << "Rank " << rank	<< " send failed, rc " << rc << endl;
+			MPI_Finalize();
+			exit(1);
+		}
+		
+	}
+}
+
+/** Thread Communicator
+ *  handles communication with the MPI slaves to calculate the current window
+ */
+void* thread_com_slave(void* unused) {
+	// Get vital information about mpi settings
+	int numtasks, rank;
+	MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
+	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+
+	// Grab the mutex, it's released while waiting for signal
+	//pthread_mutex_lock(&calc_mutex);
+	while ( 1 ) {
+		// Wait for signal from main task before beginning calculations
+		cout << "Thread Waiting." << endl;
+		//pthread_cond_wait(&calc_cond, &calc_mutex);
+		pthread_barrier_wait(&calc_barrier);
+
+#ifdef DEBUG
+		cout << "Sending calculation instructions to MPI slaves." << endl;
+#endif
+
+		// Send window struct to MPI slaves
+		MBWindow* w = &window_list[window];
+		int rc;
+		MPI_Request requestSend[15];
+		int qq = 0;
+		for (int i = 1; i < numtasks; i++) {
+			rc = MPI_Isend(w, sizeof(MBWindow), MPI_BYTE, i, 0, MPI_COMM_WORLD, &requestSend[qq++]);
+			if (rc != MPI_SUCCESS) {
+				cout << "Error sending window specs to " << i << endl;
+				MPI_Finalize();
+				exit(1);
+			}
+		}
+		
+		// Determine size of calculations for each MPI process
+		int height = w->height / (numtasks - 1);
+		if (0 != (w->height % (numtasks - 1)))
+			height++;
+		int bufsize = height * w->width;
+		int bufsize2 = bufsize;
+
+		// Allocate memory
+		w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
+
+		// Retrieve computed values and save
+		MPI_Request requestRecv[numtasks-1];
+		int q = 0;
+		for (int i = 0; i < numtasks-1; i++) {
+			rc = MPI_Irecv(&w->Iters[i*bufsize], sizeof(unsigned short) * bufsize2, MPI_BYTE, i+1,
+					0, MPI_COMM_WORLD, &requestRecv[q++]);
+			if (rc != MPI_SUCCESS) {
+				cout << "Error receiving iters from " << i << endl;
+				MPI_Finalize();
+				exit(1);
+			}
+			if (i == numtasks - 1) {
+				// Change bufsize if necessary
+				bufsize2 = (w->height - (height * (numtasks - 1))) * w->width;
+			}
+		}
+		// Wait for all data to be received
+		MPI_Status status[numtasks-1];
+		cout << "hiya" << endl;
+		MPI_Waitall(numtasks-1, requestRecv, status);
+		cout << "hiya" << endl;
+
+		// Indicate finished to main task
+		pthread_barrier_wait(&calc_barrier);
+	}
+	return NULL;
 }
 
 void mandelbrot_compute(MBWindow* w)
@@ -195,7 +342,13 @@ void display(void)
 	}
 
 	// Calculate mandelbrot window
-	mandelbrot_compute(w);
+	pthread_mutex_lock(&calc_mutex);
+	if (NULL == w->Iters) {
+		//pthread_cond_signal(&calc_cond);
+		pthread_barrier_wait(&calc_barrier);
+		pthread_barrier_wait(&calc_barrier);
+	}
+	pthread_mutex_unlock(&calc_mutex);
 
 	// Correct for 1 pixel discrepency
 	glTranslatef(1, 0, 0);
@@ -393,29 +546,64 @@ void keyboard(unsigned char c, int x, int y)
 
 int main(int argc, char** argv)
 {
-	// Initialize OpenGL, but only on the "master" thread or process.
-	// See the assignment writeup to determine which is "master" 
-	// and which is slave.
+	// MPI initialization here
+	int rc = MPI_Init(&argc,&argv);
+	if (rc != MPI_SUCCESS) {
+		printf ("Error starting MPI program. Terminating.\n");
+		MPI_Abort(MPI_COMM_WORLD, rc);
+	}
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+	if (rank != 0) {
+		mpi_slave();
+	}
+	else {
+		// For attaching gdb
+		int i = 0;
+		char hostname[256];
+		gethostname(hostname, sizeof(hostname));
+		printf("PID %d on %s ready for attach\n", getpid(), hostname);
+		fflush(stdout);
+		while (0 == i)
+			sleep(5);
 
-	// Initialize glut to default window size and display mode
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(init_width, init_height);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow("MBSet");
 
-	// Run initialization for opengl
-	init();
+		// Init mutex
+		pthread_mutex_init(&calc_mutex, NULL);
+		pthread_cond_init(&calc_cond, NULL);
+		pthread_barrier_init(&calc_barrier, NULL, 2);
 
-	// Set callbacks
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-	glutMouseFunc(mouse);
-	glutKeyboardFunc(keyboard);
-	glutMotionFunc(motion);
+		// Spawn off pthread slave process for communication with mpi processes
+		
+		pthread_t t;
+		pthread_create(&t, 0, thread_com_slave, NULL); 
 
-	// Start main loop
-	glutMainLoop();
+		// Initialize OpenGL, but only on the "master" thread or process.
+		// See the assignment writeup to determine which is "master" 
+		// and which is slave.
+
+		// Initialize glut to default window size and display mode
+		glutInit(&argc, argv);
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+		glutInitWindowSize(init_width, init_height);
+		glutInitWindowPosition(100, 100);
+		glutCreateWindow("MBSet");
+
+		// Run initialization for opengl
+		init();
+
+		// Set callbacks
+		glutDisplayFunc(display);
+		glutReshapeFunc(reshape);
+		glutMouseFunc(mouse);
+		glutKeyboardFunc(keyboard);
+		glutMotionFunc(motion);
+
+		// Start main loop
+		glutMainLoop();
+	}
+	// Finalize MPI here
+	MPI_Finalize();
 
 	return 0;
 }

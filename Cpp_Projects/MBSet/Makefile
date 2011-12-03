@@ -3,10 +3,10 @@
 # CFLAGS   = -gstabs -I. -I$(HOME)/Software/OpenGLLinks
 # CXXFLAGS = -gstabs -I. -I$(HOME)/Software/OpenGLLinks
 #LDFLAGS  = -g -framework Carbon -framework GLUT -framework OpenGL
-LDFLAGS  = -g -lglut -lGLU -lGL 
-CCFLAGS = -g
-CXXFLAGS = -g
-CFLAGS = -g
+LDFLAGS  = -g -O3 -lglut -lGLU -lGL 
+CCFLAGS = -g -O3
+CXXFLAGS = -g -O3
+CFLAGS = -
 
 #CXX = /Developer/usr/bin/g++-4.0
 #CC  = /Developer/usr/bin/gcc-4.0

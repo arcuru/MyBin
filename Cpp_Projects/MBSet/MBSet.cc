@@ -21,7 +21,7 @@
 
 using namespace std;
 
-#define DEBUG //!< Un comment to print debug statements
+//#define DEBUG //!< Un comment to print debug statements
 #ifdef DEBUG
 #include <sys/time.h>
 #include <iomanip>
@@ -41,7 +41,6 @@ int click_YMin;
 int click_YMax;
 int maxIt = 2000;     //!< Max iterations for the set computations
 
-//GLfloat palette[5][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}, {0.5, 0.5, 0.5}, {1.0, 1.0, 1.0}}; 
 GLfloat* default_palette;
 
 //! Structure to hold all information necessary for a single viewport
@@ -59,9 +58,8 @@ struct MBWindow {
 
 MBWindow window_list[100]; //!< List containing all the drawn windows
 size_t window = 0;  //!< Index of current working window
-pthread_mutex_t calc_mutex;
-pthread_cond_t calc_cond;
-pthread_barrier_t calc_barrier;
+pthread_mutex_t win_mutex; //!< Mutex for accessing the current window
+pthread_barrier_t calc_barrier; //!< Barrier for synchronization between the rank0 threads
 
 /** Iterate Point
  *  returns the number of iterations below max_iter that it took to reach
@@ -75,6 +73,7 @@ pthread_barrier_t calc_barrier;
 unsigned short iterate_point(double a, double b, unsigned int max_iter)
 {
 /* Using the Complex class
+   this is approximately 4 times slower than unrolling the calculations
 	Complex c(a, b);
 	Complex z(0, 0);
 
@@ -86,16 +85,16 @@ unsigned short iterate_point(double a, double b, unsigned int max_iter)
 	} while (--max_iter);
 	return max_iter;
 */
-	double za, zb, za2, zb2;
-	za = zb = za2 = zb2 = 0.0;
+	double r, i, rr, ii;
+	r = i = rr = ii = 0.0;
 
 	do {
 		// Run a single step of the algorithm and check
-		zb = (za + za) * zb + b;
-		za = za2 - zb2 + a;
-		za2 = za * za;
-		zb2 = zb * zb;
-		if ( (za2 + zb2) >= 4.0 )
+		i = 2 * r * i + b;
+		r = rr - ii + a;
+		rr = r * r;
+		ii = i * i;
+		if ( (rr + ii) >= 4.0 )
 			break;
 	} while ( --max_iter );
 
@@ -142,7 +141,7 @@ void mpi_slave()
 		if (0 != (w->height % numtasks))
 			height++;
 		int start = height * rank;
-		if (rank == numtasks) { // Scale last task down to not overshoot end
+		if (rank == numtasks-1) { // Scale last task down to not overshoot end
 			height = w->height - start;
 		}
 
@@ -177,50 +176,32 @@ void mpi_slave()
  */
 void* thread_com_slave(void* unused) {
 	// Get vital information about mpi settings
-	int numtasks, rank;
+	int numtasks;
 	MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
-	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+	numtasks--;
 
-	// Grab the mutex, it's released while waiting for signal
-	//pthread_mutex_lock(&calc_mutex);
 	while ( 1 ) {
-		// Wait for signal from main task before beginning calculations
-		cout << "Thread Waiting." << endl;
-		//pthread_cond_wait(&calc_cond, &calc_mutex);
+		// Wait for window to be set
 		pthread_barrier_wait(&calc_barrier);
 
-#ifdef DEBUG
-		cout << "Sending calculation instructions to MPI slaves." << endl;
-#endif
-
-		// Send window struct to MPI slaves
+		// Get a pointer to the current window
 		MBWindow* w = &window_list[window];
-		int rc;
-		MPI_Request requestSend[15];
-		int qq = 0;
-		for (int i = 1; i < numtasks; i++) {
-			rc = MPI_Isend(w, sizeof(MBWindow), MPI_BYTE, i, 0, MPI_COMM_WORLD, &requestSend[qq++]);
-			if (rc != MPI_SUCCESS) {
-				cout << "Error sending window specs to " << i << endl;
-				MPI_Finalize();
-				exit(1);
-			}
-		}
+
+		// Allocate space in current window
+		w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
 		
 		// Determine size of calculations for each MPI process
-		int height = w->height / (numtasks - 1);
-		if (0 != (w->height % (numtasks - 1)))
+		int height = w->height / numtasks;
+		if (0 != (w->height % numtasks))
 			height++;
 		int bufsize = height * w->width;
 		int bufsize2 = bufsize;
 
-		// Allocate memory
-		w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
-
 		// Retrieve computed values and save
-		MPI_Request requestRecv[numtasks-1];
+		MPI_Request requestRecv[numtasks];
 		int q = 0;
-		for (int i = 0; i < numtasks-1; i++) {
+		int rc;
+		for (int i = 0; i < numtasks; i++) {
 			rc = MPI_Irecv(&w->Iters[i*bufsize], sizeof(unsigned short) * bufsize2, MPI_BYTE, i+1,
 					0, MPI_COMM_WORLD, &requestRecv[q++]);
 			if (rc != MPI_SUCCESS) {
@@ -228,16 +209,14 @@ void* thread_com_slave(void* unused) {
 				MPI_Finalize();
 				exit(1);
 			}
-			if (i == numtasks - 1) {
+			if (i == numtasks - 2) {
 				// Change bufsize if necessary
-				bufsize2 = (w->height - (height * (numtasks - 1))) * w->width;
+				bufsize2 = (w->height - (height * (numtasks-1))) * w->width;
 			}
 		}
 		// Wait for all data to be received
-		MPI_Status status[numtasks-1];
-		cout << "hiya" << endl;
-		MPI_Waitall(numtasks-1, requestRecv, status);
-		cout << "hiya" << endl;
+		MPI_Status status[numtasks];
+		MPI_Waitall(numtasks, requestRecv, status);
 
 		// Indicate finished to main task
 		pthread_barrier_wait(&calc_barrier);
@@ -282,7 +261,40 @@ void display(void)
 #ifdef DEBUG
 	static int pass;
 	cout << "Displaying pass " << ++pass << endl;
+	struct timeval t;
 #endif
+
+	// Get a pointer to the current window
+	MBWindow* w = &window_list[window];
+
+	// Send to slave MPI processes if recalculation needed
+	bool recalc = false;
+	static int numtasks = 0;
+	if (0 == numtasks) {
+		MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
+		numtasks--;
+	}
+	if (NULL == w->Iters) {
+#ifdef DEBUG
+		cout << "Calculating..." << endl;
+		gettimeofday(&t, 0);
+#endif
+		// Start the slave thread
+		pthread_barrier_wait(&calc_barrier);
+		recalc = true;
+		// Send window struct to MPI slaves
+		int rc;
+		MPI_Request requestSend[15];
+		int qq = 0;
+		for (int i = 1; i <= numtasks; i++) {
+			rc = MPI_Isend(w, sizeof(MBWindow), MPI_BYTE, i, 0, MPI_COMM_WORLD, &requestSend[qq++]);
+			if (rc != MPI_SUCCESS) {
+				cout << "Error sending window specs to " << i << endl;
+				MPI_Finalize();
+				exit(1);
+			}
+		}
+	}
 
 	// Clear all the colors
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -293,65 +305,21 @@ void display(void)
 
 	// Set the viewing transformation
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-
-/* All of this is unnecessary, just draw at each individual pixel
-	// Center the origin on the screen
-	glTranslated( ((double)window.width) / 2.0, ((double)window.height) / 2.0, 0);
 	
-	// Scale image to fill the whole screen
-	double scaleX = ((double)window.width) / (window.XMax - window.XMin);
-	double scaleY = ((double)window.height) / (window.YMax - window.YMin);
-	double min_Scale = (scaleX < scaleY) ? scaleX : scaleY;
-	min_Scale *= ((double)511) / 512;
-	glScaled(min_Scale, min_Scale, 0.0);
-
-	// Size of one pixel
-	double dx = 1.0 / ((double) window.width) * (window.XMax - window.XMin);
-	double dy = 1.0 / ((double) window.height) * (window.YMax - window.YMin);
-	double midx = ((double)(window.XMin + window.XMax)) / 2.0;
-	double midy = ((double)(window.YMin + window.YMax)) / 2.0;
-	midx *= -1;
-	midy *= -1;
-	glTranslated(midx, midy, 0);
-*/
-	// Get a pointer to the current window
-	MBWindow* w = &window_list[window];
-
-	// Scale Min and Max points for correct aspect ratio
-	double pix_scale = ((double)w->height) / w->width;
-	double point_scale = (w->YMax - w->YMin) / (w->XMax - w->XMin);
-	if (pix_scale != point_scale) {
-		double dy = w->YMax - w->YMin;
-		double dx = w->XMax - w->XMin;
-		double x_pix_size = dx / ((double)w->width);
-		double y_pix_size = dy / ((double)w->height);
-		if (x_pix_size < y_pix_size) {
-			// Modify X vals
-			double mid = (w->XMax + w->XMin) / 2.0;
-			w->XMin = mid - (y_pix_size * w->width / 2.0);
-			w->XMax = mid + (y_pix_size * w->width / 2.0);
-		}
-		else if (x_pix_size > y_pix_size) {
-			// Modify Y vals
-			double mid = (w->YMax + w->YMin) / 2.0;
-			w->YMin = mid - (x_pix_size * w->height / 2.0);
-			w->YMax = mid + (x_pix_size * w->height / 2.0);
-			cout << w->YMin << endl;
-			cout << w->YMax << endl;
-		}
-	}
-
-	// Calculate mandelbrot window
-	pthread_mutex_lock(&calc_mutex);
-	if (NULL == w->Iters) {
-		//pthread_cond_signal(&calc_cond);
-		pthread_barrier_wait(&calc_barrier);
-		pthread_barrier_wait(&calc_barrier);
-	}
-	pthread_mutex_unlock(&calc_mutex);
-
 	// Correct for 1 pixel discrepency
 	glTranslatef(1, 0, 0);
+
+	// Wait for calculations to finish
+	if (recalc) {
+		pthread_barrier_wait(&calc_barrier);
+#ifdef DEBUG
+		cout << "Finished calculating" << endl;
+		struct timeval t2;
+		gettimeofday(&t2, 0);
+		unsigned int time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
+		cout << "Calculation time: " << setw(6) << ((float)time) / 1000000 << endl;
+#endif
+	}
 
 	// Iterate over calculated image and display points
 	glBegin( GL_POINTS );
@@ -363,9 +331,6 @@ void display(void)
 	}
 	if (click) {
 		glColor3f(1.0, 0.0, 0.0);
-		cout << "Coords" << endl;
-		cout << click_XMin << ", " << click_XMax << endl;
-		cout << click_YMin << ", " << click_YMax << endl;
 		for (int i = click_XMin; i != click_XMax; i += (click_XMax - click_XMin) / abs(click_XMax - click_XMin)) {
 			glVertex2d(i, w->height - click_YMin);
 			glVertex2d(i, w->height - click_YMax);
@@ -433,12 +398,38 @@ void reshape(int w, int h)
 	cout << "Reshape: (" << w << ", " << h << ")" << endl;
 #endif
 	// Get pointer to current window object
+	pthread_mutex_lock(&win_mutex);
+	memcpy(&window_list[window+1], &window_list[window], sizeof(MBWindow));
+	window++;
 	MBWindow* win = &window_list[window];
 	win->width = w;
 	win->height = h;
-	if (NULL != win->Iters)
-		free(win->Iters);
 	win->Iters = NULL;
+
+	// Scale Min and Max points for correct aspect ratio
+	// shouldn't change anything unless window is not a square
+	double pix_scale = ((double)win->height) / win->width;
+	double point_scale = (win->YMax - win->YMin) / (win->XMax - win->XMin);
+	if (pix_scale != point_scale) {
+		double dy = win->YMax - win->YMin;
+		double dx = win->XMax - win->XMin;
+		double x_pix_size = dx / ((double)win->width);
+		double y_pix_size = dy / ((double)win->height);
+		if (x_pix_size < y_pix_size) {
+			// Modify X vals
+			double mid = (win->XMax + win->XMin) / 2.0;
+			win->XMin = mid - (y_pix_size * win->width / 2.0);
+			win->XMax = mid + (y_pix_size * win->width / 2.0);
+		}
+		else if (x_pix_size > y_pix_size) {
+			// Modify Y vals
+			double mid = (win->YMax + win->YMin) / 2.0;
+			win->YMin = mid - (x_pix_size * win->height / 2.0);
+			win->YMax = mid + (x_pix_size * win->height / 2.0);
+		}
+	}
+
+	pthread_mutex_unlock(&win_mutex);
 	// Resize viewport and ortho projection
 	glViewport(0,0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -480,6 +471,7 @@ void mouse(int button, int state, int x, int y)
 		click_XMax = click_XMin + (min * ((x - click_XMin) / abs(x-click_XMin)));
 		click_YMax = click_YMin + (min * ((y - click_YMin) / abs(y-click_YMin)));
 
+		pthread_mutex_lock(&win_mutex);
 		MBWindow* w = &window_list[window+1];
 		MBWindow* wtmp = &window_list[window];
 		w->YMin = (((double)wtmp->height - click_YMax) / ((double) wtmp->height)) * (wtmp->YMax - wtmp->YMin) + wtmp->YMin;
@@ -508,12 +500,13 @@ void mouse(int button, int state, int x, int y)
 		w->Iters = NULL;
 		w->palette = wtmp->palette;
 		window++;
+		pthread_mutex_unlock(&win_mutex);
 		glutPostRedisplay();
 	}
 }
 
 void motion(int x, int y)
-{ // Your mouse motion here, x and y coordinates are as above
+{
 #ifdef DEBUG
 	cout << "Motion: (" << x << ", " << y << ")" << endl;
 #endif
@@ -527,11 +520,11 @@ void motion(int x, int y)
 }
 
 void keyboard(unsigned char c, int x, int y)
-{ // Your keyboard processing here
+{ 
 #ifdef DEBUG
 	cout << "Keyboard: (" << x << ", " << y << ") " << c << endl;
 #endif
-	
+	// Switch on keyboard command
 	switch ( c ) {
 		case 'b':	
 			if (window > 0) // Restrict to positive values
@@ -558,7 +551,7 @@ int main(int argc, char** argv)
 		mpi_slave();
 	}
 	else {
-		// For attaching gdb
+		/* 	For attaching GDB to main process
 		int i = 0;
 		char hostname[256];
 		gethostname(hostname, sizeof(hostname));
@@ -566,21 +559,15 @@ int main(int argc, char** argv)
 		fflush(stdout);
 		while (0 == i)
 			sleep(5);
-
+		*/
 
 		// Init mutex
-		pthread_mutex_init(&calc_mutex, NULL);
-		pthread_cond_init(&calc_cond, NULL);
+		pthread_mutex_init(&win_mutex, NULL);
 		pthread_barrier_init(&calc_barrier, NULL, 2);
 
 		// Spawn off pthread slave process for communication with mpi processes
-		
 		pthread_t t;
 		pthread_create(&t, 0, thread_com_slave, NULL); 
-
-		// Initialize OpenGL, but only on the "master" thread or process.
-		// See the assignment writeup to determine which is "master" 
-		// and which is slave.
 
 		// Initialize glut to default window size and display mode
 		glutInit(&argc, argv);

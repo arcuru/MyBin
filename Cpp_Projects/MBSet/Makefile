@@ -5,7 +5,7 @@
 #LDFLAGS  = -g -framework Carbon -framework GLUT -framework OpenGL
 LDFLAGS  = -g -O3 -lglut -lGLU -lGL 
 CCFLAGS = -g -O3
-CXXFLAGS = -g -O3
+CXXFLAGS = -g -O3 -Wall
 CFLAGS = -
 
 #CXX = /Developer/usr/bin/g++-4.0

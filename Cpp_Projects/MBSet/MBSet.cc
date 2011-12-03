@@ -153,7 +153,7 @@ void mpi_slave()
 		double imag, real;
 		for (int r = start; r < start+height; r++) {
 			imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
-			for (int c = 0; c < w->width; c++) {
+			for (unsigned int c = 0; c < w->width; c++) {
 				real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
 				iters[index++] = iterate_point(real, imag, maxIt);
 			}
@@ -236,9 +236,9 @@ void mandelbrot_compute(MBWindow* w)
 #endif
 	w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
 	double real, imag;
-	for (int r = 0; r < w->height; r++) {
+	for (unsigned int r = 0; r < w->height; r++) {
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
-		for (int c = 0; c < w->width; c++) {
+		for (unsigned int c = 0; c < w->width; c++) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
 			w->Iters[w->width * r + c] = iterate_point(real, imag, maxIt);
 		}
@@ -323,8 +323,8 @@ void display(void)
 
 	// Iterate over calculated image and display points
 	glBegin( GL_POINTS );
-	for (int r = 0; r < w->height; r++) {
-		for (int c = 0; c < w->width; c++) {
+	for (unsigned int r = 0; r < w->height; r++) {
+		for (unsigned int c = 0; c < w->width; c++) {
 			glColor3fv(&w->palette[3 * w->Iters[w->width * r + c]]);
 			glVertex2d(c, r);
 		}
@@ -447,13 +447,9 @@ void mouse(int button, int state, int x, int y)
 #ifdef DEBUG
 	cout << "Mouse: " << button << " - " << state << " - (" << x << ", " << y << ")" << endl;
 #endif
-	static int firstx = 0;
-	static int firsty = 0;
 	static bool firstvalid = false;
 	if (0 == state) {
 		firstvalid = true;
-		firstx = x;
-		firsty = y;
 		click_XMin = x;
 		click_YMin = y;
 		click_XMax = x;

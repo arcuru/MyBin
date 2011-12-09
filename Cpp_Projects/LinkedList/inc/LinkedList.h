@@ -28,15 +28,11 @@ class LinkedList
 
 		/* ====================  MUTATORS      ======================================= */
 		void Push( void* info );
-		virtual void PushFront( void* info )
-			{ return ; };
-		virtual void PushBack( void* info )
-			{ return ; };
+		virtual void PushFront( void* info ) = 0;
+		virtual void PushBack( void* info ) = 0;
 		void* Pop();
-		virtual void* PopFront()
-			{ return 0; };
-		virtual void* PopBack()
-			{ return 0; };
+		virtual void* PopFront() = 0;
+		virtual void* PopBack() = 0;
 
 		/* ====================  OPERATORS     ======================================= */
 

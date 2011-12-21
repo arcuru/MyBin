@@ -284,7 +284,7 @@ void display(void)
 		recalc = true;
 		// Send window struct to MPI slaves
 		int rc;
-		MPI_Request requestSend[15];
+		MPI_Request* requestSend = (MPI_Request*) malloc(sizeof(MPI_Request) * (numtasks-1));
 		int qq = 0;
 		for (int i = 1; i <= numtasks; i++) {
 			rc = MPI_Isend(w, sizeof(MBWindow), MPI_BYTE, i, 0, MPI_COMM_WORLD, &requestSend[qq++]);

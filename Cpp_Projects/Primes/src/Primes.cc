@@ -133,7 +133,7 @@ uint8_t* Primes::SieveOfEratosthenes(int N) const
 #ifdef DEBUG
 		std::cout << "Could not allocate " << primeEnd+1 << " bytes." << std::endl;
 #endif
-		return NULL;
+		return nullptr;
 	}
 	int n, s, num, num1, num2, num4, num6;
 	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
@@ -261,7 +261,7 @@ int* Primes::SE_List(int N, const uint8_t* prime) const
 
 	int* list = (int*) calloc(top, sizeof(int));
 	if (!list) {
-		return NULL;
+		return nullptr;
 	}
 	int count = 3;
 	list[0] = 2;
@@ -508,7 +508,7 @@ int* Primes::SS_List(int N, const uint8_t* primes) const
 	}
 	int* list = (int*) malloc((top+1) * sizeof(int));
 	if (!list) {
-		return NULL;
+		return nullptr;
 	}
 	int current = 0;
 	list[current++] = 2;

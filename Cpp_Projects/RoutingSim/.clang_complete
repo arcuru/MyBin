@@ -1,0 +1,6 @@
+-I/usr/include
+-I/usr/include/linux
+-I/usr/include/c++/4.6.2
+-I/usr/include/c++/4.6.2/x86_64-unknown-linux-gnu
+-std=c++0x
+

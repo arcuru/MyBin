@@ -12,14 +12,14 @@ using namespace std;
 
 #define END_TIME 10000
 
-extern uint32_t Global_Time;
+extern uint32_t Global_Time; //!< Current time step
 
 struct Packet {
 	uint8_t x;
 	uint8_t y;
 	uint16_t size;
 	uint32_t data;
-};
+}; //!< Packet definition
 
 typedef struct Packet Packet;
 
@@ -29,7 +29,7 @@ enum direction {
 	SOUTH = 1,
 	EAST  = 2,
 	WEST  = 3
-};
+}; //!< Cardinal direction for use in 2D Mesh
 
 typedef enum direction Direction;
 
@@ -40,6 +40,6 @@ typedef enum direction Direction;
 #include "PacketGen.h"
 #include "Router.h"
 
-extern EventQueue Global_Queue;
+extern EventQueue Global_Queue; //!< Single global queue handling all events
 
 #endif

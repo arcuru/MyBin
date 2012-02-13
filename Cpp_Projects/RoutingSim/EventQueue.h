@@ -15,7 +15,7 @@ class EventQueue
 	protected:
 
 	private:
-		sll_t* head;
+		sll_t* head;  //!< Pointer to head of linked list
 
 };
 

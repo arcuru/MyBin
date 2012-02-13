@@ -14,12 +14,12 @@ class Router
 	protected:
 
 	private:
-		InputBuffer ibuf[4];
-		OutputBuffer obuf[4];
-		uint32_t addr_x;
-		uint32_t addr_y;
-		uint32_t packets_routed;
-		uint32_t packet_collision;
+		InputBuffer ibuf[4];       //!< Input buffers situated in this router
+		OutputBuffer obuf[4];      //!< Output buffers situated in this router
+		uint32_t addr_x;           //!< X value of address for this router
+		uint32_t addr_y;           //!< Y value of address for this router
+		uint32_t packets_routed;   //!< Count of total packets routed
+		uint32_t packet_collision; //!< Count of packet collisions
 
 };
 

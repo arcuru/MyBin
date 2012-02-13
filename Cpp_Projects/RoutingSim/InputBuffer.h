@@ -4,9 +4,9 @@
 class InputBuffer : public Buffer
 {
 	public:
-		InputBuffer ();                             /* constructor      */
+		InputBuffer ();
 		InputBuffer ( size_t entries );
-		~InputBuffer ();                            /* destructor       */
+		~InputBuffer ();
 
 		void WriteBack ( OutputBuffer* write_back );
 		void PopPacket ( );
@@ -14,7 +14,7 @@ class InputBuffer : public Buffer
 	protected:
 
 	private:
-		OutputBuffer* obuf;
+		OutputBuffer* obuf;  //!< Paired Output Buffer for writeback information
 
 };
 

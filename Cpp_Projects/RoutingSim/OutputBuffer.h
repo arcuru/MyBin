@@ -16,9 +16,8 @@ class OutputBuffer : public Buffer
 	protected:
 
 	private:
-		EventTarget* t;
-		uint32_t last_processed;
-		uint32_t available_space;
+		EventTarget* t;            //!< Corresponding Input Buffer for packet destination
+		uint32_t available_space;  //!< Keeping track of how many available spaces are left in corresponding input buffer
 
 };
 

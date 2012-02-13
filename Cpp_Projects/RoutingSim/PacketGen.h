@@ -5,8 +5,8 @@ class PacketGen
 {
 	public:
 		PacketGen ( );
-		PacketGen ( uint32_t X, uint32_t Y );                             /* constructor      */
-		~PacketGen ();                            /* destructor       */
+		PacketGen ( uint32_t X, uint32_t Y );
+		~PacketGen ();
 
 		void SetAddr ( uint32_t X, uint32_t Y);
 		void SetDirection ( Direction edge );

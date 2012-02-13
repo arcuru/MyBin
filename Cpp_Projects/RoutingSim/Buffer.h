@@ -18,10 +18,10 @@ class Buffer : public EventTarget
 	protected:
 
 	private:
-		Packet* buf;
-		int buf_index;
-		int buf_valid;
-		size_t buf_size;
+		Packet* buf;     //!< Pointer to buffer space
+		int buf_index;   //!< Pointer to next empty buffer space
+		int buf_valid;   //!< Pointer to oldest valid data
+		size_t buf_size; //!< Size of buffer
 
 };
 

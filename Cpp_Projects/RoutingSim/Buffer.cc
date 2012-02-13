@@ -89,7 +89,7 @@ Packet Buffer::GetPacket ( )
  */
 uint32_t Buffer::PacketsRemaining ( )
 {
-	if (buf_valid == -1)
+	if (-1 == buf_valid)
 		return 0;
 	int tmp = buf_index;
 	if (tmp <= buf_valid)

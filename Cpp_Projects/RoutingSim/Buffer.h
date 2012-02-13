@@ -5,9 +5,9 @@
 class Buffer : public EventTarget 
 {
 	public:
-		Buffer ();                             /* constructor      */
+		Buffer ();
 		Buffer ( size_t entries );
-		~Buffer ();                            /* destructor       */
+		virtual ~Buffer ();
 
 		uint32_t Size ( );
 		void ProcessPacket ( Packet p );

@@ -5,6 +5,8 @@ PacketGen::PacketGen ( )
 	ibuf = new InputBuffer(32);
 	obuf = new OutputBuffer(32);
 	packets_out = 0;
+	packets_sent = 0;
+	packets_blocked = 0;
 }
 
 PacketGen::PacketGen ( uint32_t X, uint32_t Y )
@@ -13,31 +15,38 @@ PacketGen::PacketGen ( uint32_t X, uint32_t Y )
 	ibuf = new InputBuffer(32);
 	obuf = new OutputBuffer(32);
 	packets_out = 0;
+	packets_sent = 0;
+	packets_blocked = 0;
 }
 
 PacketGen::~PacketGen ()
 {
 	switch ( dir ) {
 		case NORTH:	
-			cout << "North ";
+			cout << "North:" << endl;
 			break;
 
 		case SOUTH:	
-			cout << "South ";
+			cout << "South:" << endl;
 			break;
 
 		case EAST:	
-			cout << "East ";
+			cout << "East:" << endl;
 			break;
 
 		case WEST:	
-			cout << "West ";
+			cout << "West:" << endl;
 			break;
 
 		default:	
 			break;
 	}
 	cout << "Packets Out: " << packets_out << endl;
+	packets_sent -= obuf->PacketsRemaining();
+	cout << "Packets Sent: " << packets_sent << endl;
+	cout << "Packets Blocked: " << packets_blocked << endl;
+	delete ibuf;
+	delete obuf;
 }
 
 void PacketGen::SetAddr ( uint32_t X, uint32_t Y )
@@ -128,10 +137,13 @@ void PacketGen::GenPacket ( )
 	assert((p.x != p.y) || (p.x != 5));
 
 	// Add packet to output buffer
-	if (obuf->PacketsRemaining() < 32)
+	if (obuf->PacketsRemaining() < 32) {
 		obuf->ProcessPacket(p);
+		packets_sent++;
+	}
 	else {
 	//	cout << "PacketGen OutputBuffer full" << endl;
+		packets_blocked++;
 	}
 	return ;
 }

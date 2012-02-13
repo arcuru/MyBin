@@ -20,12 +20,14 @@ class PacketGen
 	protected:
 
 	private:
-		InputBuffer* ibuf;
-		OutputBuffer* obuf;
-		Direction dir;
-		uint32_t addr_x;
-		uint32_t addr_y;
-		uint32_t packets_out;
+		InputBuffer* ibuf;       //!< Ejection queue 
+		OutputBuffer* obuf;      //!< Injection queue
+		Direction dir;           //!< Direction this generator is pointing
+		uint32_t addr_x;         //!< X address of this generator
+		uint32_t addr_y;         //!< Y address of this generator
+		uint32_t packets_out;    //!< Total packets that arrived in the ejection queue
+		uint32_t packets_sent;   //!< Total packets sent injected into the network
+		uint32_t packets_blocked;//!< Total packets blocked from being inserted
 
 };
 

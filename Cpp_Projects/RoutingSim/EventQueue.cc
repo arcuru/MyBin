@@ -37,6 +37,7 @@ void EventQueue::Add ( Packet p, EventTarget* target, uint32_t arrival )
 	n->p = p;
 	n->t = target;
 	n->arrival = arrival;
+	n->next = NULL;
 	sll_t* cur = head;
 	if (cur) {
 		while (cur->next && cur->next->arrival < n->arrival)

@@ -3,8 +3,12 @@
 uint32_t Global_Time;
 EventQueue Global_Queue;
 
-int main ( )
+int main ( int argc, char** argv )
 {
+	uint32_t simulation_end = END_TIME;
+	if (argc > 1) {
+		simulation_end = atoi(argv[1]);
+	}
 	// Seed random number generator
 	//srand(4);
 	srand(time(NULL));
@@ -36,10 +40,10 @@ int main ( )
 	sim.Connect( EAST, &pg[EAST]);
 	sim.Connect( WEST, &pg[WEST]);
 
-	for (Global_Time = 0; Global_Time < END_TIME; Global_Time++) {
+	for (Global_Time = 0; Global_Time < simulation_end; Global_Time++) {
 		// Run packet generation for this timestep
 		for (int i = 0; i < 4; i++) {
-			pg[i].RandomGenPacket(1);
+			pg[i].RandomGenPacket(0.6);
 		}
 		Global_Queue.Process(); // Process all packet movements in the queue
 		sim.Process(); // Process all buffers in the router

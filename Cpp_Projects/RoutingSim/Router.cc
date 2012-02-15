@@ -12,8 +12,6 @@ Router::Router (uint32_t X, uint32_t Y)
 
 Router::~Router ()
 {
-	cout << "Routed: " << packets_routed << endl;
-	cout << "Collisions: " << packet_collision << endl;
 }
 
 /** GetTarget
@@ -25,6 +23,16 @@ Router::~Router ()
 EventTarget* Router::GetTarget ( Direction edge )
 {
 	return &ibuf[edge];
+}
+
+/** GetCollisions
+ *  returns the total number of packet collisions observed by this router
+ *
+ * @return  Number of packet collisions
+ */
+uint32_t Router::GetCollisions ( )
+{
+	return packet_collision;
 }
 
 /** Connect
@@ -47,13 +55,35 @@ void Router::Connect( Direction edge, PacketGen* target)
  */
 void Router::Process ( )
 {
+	// Process all the output buffers
+	for (int i=0; i < 4; i++)
+		obuf[i].ProcessBuffer();
+
+	// Traverse packets through the switch
 	bool sent[4];
 	for (int i=0; i < 4; i++)
 		sent[i] = false;
-	// Start routing from a random side
+
+	// Start sending from a random side
 	int start = rand() % 4;
 	for (int k=start; k < 4+start; k++) {
 		int i = k % 4;
+		if (ibuf[i].Routed() > 0) {
+			// Valid packets are routed
+			Packet p = ibuf[i].GetPacket();
+			Direction d = ibuf[i].GetRoute();
+			if ( false == sent[d] ) {
+				Global_Queue.Add(p, &obuf[d], Global_Time+1);
+				sent[d] = true;
+				ibuf[i].PopPacket();
+			}
+			else {
+				// Outgoing buffer full
+				packet_collision++;
+				packets_routed--;
+			}
+		}
+		/*
 		if (ibuf[i].PacketsRemaining() > 0) {
 			// Process packet
 			Packet p = ibuf[i].GetPacket();
@@ -97,10 +127,13 @@ void Router::Process ( )
 				packets_routed--;
 			}
 		}
+		*/
 	}
-	// Process all the output buffers
+
+	// Route packets
 	for (int i=0; i < 4; i++)
-		obuf[i].ProcessBuffer();
+		ibuf[i].RoutePacket( addr_x, addr_y );
+
 	return ;
 }
 

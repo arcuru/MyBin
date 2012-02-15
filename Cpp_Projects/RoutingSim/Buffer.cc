@@ -42,6 +42,8 @@ void Buffer::ProcessPacket ( Packet p )
 		// Buffer full
 		assert(false);
 	}
+	if (buf_index < 0)
+		assert(false);
 	buf[buf_index] = p;
 	if (-1 == buf_valid)
 		buf_valid = buf_index;

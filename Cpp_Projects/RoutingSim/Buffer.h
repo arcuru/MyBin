@@ -16,12 +16,12 @@ class Buffer : public EventTarget
 		uint32_t PacketsRemaining ( );
 
 	protected:
-
-	private:
 		Packet* buf;     //!< Pointer to buffer space
 		int buf_index;   //!< Pointer to next empty buffer space
 		int buf_valid;   //!< Pointer to oldest valid data
 		size_t buf_size; //!< Size of buffer
+
+	private:
 
 };
 

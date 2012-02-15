@@ -21,6 +21,7 @@ PacketGen::PacketGen ( uint32_t X, uint32_t Y )
 
 PacketGen::~PacketGen ()
 {
+	/* 
 	switch ( dir ) {
 		case NORTH:	
 			cout << "North:" << endl;
@@ -45,6 +46,7 @@ PacketGen::~PacketGen ()
 	packets_sent -= obuf->PacketsRemaining();
 	cout << "Packets Sent: " << packets_sent << endl;
 	cout << "Packets Blocked: " << packets_blocked << endl;
+	*/
 	delete ibuf;
 	delete obuf;
 }
@@ -137,6 +139,7 @@ void PacketGen::GenPacket ( )
 	assert((p.x != p.y) || (p.x != 5));
 
 	// Add packet to output buffer
+	packet_injections++;
 	if (obuf->PacketsRemaining() < 32) {
 		obuf->ProcessPacket(p);
 		packets_sent++;
@@ -173,6 +176,7 @@ void PacketGen::Process ( )
 		assert(p.y == addr_y);
 		ibuf->PopPacket();
 		packets_out++;
+		packet_ejections++;
 	}
 	obuf->ProcessBuffer();
 	return ;

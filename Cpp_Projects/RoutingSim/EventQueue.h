@@ -6,11 +6,12 @@ struct sll_t;
 class EventQueue
 {
 	public:
-		EventQueue ();
-		~EventQueue ();
+		EventQueue ( );
+		~EventQueue ( );
 
 		void Add ( Packet p, EventTarget* target, uint32_t arrival );
-		void Process ();
+		void Process ( );
+		void Clear ( );
 
 	protected:
 

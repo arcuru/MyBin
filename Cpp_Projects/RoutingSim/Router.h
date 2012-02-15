@@ -9,6 +9,7 @@ class Router
 
 		void Connect( Direction edge, PacketGen* target);
 		EventTarget* GetTarget ( Direction edge );
+		uint32_t GetCollisions ( );
 		void Process ( );
 
 	protected:

@@ -16,11 +16,7 @@ EventQueue::EventQueue ()
 
 EventQueue::~EventQueue ()
 {
-	while (head) {
-		sll_t* tmp = head->next;
-		free(head);
-		head = tmp;
-	}
+	Clear();
 }
 
 /** Add
@@ -38,12 +34,18 @@ void EventQueue::Add ( Packet p, EventTarget* target, uint32_t arrival )
 	n->t = target;
 	n->arrival = arrival;
 	n->next = NULL;
-	sll_t* cur = head;
-	if (cur) {
-		while (cur->next && cur->next->arrival < n->arrival)
-			cur = cur->next;
-		n->next = cur->next;
-		cur->next = n;
+	if (head) {
+		if (n->arrival < head->arrival) {
+			n->next = head;
+			head = n;
+		}
+		else {
+			sll_t* cur = head;
+			while (cur->next && cur->next->arrival < n->arrival)
+				cur = cur->next;
+			n->next = cur->next;
+			cur->next = n;
+		}
 	}
 	else
 		head = n;
@@ -64,5 +66,18 @@ void EventQueue::Process ( )
 		head = tmp;
 	}
 	return ;
+}
+
+/** Clear
+ *  removes all leftover elements in the queue
+ *
+ */
+void EventQueue::Clear ( )
+{
+	while (head) {
+		sll_t* tmp = head->next;
+		free(head);
+		head = tmp;
+	}
 }
 

@@ -11,6 +11,14 @@ int main ( int argc, char** argv )
 	uint32_t simulation_end = END_TIME;
 	double injection_chance = 0.6;
 
+	// Generate lots of output
+	cout << "Packet Injections, ";
+	cout << "Packet Ejections, ";
+	cout << "Offered Load, ";
+	cout << "Switch Throughput, ";
+	cout << "Packet Collisions, ";
+	cout << "Simulation Time, ";
+	cout << "Injection Chance" << endl;
 	if (argc > 1) {
 		simulation_end = atoi(argv[1]);
 		if (argc > 2) {
@@ -19,20 +27,11 @@ int main ( int argc, char** argv )
 		RunSimulation( simulation_end, injection_chance );
 	}
 	else {
-		// Generate lots of output
-		cout << "Packet Injections, ";
-		cout << "Packet Ejections, ";
-		cout << "Offered Load, ";
-		cout << "Switch Throughput, ";
-		cout << "Packet Collisions, ";
-		cout << "Simulation Time, ";
-		cout << "Injection Chance" << endl;
-
 		// Set number of tests
-		uint32_t tests = 10;
+		uint32_t tests = 100;
 
 		// Iterate and run tests
-		for (int i = tests; i > 0; i--) {
+		for (int i = tests; i >= 0; i--) {
 			injection_chance = ((double)i) / tests;
 			RunSimulation( simulation_end, injection_chance );
 			Global_Queue.Clear();

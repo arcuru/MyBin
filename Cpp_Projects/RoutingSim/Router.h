@@ -19,7 +19,6 @@ class Router
 		OutputBuffer obuf[4];      //!< Output buffers situated in this router
 		uint32_t addr_x;           //!< X value of address for this router
 		uint32_t addr_y;           //!< Y value of address for this router
-		uint32_t packets_routed;   //!< Count of total packets routed
 		uint32_t packet_collision; //!< Count of packet collisions
 
 };

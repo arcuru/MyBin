@@ -37,9 +37,7 @@ void InputBuffer::WriteBack ( OutputBuffer* write_back )
  */
 void InputBuffer::PopPacket ( )
 {
-	Packet p;
-	p.size = 0;
-	p.x = 1;
+	Packet p( 0, 0, 0, 0, true, true, 1 );
 	Global_Queue.Add(p, obuf, Global_Time+1);
 	if ( buf_route == buf_valid )
 		buf_route = -1;
@@ -66,13 +64,13 @@ void InputBuffer::RoutePacket ( uint32_t router_x, uint32_t router_y )
 			assert(false); // No valid packets
 
 		// Route packet stored in buf[buf_route]
-		if ( buf[buf_route].x < router_x )
+		if ( buf[buf_route].GetX() < router_x )
 			routes[buf_route] = WEST;
-		else if ( buf[buf_route].x > router_x )
+		else if ( buf[buf_route].GetX() > router_x )
 			routes[buf_route] = EAST;
-		else if ( buf[buf_route].y < router_y )
+		else if ( buf[buf_route].GetY() < router_y )
 			routes[buf_route] = SOUTH;
-		else if ( buf[buf_route].y > router_y )
+		else if ( buf[buf_route].GetY() > router_y )
 			routes[buf_route] = NORTH;
 		else
 			assert(false); // Packet should never be routed to this address
@@ -108,3 +106,7 @@ size_t InputBuffer::Routed ( )
 	return tmp - buf_route;
 }
 
+void InputBuffer::ProcessPacket (Packet p)
+{
+	Buffer::ProcessPacket(p);
+}

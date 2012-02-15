@@ -5,7 +5,6 @@ Router::Router (uint32_t X, uint32_t Y)
 {
 	addr_x = X;
 	addr_y = Y;
-	packets_routed = 0;
 	packet_collision = 0;
 }
 
@@ -73,29 +72,32 @@ void Router::Process ( )
 			Packet p = ibuf[i].GetPacket();
 			Direction d = ibuf[i].GetRoute();
 			if ( false == sent[d] ) {
-				Global_Queue.Add(p, &obuf[d], Global_Time+1);
-				sent[d] = true;
-				ibuf[i].PopPacket();
+				if (obuf[d].PacketsRemaining() < obuf[d].Size()-1) {
+					Global_Queue.Add(p, &obuf[d], Global_Time+1);
+					sent[d] = true;
+					ibuf[i].PopPacket();
+				}
+				else {
+					packet_collision++;
+				}
 			}
 			else {
 				// Outgoing buffer full
 				packet_collision++;
-				packets_routed--;
 			}
 		}
 		/*
 		if (ibuf[i].PacketsRemaining() > 0) {
 			// Process packet
 			Packet p = ibuf[i].GetPacket();
-			packets_routed++;
-			if ( (p.x < addr_x) && (false == sent[WEST]) ) {
+			if ( (p.GetX() < addr_x) && (false == sent[WEST]) ) {
 				if ( obuf[WEST].PacketsRemaining() < obuf[WEST].Size() ) {
 					Global_Queue.Add(p, &obuf[WEST], Global_Time+1);
 					sent[WEST] = true;
 					ibuf[i].PopPacket();
 				}
 			}
-			else if ( (p.x > addr_x) && (false == sent[EAST]) ) {
+			else if ( (p.GetX() > addr_x) && (false == sent[EAST]) ) {
 				if ( obuf[EAST].PacketsRemaining() < obuf[EAST].Size() ) {
 					Global_Queue.Add(p, &obuf[EAST], Global_Time+1);
 					sent[EAST] = true;
@@ -116,7 +118,7 @@ void Router::Process ( )
 					ibuf[i].PopPacket();
 				}
 			}
-			else if ( (p.x == addr_x) && (p.y == addr_y) ) {
+			else if ( (p.GetX() == addr_x) && (p.y == addr_y) ) {
 				// Packet routed to this address
 				// Shouldn't happen in this simulation yet
 				assert(false);
@@ -124,7 +126,6 @@ void Router::Process ( )
 			else {
 				// Outgoing buffer full
 				packet_collision++;
-				packets_routed--;
 			}
 		}
 		*/

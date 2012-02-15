@@ -13,6 +13,7 @@ class InputBuffer : public Buffer
 		void RoutePacket ( uint32_t router_x, uint32_t router_y );
 		Direction GetRoute ( );
 		size_t Routed ( );
+		void ProcessPacket(Packet p);
 
 	protected:
 

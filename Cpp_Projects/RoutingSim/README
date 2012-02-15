@@ -1,0 +1,8 @@
+Building and testing can be done using the included Makefile.
+
+To compile the program, run 'make' in the project directory.
+
+To test (and build if necessary) the program, run 'make test' in the project directory. This will execute the command './RoutingSim' which will run 101 tests of 1000 cycles each. Each test is unique in the chance of generating a packet during each cycle in each Packet Generating. Thus, each timestep each Packet Generator will separately choose to inject a packet or not with a chance equal to 1% times the test number (0 - 100). 
+
+Alternately, testing can be done by running './RoutingSim [cycles [chance]]'. This will run a single simulation with the provided number of cycles and the provided chance of packet injection each cycle (0.0 - 1.0).
+

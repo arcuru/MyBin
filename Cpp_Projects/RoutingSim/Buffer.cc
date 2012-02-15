@@ -41,6 +41,7 @@ void Buffer::ProcessPacket ( Packet p )
 	if (buf_index == buf_valid) {
 		// Buffer full
 		assert(false);
+		return ;
 	}
 	if (buf_index < 0)
 		assert(false);
@@ -61,6 +62,7 @@ void Buffer::PopPacket ( )
 	if (-1 == buf_valid) {
 		// No valid packets
 		assert(false);
+		return ;
 	}
 	buf_valid++;
 	buf_valid %= buf_size;

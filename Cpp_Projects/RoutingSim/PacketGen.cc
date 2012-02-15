@@ -21,32 +21,6 @@ PacketGen::PacketGen ( uint32_t X, uint32_t Y )
 
 PacketGen::~PacketGen ()
 {
-	/* 
-	switch ( dir ) {
-		case NORTH:	
-			cout << "North:" << endl;
-			break;
-
-		case SOUTH:	
-			cout << "South:" << endl;
-			break;
-
-		case EAST:	
-			cout << "East:" << endl;
-			break;
-
-		case WEST:	
-			cout << "West:" << endl;
-			break;
-
-		default:	
-			break;
-	}
-	cout << "Packets Out: " << packets_out << endl;
-	packets_sent -= obuf->PacketsRemaining();
-	cout << "Packets Sent: " << packets_sent << endl;
-	cout << "Packets Blocked: " << packets_blocked << endl;
-	*/
 	delete ibuf;
 	delete obuf;
 }
@@ -130,13 +104,10 @@ void PacketGen::GenPacket ( )
 		assert(false);
 
 	// Generate packet and load appropriate data
-	Packet p;
-	p.size = 4;
-	p.x = dest_x;
-	p.y = dest_y;
+	Packet p( dest_x, dest_y, addr_x, addr_y, true, false, rand() & 0xFFFFFFFF);
 
 	// Check to make sure we aren't routing to (5, 5)
-	assert((p.x != p.y) || (p.x != 5));
+	assert((p.GetX() != p.GetY()) || (p.GetX() != 5));
 
 	// Add packet to output buffer
 	packet_injections++;
@@ -172,8 +143,8 @@ void PacketGen::Process ( )
 	if (ibuf->PacketsRemaining() != 0) {
 		assert(1 == ibuf->PacketsRemaining());
 		Packet p = ibuf->GetPacket();
-		assert(p.x == addr_x);
-		assert(p.y == addr_y);
+		assert(p.GetX() == addr_x);
+		assert(p.GetY() == addr_y);
 		ibuf->PopPacket();
 		packets_out++;
 		packet_ejections++;

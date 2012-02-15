@@ -1,6 +1,5 @@
 #ifndef EVENTTARGET_H
 #define EVENTTARGET_H
-struct Packet;
 
 class EventTarget
 {

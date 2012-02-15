@@ -1,9 +1,10 @@
 CC=clang++
-CFLAGS=-std=c++0x -Wall -Wextra -g -pedantic -O0
+CFLAGS=-std=c++0x -Wall -Wextra -g -pedantic -O4
 INCLUDE_DIR=
 LIBS=
 HEADERS=Global.h
-SOURCES=EventQueue.cc \
+SOURCES=Packet.cc \
+		EventQueue.cc \
 		Buffer.cc \
 		InputBuffer.cc \
 		OutputBuffer.cc \
@@ -24,3 +25,6 @@ $(TARGET): $(OBJECTS)
 
 clean:
 	rm -rf $(OBJECTS) $(TARGET)
+
+test: all
+	./$(TARGET)

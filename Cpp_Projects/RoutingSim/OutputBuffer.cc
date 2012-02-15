@@ -51,8 +51,8 @@ void OutputBuffer::Connect ( EventTarget* target )
  */
 void OutputBuffer::ProcessPacket ( Packet p )
 {
-	if (0 == p.size)
-		available_space += p.x;
+	if ( p.GetCredit() )
+		available_space += p.GetData();
 	else
 		Buffer::ProcessPacket(p);
 }

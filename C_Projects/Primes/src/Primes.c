@@ -20,19 +20,19 @@
 					}										\
 					prime[n] |= kk;
 
-unsigned char* SieveEratosthenes(int N) {
-	int SQRTN = (int) sqrt(N);
-	int sqrtEnd = SQRTN / 30;
-	int primeEnd = N / 30;
-	unsigned char* prime = (unsigned char*) calloc(primeEnd + 1, sizeof(char));
+uint8_t* SieveEratosthenes( uint32_t N )
+{
+	size_t sqrtEnd = sqrt(N) / 30;
+	size_t primeEnd = N / 30;
+	uint8_t* prime = (uint8_t*) calloc(primeEnd + 1, sizeof(uint8_t));
 	if (!prime) {
 		printf("Memory Fail\n");
 		return NULL;
 	}
-	int n, s, j, num, num1, num2, num4, num6;
-	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
-	int incr2, incr4, incr6, s30;
-	unsigned char k, kk;
+	uint_fast32_t n, s, j, num, num1, num2, num4, num6;
+	uint_fast8_t mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
+	uint_fast32_t incr2, incr4, incr6, s30;
+	uint8_t k, kk;
 	prime[0] |= 1;
 	for (n = 0, num1 = 0; n <= sqrtEnd; num1 += 30, n++) {
 		for (j = 0, k = 1; k; j++, k += k) {
@@ -141,30 +141,32 @@ unsigned char* SieveEratosthenes(int N) {
 //Returns array filled with primes from 2 to N
 //Index 0 starts off with 2
 //Fills an extra place with value of 0 for terminator
-int* primeListE(int N) {
+uint32_t* primeListE(uint32_t N)
+{
 	uint8_t* primes = SieveEratosthenes(N);
-	int* ret = primeListE_inc(N, primes);
+	uint32_t* ret = primeListE_inc(N, primes);
 	free(primes);
 	return ret;
 }
 
 #define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
-int* primeListE_inc(int N, const unsigned char* prime) {
-	int primeEnd = N / 30;
-	int n, k;
-	unsigned char s;
-	int top = 3;
+uint32_t* primeListE_inc(uint32_t N, const uint8_t* prime)
+{
+	size_t primeEnd = N / 30;
+	size_t n;
+	uint8_t s, k;
+	size_t top = 3;
 	for (n = 0; n <= primeEnd; n++) //Counts primes
 		for (k = 0, s = 1; s; k++, s += s)
 			if (!(prime[n] & s))
 				top++;
 
-	int* list = (int*) (malloc)(sizeof(int) * top);
+	uint32_t* list = (uint32_t*) (malloc)(sizeof(uint32_t) * top);
 	if (!list) {
 		printf("Memory Fail\n");
 		return NULL;
 	}
-	int count = 3;
+	size_t count = 3;
 	list[0] = 2;
 	list[1] = 3;
 	list[2] = 5;
@@ -202,14 +204,15 @@ int* primeListE_inc(int N, const unsigned char* prime) {
 //List is in the form from SieveEratosthenes
 //Null should be passed as the list for all but the first call
 #define NPhelp(x)	if (x>saved_eol) return 0; ++current_bitval;current_bit+=current_bit;return x;
-int NextPrime(int end_of_list, const unsigned char* list) {
+int NextPrime(int end_of_list, const uint8_t* list)
+{
 	static int saved_eol = 0;
 	static int primeEnd = 0;
 	if (saved_eol != end_of_list) {
 		saved_eol = end_of_list;
 		primeEnd = saved_eol / 30;
 	}
-	static const unsigned char* saved_list = NULL;
+	static const uint8_t* saved_list = NULL;
 	static int current_byte = 0, current_bitval = 0, last_prime = 0;
 	static char current_bit = 1;
 	if (list != NULL) {
@@ -261,18 +264,20 @@ int NextPrime(int end_of_list, const unsigned char* list) {
 	return 0;
 }
 
-//Returns an array of unsigned char's that holds a 1
+//Returns an array of uint8_t's that holds a 1
 //at the index of a prime and 0 otherwise
-unsigned char* primeIndexListE(int N) {
-	unsigned char* primes = SieveEratosthenes(N);
-	unsigned char* ret = primeIndexListE_inc(N, primes);
+uint8_t* primeIndexListE(int N)
+{
+	uint8_t* primes = SieveEratosthenes(N);
+	uint8_t* ret = primeIndexListE_inc(N, primes);
 	free(primes);
 	return ret;
 }
 
 #define pILhelp(x)	list[x]=1; break;
-unsigned char* primeIndexListE_inc(int N, const unsigned char* prime) {
-	unsigned char* list = (unsigned char*) calloc(N + 1, sizeof(unsigned char));
+uint8_t* primeIndexListE_inc(int N, const uint8_t* prime)
+{
+	uint8_t* list = (uint8_t*) calloc(N + 1, sizeof(uint8_t));
 	if (!list) {
 		printf("Memory Fail\n");
 		return NULL;
@@ -282,7 +287,7 @@ unsigned char* primeIndexListE_inc(int N, const unsigned char* prime) {
 	list[5] = 1;
 	int primeEnd = N / 30;
 	int n, k;
-	unsigned char s;
+	uint8_t s;
 	for (n = 0; n < primeEnd; n++) {
 		for (k = 0, s = 1; s; k++, s += s) {
 			if (!(prime[n] & s)) {
@@ -313,14 +318,16 @@ unsigned char* primeIndexListE_inc(int N, const unsigned char* prime) {
 //Returns an array filled with prime factors of input
 //Repeats are in the output twice
 //End is expressed by a value of 0
-int* primeFactorsE(int N) {
-	int* primeList = primeListE((int) sqrt(N) + 1);
+int* primeFactorsE(int N)
+{
+	uint32_t* primeList = primeListE((uint32_t) sqrt(N) + 1);
 	int* ret = primeFactorsE_inc(N, primeList);
 	free(primeList);
 	return ret;
 }
 
-int* primeFactorsE_inc(int N, const int* primes) {
+int* primeFactorsE_inc(int N, const uint32_t* primes)
+{
 	int* list = (int*) calloc(32, sizeof(int));
 	if (isPrime(N)){
         list[0]=N;
@@ -345,8 +352,9 @@ int* primeFactorsE_inc(int N, const int* primes) {
 	return list;
 }
 
-uint64_t* primeFactorsE_u64(uint64_t N) {
-	int* primes = primeListE(1000000);
+uint64_t* primeFactorsE_u64(uint64_t N)
+{
+	uint32_t* primes = primeListE(1000000);
 	uint64_t* list = (uint64_t*) calloc(64, sizeof(uint64_t));
 	int n;
 	int s = 0;
@@ -391,7 +399,8 @@ uint64_t* primeFactorsE_u64(uint64_t N) {
 //Must be within range of input list
 //Returns TRUE if prime, FALSE if not
 
-int isPrimeE(int n, const unsigned char* primes) {
+int isPrimeE(int n, const uint8_t* primes)
+{
 	if (n <= 6) {
 		if (n == 2 || n == 3 || n == 5)
 			return TRUE;
@@ -420,7 +429,8 @@ int isPrimeE(int n, const unsigned char* primes) {
 	return FALSE;
 }
 
-int isPrime(int n) {
+int isPrime(int n)
+{
 	if (n < 10) {
 		if (n < 2)
 			return FALSE;

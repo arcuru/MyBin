@@ -406,6 +406,37 @@ void init()
 	w->palette = default_palette;
 }
 
+/** Fix Aspect Ratio
+ *  sets the window to the correct dimensions based on the aspect ratio of the window
+ *
+ *  @param w Pointer to the window object to adjust
+ */
+void fix_aspect( MBWindow* w )
+{
+	// Scale Min and Max points for correct aspect ratio
+	// shouldn't change anything unless window is not a square
+	double pix_scale = ((double)w->height) / w->width;
+	double point_scale = (w->YMax - w->YMin) / (w->XMax - w->XMin);
+	if (pix_scale != point_scale) {
+		double dy = w->YMax - w->YMin;
+		double dx = w->XMax - w->XMin;
+		double x_pix_size = dx / ((double)w->width);
+		double y_pix_size = dy / ((double)w->height);
+		if (x_pix_size < y_pix_size) {
+			// Modify X vals
+			double mid = (w->XMax + w->XMin) / 2.0;
+			w->XMin = mid - (y_pix_size * w->width / 2.0);
+			w->XMax = mid + (y_pix_size * w->width / 2.0);
+		}
+		else if (x_pix_size > y_pix_size) {
+			// Modify Y vals
+			double mid = (w->YMax + w->YMin) / 2.0;
+			w->YMin = mid - (x_pix_size * w->height / 2.0);
+			w->YMax = mid + (x_pix_size * w->height / 2.0);
+		}
+	}
+}
+
 /** Reshape
  *  when the window is resized, redraw the image
  *
@@ -426,28 +457,7 @@ void reshape(int w, int h)
 	win->height = h;
 	win->Iters = NULL;
 
-	// Scale Min and Max points for correct aspect ratio
-	// shouldn't change anything unless window is not a square
-	double pix_scale = ((double)win->height) / win->width;
-	double point_scale = (win->YMax - win->YMin) / (win->XMax - win->XMin);
-	if (pix_scale != point_scale) {
-		double dy = win->YMax - win->YMin;
-		double dx = win->XMax - win->XMin;
-		double x_pix_size = dx / ((double)win->width);
-		double y_pix_size = dy / ((double)win->height);
-		if (x_pix_size < y_pix_size) {
-			// Modify X vals
-			double mid = (win->XMax + win->XMin) / 2.0;
-			win->XMin = mid - (y_pix_size * win->width / 2.0);
-			win->XMax = mid + (y_pix_size * win->width / 2.0);
-		}
-		else if (x_pix_size > y_pix_size) {
-			// Modify Y vals
-			double mid = (win->YMax + win->YMin) / 2.0;
-			win->YMin = mid - (x_pix_size * win->height / 2.0);
-			win->YMax = mid + (x_pix_size * win->height / 2.0);
-		}
-	}
+	fix_aspect( win );
 
 	pthread_mutex_unlock(&win_mutex);
 	// Resize viewport and ortho projection
@@ -515,6 +525,8 @@ void mouse(int button, int state, int x, int y)
 		w->maxIters = wtmp->maxIters;
 		w->Iters = NULL;
 		w->palette = wtmp->palette;
+
+
 		window++;
 		pthread_mutex_unlock(&win_mutex);
 		glutPostRedisplay();

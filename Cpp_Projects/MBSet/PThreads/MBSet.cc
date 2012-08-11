@@ -4,13 +4,7 @@
  *  Patrick Jackson
  */
 
-#include <iostream>
 #include <string.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
-#include <pthread.h>
 
 #include <GL/glut.h>
 #include <GL/glext.h>

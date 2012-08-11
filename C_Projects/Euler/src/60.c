@@ -20,7 +20,7 @@ static int Concatenate(int n, int h)
     return TRUE;
 }
 
-static void rec(int* list, int place, int* primelist, int index)
+static void rec(int* list, int place, uint32_t* primelist, int index)
 {
     if (place == 6) {
         int total = 0;
@@ -56,7 +56,7 @@ static void rec(int* list, int place, int* primelist, int index)
 int64_t Euler_60()
 {
     unsigned char* primes = SieveEratosthenes(N * N);
-    int* primelist = primeListE_inc(N, primes);
+    uint32_t* primelist = primeListE_inc(N, primes);
     PIndex = primeIndexListE_inc(N * N, primes);
     int list[6];
     rec(list, 1, primelist, 0);

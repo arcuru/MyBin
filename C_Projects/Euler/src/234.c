@@ -7,7 +7,7 @@ int64_t Euler_234()
 {
     uint64_t N = 999966663333ll;
     int primetop = (int)(sqrt(N)+500);
-    int* primeList=primeListE(primetop);
+    uint32_t* primeList = primeListE(primetop);
     uint64_t total=0;
     int index=0;
     uint64_t lps=0;

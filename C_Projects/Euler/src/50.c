@@ -3,10 +3,10 @@
 
 int64_t Euler_50()
 {
-    int N = 1000000;
-    unsigned char* primes = SieveEratosthenes(N);
-    int* list = primeListE_inc(N, primes);
-    int total = 0;
+    const uint32_t N = 1000000;
+    uint8_t* primes = SieveEratosthenes(N);
+    uint32_t* list = primeListE_inc(N, primes);
+    uint32_t total = 0;
     int n;
     for (n = 0; total + list[n] <= N; n++) {
         total += list[n];

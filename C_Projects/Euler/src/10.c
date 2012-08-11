@@ -4,7 +4,7 @@
 int64_t Euler_10()
 {
     int N = 2000000;
-    unsigned char* list = SieveEratosthenes(N);
+    uint8_t* list = SieveEratosthenes(N);
     int n = 1;
     uint64_t total = NextPrime(N, list);
     while (n > 0) {

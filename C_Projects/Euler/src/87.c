@@ -10,7 +10,7 @@ int64_t Euler_87()
 	int total = 0;
 	int count = 0;
 	char* list = (char*) (calloc)(sizeof(char), N + 1);
-	int* prime = primeListE((int) sqrt(N));
+	uint32_t* prime = primeListE((int) sqrt(N));
 	for (a=0; prime[a]!=0; a++) {
 		total = pow(prime[a], 2);
 		if (total >= N)

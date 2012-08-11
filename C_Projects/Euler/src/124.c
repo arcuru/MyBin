@@ -27,7 +27,7 @@ int64_t Euler_124()
     int N = 100000;
     int* rad = (int*) (malloc) (sizeof (int) * (N + 1));
     int* k = (int*) (malloc) (sizeof (int) * (N + 1));
-    int* primes = primeListE(N);
+    uint32_t* primes = primeListE(N);
     rad[0] = 0;
     int i, n;
     for (i = 1; i <= N; i++) {

@@ -2,7 +2,7 @@
 #include "Primes.h"
 #include "stdlib.h"
 
-static int* list;
+static uint32_t* list;
 static int total = 1;
 
 static void rec(int64_t current, int n, int N)

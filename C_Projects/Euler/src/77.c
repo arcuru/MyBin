@@ -3,7 +3,7 @@
 
 static int count;
 
-static void rec(int currentTotal, int smallestIndex, int* primes, int n)
+static void rec(int currentTotal, int smallestIndex, uint32_t* primes, uint32_t n)
 {
     int tmpIndex;
     for (tmpIndex = smallestIndex; currentTotal + primes[tmpIndex] < n; tmpIndex++) {
@@ -16,7 +16,7 @@ static void rec(int currentTotal, int smallestIndex, int* primes, int n)
 
 int64_t Euler_77()
 {
-    int* primes = primeListE(1000000);
+    uint32_t* primes = primeListE(1000000);
     int n;
     for (n = 2; n < 1000000; n++) {
         count = 0;

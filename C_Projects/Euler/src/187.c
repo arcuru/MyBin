@@ -4,9 +4,9 @@
 
 int64_t Euler_187()
 {
-    int N = 100000000;
+    const uint32_t N = 100000000;
     int N2 = N >> 1;
-    int* primes = primeListE(N2);
+    uint32_t* primes = primeListE(N2);
     int total = 0, i = 0, n = 0;
     while (primes[i]) {
         i++;

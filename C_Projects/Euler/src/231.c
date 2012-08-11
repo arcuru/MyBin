@@ -6,7 +6,7 @@
 int64_t Euler_231()
 {
     unsigned char* totallist = SieveEratosthenes(20000000);
-    int* primes = primeListE_inc(20000000, totallist);
+    uint32_t* primes = primeListE_inc(20000000, totallist);
     int n, s;
     int* low = (int*) (malloc)(sizeof(int) * 5000001);//0-5000000
     int* high = (int*) (malloc)(sizeof(int) * 5000001);//15000000-20000000

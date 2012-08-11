@@ -23,8 +23,8 @@ using namespace std;
 #define NTHREADS 16
 
 // Defaults
-unsigned int init_width = 512;
-unsigned int init_height = 512;
+uint32_t init_width = 512;
+uint32_t init_height = 512;
 double init_XMin = -2.0;
 double init_YMin = -1.2;
 double init_XMax = 1.0;
@@ -44,10 +44,10 @@ struct MBWindow {
 	double XMax;           //!< Maximum X value of the window
 	double YMin;           //!< Minimum Y value of the window
 	double YMax;           //!< Maximum Y value of the window
-	unsigned int width;    //!< Width of the window in pixels
-	unsigned int height;   //!< Height of the window in pixels
-	unsigned int maxIters; //!< Maximum iterations for the computations
-	unsigned short* Iters;   //!< Holds the iterations
+	uint32_t width;    //!< Width of the window in pixels
+	uint32_t height;   //!< Height of the window in pixels
+	uint32_t maxIters; //!< Maximum iterations for the computations
+	uint16_t* Iters;   //!< Holds the iterations
 	GLfloat* palette;      //!< Color palette for this window
 };
 
@@ -65,7 +65,7 @@ pthread_barrier_t calc_barrier; //!< Barrier for synchronization between the ran
  *  @param max_iter Maximum number of iterations to run
  *  @return The number of iterations left until reaching the max
  */
-unsigned short iterate_point(double a, double b, unsigned int max_iter)
+uint16_t iterate_point(double a, double b, uint32_t max_iter)
 {
 	double r, i, rr, ii;
 	r = i = rr = ii = 0.0;
@@ -91,7 +91,7 @@ unsigned short iterate_point(double a, double b, unsigned int max_iter)
  *  @param max_iter Maximum number of iterations to run
  *  @return The number of iterations left until reaching the max
  */
-unsigned short iterate_point_complex(double a, double b, unsigned int max_iter)
+uint16_t iterate_point_complex(double a, double b, uint32_t max_iter)
 {
 	Complex c(a, b);
 	Complex z(0, 0);
@@ -136,14 +136,14 @@ void* compute_thread(void *info)
 #endif
 
 	// Allocate space
-	unsigned short* iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * height);
+	uint16_t* iters = (uint16_t*) malloc(sizeof(uint16_t) * w->width * height);
 	size_t index = 0;
 
 	// Run through the calculations
 	double imag, real;
-	for (unsigned int r = start; r < start+height; r++) {
+	for (uint32_t r = start; r < start+height; r++) {
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
-		for (unsigned int c = 0; c < w->width; c++) {
+		for (uint32_t c = 0; c < w->width; c++) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
 			iters[index++] = iterate_point(real, imag, w->maxIters);
 		}
@@ -152,7 +152,7 @@ void* compute_thread(void *info)
 	cout << "Rank " << rank << " with " << start << endl;
 #endif
 
-	memcpy(&w->Iters[w->width * start], iters, sizeof(unsigned short) * w->width * height);
+	memcpy(&w->Iters[w->width * start], iters, sizeof(uint16_t) * w->width * height);
 
 	free( iters );
 
@@ -169,7 +169,7 @@ void mandelbrot_compute_threads(MBWindow* w)
 	// Skip if already calculated this window
 	if (NULL != w->Iters)
 		return;
-	w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
+	w->Iters = (uint16_t*) malloc(sizeof(uint16_t) * w->width * w->height);
 #ifdef DEBUG
 	cout << "Calculating..." << endl;
 	struct timeval t;
@@ -198,7 +198,7 @@ void mandelbrot_compute_threads(MBWindow* w)
 	cout << "Finished calculating" << endl;
 	struct timeval t2;
 	gettimeofday(&t2, 0);
-	unsigned int time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
+	uint32_t time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
 	cout << "Calculation time: " << setw(6) << ((float)time) / 1000000 << endl;
 #endif
 
@@ -214,11 +214,11 @@ void mandelbrot_compute(MBWindow* w)
 	struct timeval t;
 	gettimeofday(&t, 0);
 #endif
-	w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
+	w->Iters = (uint16_t*) malloc(sizeof(uint16_t) * w->width * w->height);
 	double real, imag;
-	for (unsigned int r = 0; r < w->height; r++) {
+	for (uint32_t r = 0; r < w->height; r++) {
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
-		for (unsigned int c = 0; c < w->width; c++) {
+		for (uint32_t c = 0; c < w->width; c++) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
 			w->Iters[w->width * r + c] = iterate_point(real, imag, w->maxIters);
 		}
@@ -227,7 +227,7 @@ void mandelbrot_compute(MBWindow* w)
 	cout << "Finished calculating" << endl;
 	struct timeval t2;
 	gettimeofday(&t2, 0);
-	unsigned int time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
+	uint32_t time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
 	cout << "Calculation time: " << setw(6) << ((float)time) / 1000000 << endl;
 #endif
 }
@@ -266,8 +266,8 @@ void display(void)
 
 	// Iterate over calculated image and display points
 	glBegin( GL_POINTS );
-	for (unsigned int r = 0; r < w->height; r++) {
-		for (unsigned int c = 0; c < w->width; c++) {
+	for (uint32_t r = 0; r < w->height; r++) {
+		for (uint32_t c = 0; c < w->width; c++) {
 			glColor3fv(&w->palette[3 * w->Iters[w->width * r + c]]);
 			glVertex2d(c, r);
 		}
@@ -471,7 +471,7 @@ void motion(int x, int y)
 	glutPostRedisplay();
 }
 
-void keyboard(unsigned char c, int x, int y)
+void keyboard(uint8_t c, int x, int y)
 { 
 #ifdef DEBUG
 	cout << "Keyboard: (" << x << ", " << y << ") " << c << endl;

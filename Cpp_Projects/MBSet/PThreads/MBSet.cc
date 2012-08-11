@@ -26,7 +26,7 @@ using namespace std;
 #include <iomanip>
 #endif
 
-#define NTHREADS 4
+#define NTHREADS 16 
 
 // Defaults
 unsigned int init_width = 512;

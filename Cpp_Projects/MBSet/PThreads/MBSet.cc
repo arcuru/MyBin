@@ -142,9 +142,9 @@ void* compute_thread(void *info)
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
 		for (unsigned int c = 0; c < w->width; c++) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
-			//iters[index++] = iterate_point(real, imag, maxIt);
-			//w->Iters[start+index++] = iterate_point(real, imag, maxIt);
-			w->Iters[w->width * r + c] = iterate_point(real, imag, maxIt);
+			//iters[index++] = iterate_point(real, imag, w->maxIters);
+			//w->Iters[start+index++] = iterate_point(real, imag, w->maxIters);
+			w->Iters[w->width * r + c] = iterate_point(real, imag, w->maxIters);
 		}
 	}
 #ifdef DEBUG
@@ -216,7 +216,7 @@ void* compute_thread(void *info)
 /** Mandelbrot Compute Threads
  *  Computes the window area with threads
  *
- *  @args w MBWindow pointer that needs to be computed
+ *  @param w MBWindow pointer that needs to be computed
  */
 void mandelbrot_compute_threads(MBWindow* w)
 {
@@ -274,7 +274,7 @@ void mandelbrot_compute(MBWindow* w)
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
 		for (unsigned int c = 0; c < w->width; c++) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
-			w->Iters[w->width * r + c] = iterate_point(real, imag, maxIt);
+			w->Iters[w->width * r + c] = iterate_point(real, imag, w->maxIters);
 		}
 	}
 #ifdef DEBUG
@@ -300,6 +300,11 @@ void display(void)
 	// Get a pointer to the current window
 	MBWindow* w = &window_list[window];
 
+	if (NULL == w->Iters) {
+		// Compute the window
+		mandelbrot_compute_threads(w);
+	}
+
 	// Clear all the colors
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -312,11 +317,6 @@ void display(void)
 	
 	// Correct for 1 pixel discrepency
 	glTranslatef(1, 0, 0);
-
-	if (NULL == w->Iters) {
-		// Compute the window
-		mandelbrot_compute_threads(w);
-	}
 
 	// Iterate over calculated image and display points
 	glBegin( GL_POINTS );
@@ -343,6 +343,30 @@ void display(void)
 	glutSwapBuffers();
 }
 
+/** Set Max Iterations
+ *  changes the number of iterations we will attempt before concluding if something is part of the set
+ *
+ *  @param num New value for maxIt
+ */
+void setmaxIt( int num )
+{
+	maxIt = num;
+	// Initialize default palette
+	if ( NULL != default_palette )
+		free( default_palette );
+	default_palette = (GLfloat*) malloc(sizeof(GLfloat) * (maxIt+1) * 3);
+	for (int i = 0; i < maxIt*3; i++)
+		default_palette[i] = ((GLfloat)rand()) / RAND_MAX;
+	// Mark Black and white
+	for (int i = 0; i < 3; i++) {
+		default_palette[i] = 0.0;
+		default_palette[3*maxIt-i+2] = 1.0;
+		default_palette[3*maxIt-i-1] = 1.0;
+		default_palette[3*maxIt-(2*i)-1] = 1.0;
+		default_palette[3*maxIt-(3*i)-1] = 1.0;
+	}
+}
+
 /** Initialize
  *  performs opengl initialization functions.
  */
@@ -357,18 +381,7 @@ void init()
 #endif
 	glShadeModel(GL_FLAT);
 
-	// Initialize default palette
-	default_palette = (GLfloat*) malloc(sizeof(GLfloat) * (maxIt+1) * 3);
-	for (int i = 0; i < maxIt*3; i++)
-		default_palette[i] = ((GLfloat)rand()) / RAND_MAX;
-	// Mark Black and white
-	for (int i = 0; i < 3; i++) {
-		default_palette[i] = 0.0;
-		default_palette[3*maxIt-i+2] = 1.0;
-		default_palette[3*maxIt-i-1] = 1.0;
-		default_palette[3*maxIt-(2*i)-1] = 1.0;
-		default_palette[3*maxIt-(3*i)-1] = 1.0;
-	}
+	setmaxIt( 2000 );
 
 	// Initialize current window defaults
 	MBWindow* w = &window_list[window];
@@ -522,6 +535,19 @@ void keyboard(unsigned char c, int x, int y)
 		case 'b':	
 			if (window > 0) // Restrict to positive values
 				window--;
+			glutPostRedisplay();
+			break;
+
+		case '+':
+			setmaxIt( maxIt * 2 );
+			window_list[window].maxIters *= 2;
+			free( window_list[window].Iters );
+			window_list[window].Iters = NULL;
+			glutPostRedisplay();
+			break;
+
+		case '-':
+			setmaxIt( maxIt / 2 );
 			glutPostRedisplay();
 			break;
 

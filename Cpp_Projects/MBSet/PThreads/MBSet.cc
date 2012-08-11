@@ -56,6 +56,67 @@ size_t window = 0;  //!< Index of current working window
 pthread_mutex_t win_mutex; //!< Mutex for accessing the current window
 pthread_barrier_t calc_barrier; //!< Barrier for synchronization between the rank0 threads
 
+/** Iterate 2 Points
+ *  returns the number of iterations below max_iter that it took to reach
+ *  the threshold
+ *
+ *  @param a Real component of original point
+ *  @param b Imaginary component of original point
+ *  @param c Address to save the escape value of the original point
+ *  @param a2 Real component of second point
+ *  @param b2 Imaginary component of second point
+ *  @param c2 Address to save the escape value of the second point
+ *  @param max_iter Maximum number of iterations to run
+ */
+void iterate_2_points(double a, double b, uint16_t* c, double a2, double b2, uint16_t* c2, uint32_t max_iter)
+{
+	double r, i, rr, ii;
+	r = i = rr = ii = 0.0;
+
+	double r2, i2, rr2, ii2;
+	r2 = i2 = rr2 = ii2 = 0.0;
+
+	bool orig_finished = false, sec_finished = false;
+
+	do {
+		// Run a single step of the algorithm and check
+		i = 2 * r * i + b;
+		r = rr - ii + a;
+		rr = r * r;
+		ii = i * i;
+
+		i2 = 2 * r2 * i2 + b2;
+		r2 = rr2 - ii2 + a2;
+		rr2 = r2 * r2;
+		ii2 = i2 * i2;
+
+		if ( (rr + ii) >= 4.0 ) {
+			*c = max_iter;
+			if ( sec_finished )
+				return;
+			r = i = rr = ii = 0.0;
+			a = b = 0.0;
+			orig_finished = true;
+		}
+		if ( (rr2 + ii2) >= 4.0 ) {
+			*c2 = max_iter;
+			if ( orig_finished )
+				return;
+			r2 = i2 = rr2 = ii2 = 0.0;
+			a2 = b2 = 0.0;
+			sec_finished = true;
+		}
+			
+	} while ( --max_iter );
+
+	if ( !orig_finished )
+		*c = 0;
+	if ( !sec_finished )
+		*c2 = 0;
+
+	return ;
+}
+
 /** Iterate Point
  *  returns the number of iterations below max_iter that it took to reach
  *  the threshold
@@ -140,12 +201,15 @@ void* compute_thread(void *info)
 	size_t index = 0;
 
 	// Run through the calculations
-	double imag, real;
+	double imag, real, real2;
 	for (uint32_t r = start; r < start+height; r++) {
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
-		for (uint32_t c = 0; c < w->width; c++) {
+		for (uint32_t c = 0; c < w->width; c+=2) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
-			iters[index++] = iterate_point(real, imag, w->maxIters);
+			real2 = (((double) c+1) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
+			//iters[index++] = iterate_point(real, imag, w->maxIters);
+			iterate_2_points(real, imag, &iters[index], real2, imag, &iters[index+1], w->maxIters);
+			index += 2;
 		}
 	}
 #ifdef DEBUG

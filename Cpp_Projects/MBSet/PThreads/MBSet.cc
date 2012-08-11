@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <pthread.h>
-#include <mpi.h>
 
 #include <GL/glut.h>
 #include <GL/glext.h>
@@ -21,11 +20,13 @@
 
 using namespace std;
 
-//#define DEBUG //!< Un comment to print debug statements
+#define DEBUG //!< Un comment to print debug statements
 #ifdef DEBUG
 #include <sys/time.h>
 #include <iomanip>
 #endif
+
+#define NTHREADS 4
 
 // Defaults
 unsigned int init_width = 512;
@@ -101,80 +102,67 @@ unsigned short iterate_point(double a, double b, unsigned int max_iter)
 	return max_iter;
 }
 
-/** MPI Slave
- *  runs as a process not on the head node, waits for signal from rank 0,
- *  computes values, then sends back data
+struct compute_thread_struct_t {
+	int total_tasks;  //!< Informs thread of the total number of tasks in the system
+	int thread_rank;  //!< Informs thread of its rank
+	MBWindow* w;      //!< Pointer to the window to update
+};
+
+/** Compute Thread
+ *  runs the computation for a subset of the mandelbrot image
  */
-void mpi_slave()
+void* compute_thread(void *info)
 {
-	// Get vital information about mpi settings
+	compute_thread_struct_t* i = (compute_thread_struct_t*) info;
 	int numtasks, rank;
-	MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
-	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+	numtasks = i->total_tasks;
+	rank = i->thread_rank;
+	MBWindow* w = i->w;
 
-	// Remove rank 0 from the number of tasks
-	numtasks--;
-	rank--;
-#ifdef DEBUG
-	cout << "Rank " << rank << " started." << endl;
-#endif
-
-	// Allocate space for receiving data from rank 0 process
-	MBWindow* w = (MBWindow*) malloc(sizeof(MBWindow));
-	MPI_Status status;
-	int rc;
-	while ( 1 ) {
-		// Block on wait for information
-		rc = MPI_Recv(w, sizeof(MBWindow), MPI_BYTE, 0,
-				0, MPI_COMM_WORLD, &status);
-#ifdef DEBUG
-		cout << "Rank " << rank << " received data. Beginning Calculations." << endl;
-#endif
-		if (rc != MPI_SUCCESS) {
-			cout << "Rank " << rank << " recv from 0 failed, rc " << rc << endl;
-			MPI_Finalize();
-			exit(1);
-		}
-
-		// Figure out number of rows and starting row for calculations
-		int height = w->height / numtasks;
-		if (0 != (w->height % numtasks))
-			height++;
-		int start = height * rank;
-		if (rank == numtasks-1) { // Scale last task down to not overshoot end
-			height = w->height - start;
-		}
-
-		// Allocate space
-		unsigned short* iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * height);
-		size_t index = 0;
-
-		// Run through the calculations
-		double imag, real;
-		for (int r = start; r < start+height; r++) {
-			imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
-			for (unsigned int c = 0; c < w->width; c++) {
-				real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
-				iters[index++] = iterate_point(real, imag, maxIt);
-			}
-		}
-
-		// Send back to rank 0
-		rc = MPI_Send(iters, sizeof(unsigned short) * w->width * height, MPI_BYTE, 0,
-				0, MPI_COMM_WORLD);
-		if (rc != MPI_SUCCESS) {
-			cout << "Rank " << rank	<< " send failed, rc " << rc << endl;
-			MPI_Finalize();
-			exit(1);
-		}
-		
+	// Figure out number of rows and starting row for calculations
+	int height = w->height / numtasks;
+	if (0 != (w->height % numtasks))
+		height++;
+	int start = height * rank;
+	if (rank == numtasks-1) { // Scale last task down to not overshoot end
+		height = w->height - start;
 	}
+
+#ifdef DEBUG
+	cout << "Rank " << rank << " started." << start << endl;
+#endif
+
+	// Allocate space
+	unsigned short* iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * height);
+	size_t index = 0;
+
+	// Run through the calculations
+	double imag, real;
+	for (unsigned int r = start; r < start+height; r++) {
+		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
+		for (unsigned int c = 0; c < w->width; c++) {
+			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
+			//iters[index++] = iterate_point(real, imag, maxIt);
+			//w->Iters[start+index++] = iterate_point(real, imag, maxIt);
+			w->Iters[w->width * r + c] = iterate_point(real, imag, maxIt);
+		}
+	}
+#ifdef DEBUG
+	cout << "Rank " << rank << " with " << start << endl;
+#endif
+
+	//memcpy(&w->Iters[start], iters, sizeof(unsigned short) * w->width * height);
+
+	free( iters );
+
+	pthread_exit( NULL );
 }
 
 /** Thread Communicator
  *  handles communication with the MPI slaves to calculate the current window
  */
-void* thread_com_slave(void* unused) {
+/* void* thread_com_slave(void* unused)
+{
 	// Get vital information about mpi settings
 	int numtasks;
 	MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
@@ -223,6 +211,52 @@ void* thread_com_slave(void* unused) {
 	}
 	return NULL;
 }
+*/
+
+/** Mandelbrot Compute Threads
+ *  Computes the window area with threads
+ *
+ *  @args w MBWindow pointer that needs to be computed
+ */
+void mandelbrot_compute_threads(MBWindow* w)
+{
+	// Skip if already calculated this window
+	if (NULL != w->Iters)
+		return;
+	w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
+#ifdef DEBUG
+	cout << "Calculating..." << endl;
+	struct timeval t;
+	gettimeofday(&t, 0);
+#endif
+	// Fill a list with all the arguments to the threads
+	compute_thread_struct_t* info = (compute_thread_struct_t*) malloc(sizeof(compute_thread_struct_t) * NTHREADS);
+	for (int i = 0; i < NTHREADS; i++) {
+		info[i].total_tasks = NTHREADS;
+		info[i].thread_rank = i;
+		info[i].w = w;
+	}
+	// Create the threads
+	pthread_t* p = (pthread_t*) malloc(sizeof(pthread_t) * NTHREADS);
+	for (int i = 0; i < NTHREADS; i++) {
+		pthread_create(&p[i], 0, compute_thread, (void*)&info[i]); 
+	}
+	// Wait until threads finish
+	for (int i = 0; i < NTHREADS; i++) {
+		pthread_join(p[i], NULL);
+	}
+	// Free memory
+	free( info );
+	free( p );
+#ifdef DEBUG
+	cout << "Finished calculating" << endl;
+	struct timeval t2;
+	gettimeofday(&t2, 0);
+	unsigned int time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
+	cout << "Calculation time: " << setw(6) << ((float)time) / 1000000 << endl;
+#endif
+
+}
 
 void mandelbrot_compute(MBWindow* w)
 {
@@ -261,40 +295,10 @@ void display(void)
 #ifdef DEBUG
 	static int pass;
 	cout << "Displaying pass " << ++pass << endl;
-	struct timeval t;
 #endif
 
 	// Get a pointer to the current window
 	MBWindow* w = &window_list[window];
-
-	// Send to slave MPI processes if recalculation needed
-	bool recalc = false;
-	static int numtasks = 0;
-	if (0 == numtasks) {
-		MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
-		numtasks--;
-	}
-	if (NULL == w->Iters) {
-#ifdef DEBUG
-		cout << "Calculating..." << endl;
-		gettimeofday(&t, 0);
-#endif
-		// Start the slave thread
-		pthread_barrier_wait(&calc_barrier);
-		recalc = true;
-		// Send window struct to MPI slaves
-		int rc;
-		MPI_Request* requestSend = (MPI_Request*) malloc(sizeof(MPI_Request) * (numtasks-1));
-		int qq = 0;
-		for (int i = 1; i <= numtasks; i++) {
-			rc = MPI_Isend(w, sizeof(MBWindow), MPI_BYTE, i, 0, MPI_COMM_WORLD, &requestSend[qq++]);
-			if (rc != MPI_SUCCESS) {
-				cout << "Error sending window specs to " << i << endl;
-				MPI_Finalize();
-				exit(1);
-			}
-		}
-	}
 
 	// Clear all the colors
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -309,16 +313,9 @@ void display(void)
 	// Correct for 1 pixel discrepency
 	glTranslatef(1, 0, 0);
 
-	// Wait for calculations to finish
-	if (recalc) {
-		pthread_barrier_wait(&calc_barrier);
-#ifdef DEBUG
-		cout << "Finished calculating" << endl;
-		struct timeval t2;
-		gettimeofday(&t2, 0);
-		unsigned int time = (t2.tv_sec - t.tv_sec) * 1000000 + (t2.tv_usec - t.tv_usec);
-		cout << "Calculation time: " << setw(6) << ((float)time) / 1000000 << endl;
-#endif
+	if (NULL == w->Iters) {
+		// Compute the window
+		mandelbrot_compute_threads(w);
 	}
 
 	// Iterate over calculated image and display points
@@ -535,58 +532,31 @@ void keyboard(unsigned char c, int x, int y)
 
 int main(int argc, char** argv)
 {
-	// MPI initialization here
-	int rc = MPI_Init(&argc,&argv);
-	if (rc != MPI_SUCCESS) {
-		printf ("Error starting MPI program. Terminating.\n");
-		MPI_Abort(MPI_COMM_WORLD, rc);
-	}
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
-	if (rank != 0) {
-		mpi_slave();
-	}
-	else {
-		/* 	For attaching GDB to main process
-		int i = 0;
-		char hostname[256];
-		gethostname(hostname, sizeof(hostname));
-		printf("PID %d on %s ready for attach\n", getpid(), hostname);
-		fflush(stdout);
-		while (0 == i)
-			sleep(5);
-		*/
 
-		// Init mutex
-		pthread_mutex_init(&win_mutex, NULL);
-		pthread_barrier_init(&calc_barrier, NULL, 2);
+	// Init mutex
+	pthread_mutex_init(&win_mutex, NULL);
+	//pthread_barrier_init(&calc_barrier, NULL, 2);
 
-		// Spawn off pthread slave process for communication with mpi processes
-		pthread_t t;
-		pthread_create(&t, 0, thread_com_slave, NULL); 
 
-		// Initialize glut to default window size and display mode
-		glutInit(&argc, argv);
-		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-		glutInitWindowSize(init_width, init_height);
-		glutInitWindowPosition(100, 100);
-		glutCreateWindow("MBSet");
+	// Initialize glut to default window size and display mode
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(init_width, init_height);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("MBSet");
 
-		// Run initialization for opengl
-		init();
+	// Run initialization for opengl
+	init();
 
-		// Set callbacks
-		glutDisplayFunc(display);
-		glutReshapeFunc(reshape);
-		glutMouseFunc(mouse);
-		glutKeyboardFunc(keyboard);
-		glutMotionFunc(motion);
+	// Set callbacks
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+	glutMouseFunc(mouse);
+	glutKeyboardFunc(keyboard);
+	glutMotionFunc(motion);
 
-		// Start main loop
-		glutMainLoop();
-	}
-	// Finalize MPI here
-	MPI_Finalize();
+	// Start main loop
+	glutMainLoop();
 
 	return 0;
 }

@@ -165,61 +165,6 @@ void* compute_thread(void *info)
 	pthread_exit( NULL );
 }
 
-/** Thread Communicator
- *  handles communication with the MPI slaves to calculate the current window
- */
-/* void* thread_com_slave(void* unused)
-{
-	// Get vital information about mpi settings
-	int numtasks;
-	MPI_Comm_size(MPI_COMM_WORLD,&numtasks);
-	numtasks--;
-
-	while ( 1 ) {
-		// Wait for window to be set
-		pthread_barrier_wait(&calc_barrier);
-
-		// Get a pointer to the current window
-		MBWindow* w = &window_list[window];
-
-		// Allocate space in current window
-		w->Iters = (unsigned short*) malloc(sizeof(unsigned short) * w->width * w->height);
-		
-		// Determine size of calculations for each MPI process
-		int height = w->height / numtasks;
-		if (0 != (w->height % numtasks))
-			height++;
-		int bufsize = height * w->width;
-		int bufsize2 = bufsize;
-
-		// Retrieve computed values and save
-		MPI_Request requestRecv[numtasks];
-		int q = 0;
-		int rc;
-		for (int i = 0; i < numtasks; i++) {
-			rc = MPI_Irecv(&w->Iters[i*bufsize], sizeof(unsigned short) * bufsize2, MPI_BYTE, i+1,
-					0, MPI_COMM_WORLD, &requestRecv[q++]);
-			if (rc != MPI_SUCCESS) {
-				cout << "Error receiving iters from " << i << endl;
-				MPI_Finalize();
-				exit(1);
-			}
-			if (i == numtasks - 2) {
-				// Change bufsize if necessary
-				bufsize2 = (w->height - (height * (numtasks-1))) * w->width;
-			}
-		}
-		// Wait for all data to be received
-		MPI_Status status[numtasks];
-		MPI_Waitall(numtasks, requestRecv, status);
-
-		// Indicate finished to main task
-		pthread_barrier_wait(&calc_barrier);
-	}
-	return NULL;
-}
-*/
-
 /** Mandelbrot Compute Threads
  *  Computes the window area with threads
  *

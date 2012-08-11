@@ -73,19 +73,6 @@ pthread_barrier_t calc_barrier; //!< Barrier for synchronization between the ran
  */
 unsigned short iterate_point(double a, double b, unsigned int max_iter)
 {
-/* Using the Complex class
-   this is approximately 4 times slower than unrolling the calculations
-	Complex c(a, b);
-	Complex z(0, 0);
-
-	do {
-		z = z*z;
-		z = z + c;
-		if (z.Mag2() > 16.0)
-			break;
-	} while (--max_iter);
-	return max_iter;
-*/
 	double r, i, rr, ii;
 	r = i = rr = ii = 0.0;
 
@@ -99,6 +86,28 @@ unsigned short iterate_point(double a, double b, unsigned int max_iter)
 			break;
 	} while ( --max_iter );
 
+	return max_iter;
+}
+
+/** Iterate Point Complex
+ *  this version of iteration uses the complex class. It is appx 4 times slower
+ *
+ *  @param a Real component of original point
+ *  @param b Imaginary component of original point
+ *  @param max_iter Maximum number of iterations to run
+ *  @return The number of iterations left until reaching the max
+ */
+unsigned short iterate_point_complex(double a, double b, unsigned int max_iter)
+{
+	Complex c(a, b);
+	Complex z(0, 0);
+
+	do {
+		z = z*z;
+		z = z + c;
+		if (z.Mag2() > 16.0)
+			break;
+	} while (--max_iter);
 	return max_iter;
 }
 

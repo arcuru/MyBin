@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra
+CFLAGS=-Wall -Wextra -g
 INCLUDE_DIR=-I./inc
 AR=ar
 LIBS=

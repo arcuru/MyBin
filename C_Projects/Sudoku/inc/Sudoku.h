@@ -7,6 +7,9 @@
 */
 #define SUDOKU_INDEX(r,c)	((r)*(9)+(c))
 
+// Define only if we are not debugging
+//#define NDEBUG
+
 //Solves an input puzzle defined by array of length 81
 //placement is defined according to SUDOKU_INDEX(r,c)
 int* SudokuSolver(int*);
@@ -21,5 +24,11 @@ void PrintSudoku(int*);
 int CheckSudoku(int*);
 
 //extern int sudcount;
+
+#ifndef NDEBUG
+//Prints the puzzle
+//Used only in debugging this code
+void PrintSudoku_Bits(puzzle_struct* puz);
+#endif
 
 #endif

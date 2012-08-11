@@ -27,7 +27,10 @@ static puzzle_struct* RemoveBox(puzzle_struct*, int, int, int, int*);
 static int CheckSudoku_Bits(puzzle_struct*);
 static int BitCount(int);
 static int GetValue(puzzle_struct*);
-//static void PrintSudoku_Bits(puzzle_struct*);
+
+#ifndef NDEBUG
+void PrintSudoku_Bits(puzzle_struct*);
+#endif
 
 static int guess;
 static int guesslimit;
@@ -503,11 +506,10 @@ static int GetValue(puzzle_struct* puz)
     return total;
 }
 
+#ifndef NDEBUG
 //Prints the puzzle
 //Used only in debugging this code
-
-/*
-static void PrintSudoku_Bits(puzzle_struct* puz) {
+void PrintSudoku_Bits(puzzle_struct* puz) {
     printf("%d\t%d\n", puz->value, guess);
     int r, c;
     printf("-------------------------");
@@ -536,7 +538,7 @@ static void PrintSudoku_Bits(puzzle_struct* puz) {
     }
     printf("\n-------------------------\n");
 }
-*/
+#endif
 
 //Checks if puzzle is finished
 //according to basic rules

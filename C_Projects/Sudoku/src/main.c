@@ -35,7 +35,6 @@ void PrintSudoku_Bits(puzzle_struct*);
 static int guess;
 static int guesslimit;
 static const int mask = 0x3FE;
-//int sudcount = 0;
 
 
 //#define CHEAT	if (puz==NULL){printf("%d\n",__LINE__);return puz;}

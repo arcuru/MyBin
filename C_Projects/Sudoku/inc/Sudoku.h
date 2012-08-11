@@ -1,10 +1,6 @@
 #ifndef SUDOKU_H
 #define SUDOKU_H
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include "CUtils.h"
-*/
+
 #define SUDOKU_INDEX(r,c)	((r)*(9)+(c))
 
 // Define only if we are not debugging
@@ -22,8 +18,6 @@ void PrintSudoku(int*);
 //according to basic rules
 //returns 1 if correct, 0 if wrong
 int CheckSudoku(int*);
-
-//extern int sudcount;
 
 #ifndef NDEBUG
 //Prints the puzzle

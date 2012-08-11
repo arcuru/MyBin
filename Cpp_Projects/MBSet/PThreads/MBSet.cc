@@ -26,7 +26,7 @@ using namespace std;
 #include <iomanip>
 #endif
 
-#define NTHREADS 16 
+#define NTHREADS 16
 
 // Defaults
 unsigned int init_width = 512;
@@ -151,16 +151,14 @@ void* compute_thread(void *info)
 		imag = (((double) r) / ((double) w->height - 1)) * (w->YMax - w->YMin) + w->YMin;
 		for (unsigned int c = 0; c < w->width; c++) {
 			real = (((double) c) / ((double) w->width - 1)) * (w->XMax - w->XMin) + w->XMin;
-			//iters[index++] = iterate_point(real, imag, w->maxIters);
-			//w->Iters[start+index++] = iterate_point(real, imag, w->maxIters);
-			w->Iters[w->width * r + c] = iterate_point(real, imag, w->maxIters);
+			iters[index++] = iterate_point(real, imag, w->maxIters);
 		}
 	}
 #ifdef DEBUG
 	cout << "Rank " << rank << " with " << start << endl;
 #endif
 
-	//memcpy(&w->Iters[start], iters, sizeof(unsigned short) * w->width * height);
+	memcpy(&w->Iters[w->width * start], iters, sizeof(unsigned short) * w->width * height);
 
 	free( iters );
 

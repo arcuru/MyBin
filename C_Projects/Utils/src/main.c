@@ -93,7 +93,7 @@ int GetMicrosecondClock()
     gettimeofday(&tv, 0);
     static int startsec = 0;
     static char first = TRUE;
-    if (first) {
+    if (first && 0 == startsec) {
         startsec = tv.tv_sec;
         first = FALSE;
     }

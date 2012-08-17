@@ -19,10 +19,4 @@ void PrintSudoku(int*);
 //returns 1 if correct, 0 if wrong
 int CheckSudoku(int*);
 
-#ifndef NDEBUG
-//Prints the puzzle
-//Used only in debugging this code
-void PrintSudoku_Bits(puzzle_struct* puz);
-#endif
-
 #endif

@@ -1,10 +1,6 @@
 #include "Primes.h"
 #include <cmath>
 
-#ifndef NULL
-#define NULL 0
-#endif
-
 #define DEBUG
 #ifdef DEBUG
 #include <iostream>
@@ -13,8 +9,8 @@
 Primes::Primes()
 {
 	maxVal = maxList = 0;
-	pList = NULL;
-	pSieve = NULL;
+	pList = nullptr;
+	pSieve = nullptr;
 }
 
 Primes::Primes(int n)
@@ -22,7 +18,7 @@ Primes::Primes(int n)
 	pSieve = SieveOfEratosthenes(n);
 	maxVal = n;
 	maxList = 0;
-	pList = NULL;
+	pList = nullptr;
 }
 
 Primes::~Primes()
@@ -50,7 +46,7 @@ bool Primes::isPrime(int n) const
 		return false;
 	if (!(n % 5))
 		return false;
-	if ( n < maxVal && pSieve != NULL) {
+	if ( n < maxVal && pSieve != nullptr) {
 		switch (n % 30) {
 			case 1:
 				return !(pSieve[n / 30] & 0x01);
@@ -100,7 +96,7 @@ int* Primes::getList(int end)
 	if (end <= maxList)
 		return pList;
 	else if (end > maxVal)
-		return NULL;
+		return nullptr;
 	pList = SE_List(end, pSieve);
 	maxList = end;
 	return pList;
@@ -309,10 +305,10 @@ int NextPrime(int end_of_list, unsigned char* list) {
 		saved_eol = end_of_list;
 		primeEnd = saved_eol / 30;
 	}
-	static unsigned char* saved_list = NULL;
+	static unsigned char* saved_list = nullptr;
 	static int current_byte = 0, current_bitval = 0, last_prime = 0;
 	static char current_bit = 1;
-	if (list != NULL) {
+	if (list != nullptr) {
 		current_byte = 0;
 		current_bit = 1;
 		current_bitval = 0;
@@ -372,7 +368,7 @@ unsigned char* primeIndexListE_inc(int N, unsigned char* prime) {
 	unsigned char* list = (unsigned char*) calloc(N + 1, sizeof(char));
 	if (!list) {
 		printf("Memory Fail\n");
-		return NULL;
+		return nullptr;
 	}
 	list[2] = 1;
 	list[3] = 1;

@@ -1,56 +1,29 @@
 #include "Euler.h"
 #include "Primes.h"
+#include <stdlib.h>
 
 int64_t Euler_47()
 {
-    int num=2000000;
-    int count=1;
-    int candidate=1;
-    int list[200000];
-    list[0]=2;
-    while ( candidate < num ) {
-        if ( isPrime(candidate) == 1 ) {
-            list[count]=candidate;
-            count++;
-        }
-        candidate+=2;
-    }
-    count--;
-    int anslist[200000];
-    int jim=0;
-    int counter;
-    for (counter=1; counter <= num; counter++) {
-        int index=0;
-        int value=counter;
-        int crazy=0;
-        while ( value >= 2 ) {
-            int check=0;
-            while ( list[check] <= value ) {
-                int tmp=list[check];
-                if ( value%tmp == 0 ) {
-                    if ( crazy == tmp ) {
-                        value=value/tmp;
-                        check--;
-                    } else {
-                        value=value/tmp;
-                        index++;
-                        crazy=tmp;
-                        check--;
-                    }
-                }
-                check++;
-            }
-        }
+	int num = 2000000;
+	uint8_t* factors = (uint8_t*) calloc(num, sizeof(uint8_t));
 
-        if ( index == 4 ) {
-            anslist[jim]=counter;
-            jim++;
-        }
-        if ( jim >= 4 ) {
-            if ( anslist[jim-4] == (counter-3) ) {
-                return (int64_t)(counter-3);
-            }
-        }
-    }
-    return 0;
+	// Count all the prime factors for each number up to 'num'
+	int i, s;
+	for ( i = 2; i*i < num; i++ )
+		if ( 0 == factors[i] )
+			for ( s = i*2; s < num; s += i )
+				factors[s]++;
+
+	// Find 4 4's in a row
+	int count = 0;
+	for ( i = 2; i < num; i++ ) {
+		if ( 4 == factors[i] ) {
+			count++;
+			if ( 4 == count )
+				break;
+		}
+		else
+			count = 0;
+	}
+	return (int64_t) (i - 3);
 }

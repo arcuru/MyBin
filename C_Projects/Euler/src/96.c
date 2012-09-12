@@ -15,10 +15,16 @@ int64_t Euler_96()
     int i;
     int* puzzle = (int*) (malloc)(sizeof(int) * 81);
     for (i = 0; i < 50; i++) {
-        fgets(line, sizeof(line), data);
+        if (fgets(line, sizeof(line), data)) {
+			printf("Error reading from file.\n");
+			return -1;
+		}
         int n;
         for (n = 0; n < 9; n++) {
-            fgets(line, sizeof(line), data);
+			if (fgets(line, sizeof(line), data)) {
+				printf("Error reading from file.\n");
+				return -1;
+			}
             int s;
             for (s = 0; s < 9; s++)
                 puzzle[SUDOKU_INDEX(n,s)] = (int) (line[s] - '0');

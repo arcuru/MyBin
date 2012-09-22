@@ -1,10 +1,7 @@
 // Implementation of the templated Vector class
-
-//#define VECTOR_DEBUGGING
-#ifdef VECTOR_DEBUGGING
-#include <iostream> // debugging
-#endif
-#include "Vector.h"
+#ifdef __VECTOR_H__
+#ifndef __VECTOR_CC__
+#define __VECTOR_CC__
 
 using namespace std;
 
@@ -324,4 +321,7 @@ bool VectorIterator<T>::operator ==(const VectorIterator<T>& rhs) const
 {
 	return (current == rhs.current);
 }
+
+#endif //__VECTOR_CC__
+#endif //__VECTOR_H__
 

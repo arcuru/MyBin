@@ -1,18 +1,21 @@
-# Makefile for OPENGL examples
-
+CC=clang++
+CFLAGS=-std=c++0x -Wall -Wextra -O3 -g -lglut -lGLU -lGL
 LDFLAGS  = -g -O3 -lglut -lGLU -lGL -pthread
-CCFLAGS = -g -O3 -Wall
-CXXFLAGS = -g -O3 -Wall
-CFLAGS = -
-
-CXX = g++
-CC  = g++
-
+INCLUDE_DIR=
+AR=ar
+LIBS=
 SOURCES=MBSet.cc complex.cc
+ASOBJECTS=$(ASSOURCES:.s=.o)
 OBJECTS=$(SOURCES:.cc=.o)
+TARGET=MBSet
 
-MBSet: $(OBJECTS)
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
+
+%.o: %.cc
+	$(CC) -c -o $@ $< $(INCLUDE_DIR) $(CFLAGS)
 
 clean:
-	rm -f MBSet $(OBJECTS)
-
+	rm -rf $(OBJECTS) $(TARGET)

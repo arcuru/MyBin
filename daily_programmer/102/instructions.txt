@@ -1,0 +1,36 @@
+Easy: Dice Roller
+In tabletop role-playing games like D&d, people us a system called dice notation to represent a combination of dice to be rolled to generate a random number. Dice rolls are of the form AdB (+/-)C, and are calculated like this:
+
+*Generate A random numbers from 1 to B and add them together.
+*Add or subtract the modifier, C.
+
+If A is omitted, its value is 1; if (+/-)C is omitted, step 2 is skipped. That is, "d8" is equivalent to "1d8+0".
+
+Write a function that takes a string like "10d6-2" or "d20+7" and generates a random number using this syntax.
+
+Here's a hint on how to parse the strings if you get stuck:
+
+Split the string over 'd' first; if the left part is empty, A=1, otherwise, read it as an integer and assign it to A. Then determine whether or not the second part contains a '+' or '-', etc.
+
+Intermediate: n-character-set
+Write a function that takes a string s and an integer n, and returns whether or not the string s contains at most n different characters.
+
+For example, ncset("aacaabbabccc", 4) would return true, because it contains only 3 different characters, 'a', 'b', and 'c', and 3 <= 4.
+
+For how many English words does ncset(word, 4) hold?
+
+Expert: Pokemon types
+Ah, who doesn't remember the endless hours wasted playing Pokemon games on a Game Boy during long car rides? I sure do. Pokemon had an interesting battle system, and one of the nice mechanics was the type system.
+
+For this challenge, you'll be writing a function, 'type_effect', that takes two string arguments - the offending move's name and the defending Pokemon's name - and returns a multiplier like 2.0 or 0.25.
+
+Generally, you take the offending move's type, look up the multipliers for all the defending Pokemon's types in the type chart, and multiply them together. As an example, we'll run through the calculations for type_effect("Ice Beam", "Dragonite").
+
+(Optionally, use enums instead of strings, like type_effect(M_ICE_BEAM, P_DRAGONITE)).
+
+*Ice Beam is an Ice move.
+*Dragonite has multiple types, Dragon and Flying.
+*According to the type chart(link in post), Ice vs. Dragon has a 2.0x bonus, and Ice vs. Flying has a 2.0x bonus, too. Multiplying these together, you get 4.0x, so return 4.0.
+
+Obviously, this challenge is all about collecting the data you need yourself and manipulating it, so don't steal each others' representations of the type array, Pokemon's types, etc!
+

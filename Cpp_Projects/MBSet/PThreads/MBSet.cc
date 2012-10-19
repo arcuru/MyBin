@@ -526,7 +526,7 @@ void mouse(int button, int state, int x, int y)
 		w->Iters = NULL;
 		w->palette = wtmp->palette;
 
-
+		fix_aspect(w);
 		window++;
 		pthread_mutex_unlock(&win_mutex);
 		glutPostRedisplay();

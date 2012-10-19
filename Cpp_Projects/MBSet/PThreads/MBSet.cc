@@ -26,9 +26,9 @@ using namespace std;
 uint32_t init_width = 512;
 uint32_t init_height = 512;
 double init_XMin = -2.0;
-double init_YMin = -1.2;
+double init_YMin = -1.5;
 double init_XMax = 1.0;
-double init_YMax = 1.8;
+double init_YMax = 1.5;
 bool click = false;
 int click_XMin;
 int click_XMax;
@@ -184,10 +184,10 @@ void* compute_thread(void *info)
 	MBWindow* w = i->w;
 
 	// Figure out number of rows and starting row for calculations
-	int height = w->height / numtasks;
+	uint32_t height = w->height / numtasks;
 	if (0 != (w->height % numtasks))
 		height++;
-	int start = height * rank;
+	uint32_t start = height * rank;
 	if (rank == numtasks-1) { // Scale last task down to not overshoot end
 		height = w->height - start;
 	}

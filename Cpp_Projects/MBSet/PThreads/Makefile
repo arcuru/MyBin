@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-std=c++0x -Wall -Wextra -O3 -g -lglut -lGLU -lGL
+CFLAGS=-std=c++0x -Wall -Wextra -O3 -g
 LDFLAGS  = -g -O3 -lglut -lGLU -lGL -pthread
 INCLUDE_DIR=
 AR=ar

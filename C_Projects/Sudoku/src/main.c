@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 //Converted to using bits to store values in reductions
 
@@ -11,7 +12,7 @@
 //Returns a pointer to a length 81 array with the solved puzzle
 
 typedef struct {
-    short* body;
+    int16_t* body;
     int value;
 } puzzle_struct;
 
@@ -37,7 +38,7 @@ static int guesslimit;
 static const int mask = 0x3FE;
 
 
-//#define CHEAT	if (puz==NULL){printf("%d\n",__LINE__);return puz;}
+//#define CHEAT	if (puz==nullptr){printf("%d\n",__LINE__);return puz;}
 
 #define ISALONE(x)	(((x)&(x-1))==0)
 #define ISOLATE_1(x)	((x)&(-(x)))
@@ -51,9 +52,8 @@ static int ConverttoDec(int bit)
     if (!ISALONE(bit))
         return 0;
     int count = 0;
-    while (bit >>= 1) {
+    while (bit >>= 1)
         ++count;
-    }
     return count;
 }
 
@@ -62,7 +62,7 @@ int* SudokuSolver(int* puzzle)
     //do init stuff, fixes issue with running multiple times
     guess = 0;
     guesslimit = 1;
-    short* bitpuzzle = (short*) malloc(sizeof (short) * 81);
+    int16_t* bitpuzzle = (int16_t*) malloc(sizeof (int16_t) * 81);
     int r, c;
     for (r = 0; r < 9; r++)
         for (c = 0; c < 9; c++) {
@@ -77,8 +77,8 @@ int* SudokuSolver(int* puzzle)
     puz->value = GetValue(puz);
     puz = SolvingIt(puz);
     //PrintSudoku_Bits(puz);
-    if ((puz == NULL) || (puz->body == NULL))
-        return NULL;
+    if ((puz == nullptr) || (puz->body == nullptr))
+        return nullptr;
     for (r = 0; r < 9; ++r)
         for (c = 0; c < 9; ++c) {
             puzzle[SUDOKU_INDEX(r, c)] = ConverttoDec(
@@ -98,18 +98,18 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
     while (oldValue > puz->value && puz->value > 81) {
         oldValue = puz->value;
         puz = LonelyNum(puz);
-        if ((puz == NULL) || (puz->value == 81))
+        if ((puz == nullptr) || (puz->value == 81))
             return puz;
         else if (puz->value < 81){
             free(puz);
-            return NULL;
+            return nullptr;
         }
         puz = Twos(puz);
     }
     if (puz->value == 81)
         return puz;
     else if (puz->value < 81)
-        return NULL;
+        return nullptr;
     if (CheckSudoku_Bits(puz) || guess >= guesslimit)
         return puz;
     int s, i, n;
@@ -122,7 +122,7 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
             while (tmp) {
                 puzzle_struct* guessing = (puzzle_struct*) (malloc) (
                                               sizeof (puzzle_struct));
-                guessing->body = (short*) malloc(sizeof (short) * 81);
+                guessing->body = (int16_t*) malloc(sizeof (int16_t) * 81);
                 for (n = 0; n < 81; ++n)
                     guessing->body[n] = puz->body[n];
                 guessing->body[i] = ISOLATE_1(tmp);
@@ -149,7 +149,7 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
     if (!CheckSudoku_Bits(puz))
     {
         free(puz);
-        return NULL;
+        return nullptr;
     }
     return puz;
 }
@@ -164,12 +164,11 @@ static puzzle_struct* Reduction(puzzle_struct* puz)
     int oldValue = 9 * 81;
     while ((oldValue > puz->value) && (puz->value > 81)) {
         oldValue = puz->value;
-        register int r, c;
+        int r, c;
         for (r = 0; r < 9; ++r)
             for (c = 0; c < 9; ++c)
-                if (ISALONE(puz->body[SUDOKU_INDEX(r, c)])) {
+                if (ISALONE(puz->body[SUDOKU_INDEX(r, c)]))
                     puz = Remove(puz, r, c);
-                }
     }
     return puz;
 }
@@ -181,8 +180,8 @@ static puzzle_struct* Reduction(puzzle_struct* puz)
 static puzzle_struct* LonelyNum(puzzle_struct* puz)
 {
     int oldValue = 9 * 81;
-    register int oncea, onceb, twicea, twiceb;
-    register int a, b, r, c;
+    int oncea, onceb, twicea, twiceb;
+    int a, b, r, c;
     while ((oldValue > puz->value) && (puz->value > 81)) {
         oldValue = puz->value;
         oncea = 0;
@@ -198,8 +197,8 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
                 twiceb |= puz->body[SUDOKU_INDEX(b, a)] & onceb;
                 onceb |= puz->body[SUDOKU_INDEX(b, a)];
             }
-            if (oncea != mask)
-                return NULL;
+            if (oncea != mask) // At least one number is missing, return null
+                return nullptr;
             if (twicea != oncea) {
                 //found one so go back and find and set it
                 twicea ^= oncea; //isolate them (reusing variable here)
@@ -211,7 +210,7 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
                         ++puz->value;
                         puz->body[SUDOKU_INDEX(a, b)] &= twicea;
                         if (BitCount(puz->body[SUDOKU_INDEX(a, b)]) != 1)
-                            return NULL;
+                            return nullptr;
                         puz = Remove(puz, a, b);
                     }
                 }
@@ -219,8 +218,8 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
             twicea = 0;
             oncea = 0;
 
-            if (onceb != mask)
-                return NULL;
+            if (onceb != mask) // At least one number is missing, return null
+                return nullptr;
             if (twiceb != onceb) {
                 //found one so go back and find and set it
                 twiceb ^= onceb; //isolate them (reusing variable here)
@@ -232,7 +231,7 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
                         ++puz->value;
                         puz->body[SUDOKU_INDEX(b, a)] &= twiceb;
                         if (BitCount(puz->body[SUDOKU_INDEX(b, a)]) != 1)
-                            return NULL;
+                            return nullptr;
                         puz = Remove(puz, b, a);
                     }
                 }
@@ -250,7 +249,7 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
                         oncea |= puz->body[SUDOKU_INDEX(r, c)];
                     }
                 if (oncea != mask)
-                    return NULL;
+                    return nullptr;
                 if (twicea != oncea) {
                     //found one so go back and find and set it
                     twicea ^= oncea; //isolate them (reusing variable here)
@@ -265,7 +264,7 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
                                 ++puz->value;
                                 puz->body[SUDOKU_INDEX(r, c)] &= twicea;
                                 if (BitCount(puz->body[SUDOKU_INDEX(r, c)]) != 1)
-                                    return NULL;
+                                    return nullptr;
                                 puz = Remove(puz, r, c);
                             }
                         }
@@ -283,7 +282,7 @@ static puzzle_struct* LonelyNum(puzzle_struct* puz)
 static puzzle_struct* Twos(puzzle_struct* puz)
 {
     int oldValue = 9 * 81;
-    register int a, b, n, r, c, i;
+    int a, b, n, r, c, i;
     int value;
     int* skip = (int*) calloc(sizeof (int), 9);
     while ((oldValue > puz->value) && (puz->value > 81)) {
@@ -447,10 +446,11 @@ static puzzle_struct* RemoveBox(puzzle_struct* puz, int rowbox, int colbox,
 
 static int CheckSudoku_Bits(puzzle_struct* puz)
 {
-    if (puz == NULL)
+    if (puz == nullptr)
         return FALSE;
-    if ((puz->body == NULL) || (puz->value != 81))
+    if ((puz->body == nullptr) || (puz->value != 81))
         return FALSE;
+	assert( GetValue(puz) == 81 );
     int a, b, r, c;
     int maska = 0, maskb = 0;
     for (a = 0; a < 9; ++a) {
@@ -493,7 +493,7 @@ static int BitCount(int bit)
 
 static int GetValue(puzzle_struct* puz)
 {
-    if (puz->body == NULL)
+    if (puz->body == nullptr)
         return 0;
     int total = 0, tmp = 0, i;
     for (i = 0; i < 81; ++i) {
@@ -546,7 +546,7 @@ void PrintSudoku_Bits(puzzle_struct* puz) {
 
 int CheckSudoku(int* puzzle)
 {
-    if (puzzle == NULL)
+    if (puzzle == nullptr)
         return FALSE;
     int a, b, i, r, c, n;
     for (a = 0; a < 9; a++)

@@ -1,10 +1,15 @@
 #ifndef SUDOKU_H
 #define SUDOKU_H
 
+#include <stdint.h>
 #define SUDOKU_INDEX(r,c)	((r)*(9)+(c))
 
+#ifndef nullptr
+#define nullptr NULL
+#endif
+
 // Define only if we are not debugging
-//#define NDEBUG
+#define NDEBUG
 
 //Solves an input puzzle defined by array of length 81
 //placement is defined according to SUDOKU_INDEX(r,c)

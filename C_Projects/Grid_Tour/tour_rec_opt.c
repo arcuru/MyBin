@@ -25,6 +25,7 @@ typedef struct {
  *  on the board
  *
  *  @arg here Coordinate to check
+ *  @arg working Current board to check
  *  @return Boolean on whether or not the placement is valid
  */
 inline bool validCoord ( coordinate here, board* working )
@@ -40,6 +41,7 @@ inline bool validCoord ( coordinate here, board* working )
  *
  *  @arg moves Current number of moves executed
  *  @arg here Current location
+ *  @arg working Current board to test against
  */
 void countTours ( uint32_t moves, coordinate here, board* working )
 {

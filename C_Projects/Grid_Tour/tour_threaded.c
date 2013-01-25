@@ -264,6 +264,13 @@ int main ( int argc, char *argv[] )
 		w->width = atoi( argv[1] );
 		w->height = atoi( argv[2] );
 	}
+	else if ( argc != 1 ) {
+		printf("Usage: %s <width=10> <height=4>\n", argv[0]);
+		printf("Executing with default inputs.");
+		// Default to problem specifics
+		w->width = 10;
+		w->height = 4;
+	}
 	else {
 		// Default to problem specifics
 		w->width = 10;

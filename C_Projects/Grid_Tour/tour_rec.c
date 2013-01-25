@@ -17,7 +17,6 @@ typedef struct {
 	size_t width; //!< Width of the board
 	size_t height; //!< Height of the board
 	bool* board_rep; //!< Board as a 2D array of booleans
-	uint32_t mask; //!< Mask for the correct width of the board
 } board; //!< Total board representation
 
 /** Validate coordinates
@@ -62,7 +61,7 @@ void countTours ( uint32_t moves, coordinate here, board* w )
 	// Mark the board with the current position
 	w->board_rep[ here.h*w->width + here.w ] = true;
 
-	// Move in each direction recursively if it's a valid direction
+	// Move in each direction recursively
 	coordinate next;
 
 	// Up
@@ -103,6 +102,13 @@ int main ( int argc, char *argv[] )
 		w->width = atoi( argv[1] );
 		w->height = atoi( argv[2] );
 	}
+	else if ( argc != 1 ) {
+		printf("Usage: %s <width=10> <height=4>\n", argv[0]);
+		printf("Executing with default inputs.");
+		// Default to problem specifics
+		w->width = 10;
+		w->height = 4;
+	}
 	else {
 		// Default to problem specifics
 		w->width = 10;
@@ -117,19 +123,11 @@ int main ( int argc, char *argv[] )
 		exit(1);
 	}
 
-	// Set up the mask with the low bits equal to the width of the grid set to '1's
-	w->mask = 0;
-	uint32_t i;
-	uint32_t bit = 1;
-	for (i = 0; i < w->width; i++) {
-		w->mask |= bit;
-		bit <<= 1;
-	}
-
-	// Initialize board using the mask
-	for (i = 0; i < w->height; i++) {
-		w->board_rep[i] = false;
-	}
+	// Only check this while debugging
+#ifndef NDEBUG
+	for (i = 0; i < w->height * w->width; i++)
+		assert( w->board_rep[i] == false );
+#endif
 
 	// Set up initial entry into the grid
 	coordinate h;

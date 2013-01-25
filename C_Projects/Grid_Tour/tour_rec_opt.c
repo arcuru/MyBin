@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 // Uncomment to disable asserts
-//#define NDEBUG 1
+#define NDEBUG 1
 
 typedef struct {
 	uint32_t w;

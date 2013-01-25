@@ -10,16 +10,26 @@
 //#define NDEBUG 1
 
 uint32_t total = 0; //!< Full count of possible paths
-size_t width; //!< Width of working board
-size_t height; //!< Height of working board
+pthread_mutex_t tour_mutex = PTHREAD_MUTEX_INITIALIZER; //!< Mutex lock for updating count
 
 typedef struct {
-	int32_t w;
-	int32_t h;
+	uint32_t w;
+	uint32_t h;
 } coordinate; //!< Coordinate, with h being the index into 'board' and w being the bitwise representation of the current space
 
-uint32_t* board; //!< Board in bitwise form. Each entry is a single row, '1's indicate free space
-uint32_t mask; //!< Mask for the correct width of the board
+typedef struct {
+	coordinate loc;
+	int8_t dir;
+} move; //!< Structure to hold a single turn in the path
+
+typedef struct {
+	size_t width; //!< Width of the board
+	size_t height; //!< Height of the board
+	uint32_t* board_rep; //!< Board in bitwise form. Each entry is a single row, '1's indicate free space
+	uint32_t mask; //!< Mask for the correct width of the board
+	move* move_list; //!< History of moves made on this board
+	int32_t moves; //!< Number of moves made on the board
+} board; //!< Total board representation
 
 // Constants for directionality
 #define UP 0
@@ -28,38 +38,22 @@ uint32_t mask; //!< Mask for the correct width of the board
 #define RIGHT 3
 #define FINISHED 4
 
-// Structure to hold a single turn in the path
-typedef struct {
-	coordinate loc;
-	int8_t dir;
-} move;
-
-move* move_list;
-pthread_mutex_t tour_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /** Validate coordinates
  *  Takes in a coordinate and a valid board, and checks to see if it is
  *  a valid move
  *
  *  @arg here Coordinate to check
- *  @arg board Working board
+ *  @arg w Working board
  *  @return Boolean on whether or not the placement is valid
  */
-inline bool validCoord_opt ( coordinate here, uint32_t* board )
+bool validCoord ( coordinate here, board* w )
 {
-
-	if ( (here.w & mask) != 0 && here.h >= 0 && here.h < height )
-		if ( (board[ here.h ] & here.w) != 0 )
+	if ( (here.w & w->mask) != 0 && here.h < w->height )
+		if ( (w->board_rep[ here.h ] & here.w) != 0 )
 			return true;
 	return false;
 }
-
-// Structure for the input info necessary for individual threads
-typedef struct {
-	int moves;
-	move* move_list;
-	uint32_t* board;
-} thread_info;
 
 /** Single Thread
  *  Performs a single thread of searching for a working path.
@@ -69,75 +63,74 @@ typedef struct {
 static void* executeThread ( void* input )
 {
 	// Pull inputs (board, move history, etc)
-	thread_info* tmp = (thread_info*) input;
-	int moves = tmp->moves;
-	move* move_list = tmp->move_list;
-	uint32_t* board = tmp->board;
+	board* w = (board*) input;
 
-	while ( moves >= tmp->moves ) {
-		if ( moves >= width * height - 1 ) {
+	uint32_t local_total = 0;
+	int32_t minimum_moves = w->moves;
+
+	while ( w->moves >= minimum_moves ) {
+		if ( w->moves >= (int32_t)(w->width * w->height - 1) ) {
 			// Found a full working path
 			// Add to total
-			assert( move_list[moves].loc.w == 1 && move_list[moves].loc.h == 0 );
-			pthread_mutex_lock( &tour_mutex );
-			total++;
+			assert( w->move_list[w->moves].loc.w == 1 && w->move_list[w->moves].loc.h == 0 );
+			local_total++;
 			pthread_mutex_unlock( &tour_mutex );
-			board[ move_list[moves].loc.h ] |= move_list[moves].loc.w;
-			moves--;
+			w->board_rep[ w->move_list[w->moves].loc.h ] |= w->move_list[w->moves].loc.w;
+			w->moves--;
 			continue;
 		}
 		coordinate next;
-		coordinate here = move_list[moves].loc;
+		coordinate here = w->move_list[w->moves].loc;
 		// Finish if we are trying to pass through the finish line
 		if ( here.w == 1 && here.h == 0 ) {
-			moves--;
+			w->moves--;
 			continue;
 		}
 		// Mark board with the current location
-		board[ here.h ] ^= here.w;
-		if (board[ here.h ] & here.w)
-			board[ here.h ] ^= here.w;
+		w->board_rep[ here.h ] ^= here.w;
+		if (w->board_rep[ here.h ] & here.w)
+			w->board_rep[ here.h ] ^= here.w;
 		// Perform movements based on current location and valid moves	
-		switch ( move_list[moves].dir ) {
+		switch ( w->move_list[w->moves].dir ) {
 			case UP:
 				next.w = here.w; next.h = here.h + 1;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = DOWN;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = DOWN;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case DOWN:
 				next.w = here.w; next.h = here.h - 1;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = LEFT;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = LEFT;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case LEFT:
 				next.w = here.w >> 1; next.h = here.h;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = RIGHT;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = RIGHT;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case RIGHT:
 				next.w = here.w << 1; next.h = here.h;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = FINISHED;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = FINISHED;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case FINISHED:
-				board[ here.h ] |= here.w;
-				moves--;
+				w->board_rep[ here.h ] |= here.w;
+				w->moves--;
 				continue;
 			default:
 				// Fail out if reaching this area
@@ -145,8 +138,16 @@ static void* executeThread ( void* input )
 				return NULL;
 		}
 	}
-	free( board );
-	free( move_list );
+
+	// Free allocated memory
+	free( w->board_rep );
+	free( w->move_list );
+	free( w );
+
+	// Update global totals
+	pthread_mutex_lock( &tour_mutex );
+	total += local_total;
+	pthread_mutex_unlock( &tour_mutex );
 	return NULL;
 }
 
@@ -154,93 +155,97 @@ static void* executeThread ( void* input )
  *  Performs initial two step search and kicks off threads.
  *
  *  @arg start Initial coordinates for searching
+ *  @arg w Initial board with settings
  */
-void setupThreads ( coordinate start )
+void setupThreads ( coordinate start, board* w )
 {
 	pthread_t thread[4];
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-	thread_info inputs[4];
+	board* inputs[4];
 	int in_counter = 0;
 	pthread_mutex_init(&tour_mutex, NULL);
 
-	int moves = 0;
-	move_list[moves].loc = start;
-	move_list[moves].dir = UP;
-	while ( moves >= 0 ) {
-		if ( moves == 2 ) {
+	w->moves = 0;
+	w->move_list[w->moves].loc = start;
+	w->move_list[w->moves].dir = UP;
+	while ( w->moves >=  0 ) {
+		if ( w->moves == 2 ) {
 			// Reached the depth of the initial search
 			// Start up thread on this path
-			move* new_move_list = (move*)malloc(sizeof(move)*width*height);
-			uint32_t* new_board = (uint32_t*)calloc( sizeof(uint32_t), height );
-			memcpy( new_move_list, move_list, sizeof(move)*width*height );
-			memcpy( new_board, board, sizeof(uint32_t)*height );
-			inputs[in_counter].moves = moves;
-			inputs[in_counter].move_list = new_move_list;
-			inputs[in_counter].board = new_board;
-			if ( pthread_create(&thread[in_counter], &attr, executeThread, (void*) &inputs[in_counter]) ) {
+			board* new_board = (board*) malloc( sizeof(board) );
+			new_board->width = w->width;
+			new_board->height = w->height;
+			new_board->mask = w->mask;
+			new_board->moves = w->moves;
+			new_board->move_list = (move*) malloc(sizeof(move)*w->width*w->height);
+			new_board->board_rep = (uint32_t*) calloc( sizeof(uint32_t), w->height );
+			memcpy( new_board->move_list, w->move_list, sizeof(move)*w->width*w->height );
+			memcpy( new_board->board_rep, w->board_rep, sizeof(uint32_t)*w->height );
+			inputs[in_counter] = new_board;
+			if ( pthread_create(&thread[in_counter], &attr, executeThread, (void*) inputs[in_counter]) ) {
 				printf("Pthread create failed\n");
 				exit(1);
 			}
 
 			in_counter++;
-			board[ move_list[moves].loc.h ] |= move_list[moves].loc.w;
-			moves--;
+			w->board_rep[ w->move_list[w->moves].loc.h ] |= w->move_list[w->moves].loc.w;
+			w->moves--;
 			continue;
 		}
 		coordinate next;
-		coordinate here = move_list[moves].loc;
+		coordinate here = w->move_list[w->moves].loc;
 		// Finish if we are trying to pass through the finish line
 		if ( here.w == 1 && here.h == 0 ) {
-			moves--;
+			w->moves--;
 			continue;
 		}
 		// Mark board with the current location
-		board[ here.h ] ^= here.w;
-		if (board[ here.h ] & here.w)
-			board[ here.h ] ^= here.w;
+		w->board_rep[ here.h ] ^= here.w;
+		if (w->board_rep[ here.h ] & here.w)
+			w->board_rep[ here.h ] ^= here.w;
 		// Perform movements based on current location and valid moves	
-		switch ( move_list[moves].dir ) {
+		switch ( w->move_list[w->moves].dir ) {
 			case UP:
 				next.w = here.w; next.h = here.h + 1;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = DOWN;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = DOWN;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case DOWN:
 				next.w = here.w; next.h = here.h - 1;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = LEFT;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = LEFT;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case LEFT:
 				next.w = here.w >> 1; next.h = here.h;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = RIGHT;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = RIGHT;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case RIGHT:
 				next.w = here.w << 1; next.h = here.h;
-				if ( validCoord_opt( next, board ) ) {
-					move_list[moves].dir = FINISHED;
-					moves++;
-					move_list[moves].loc = next;
-					move_list[moves].dir = UP;
+				if ( validCoord( next, w ) ) {
+					w->move_list[w->moves].dir = FINISHED;
+					w->moves++;
+					w->move_list[w->moves].loc = next;
+					w->move_list[w->moves].dir = UP;
 					continue;
 				}
 			case FINISHED:
-				board[ here.h ] |= here.w;
-				moves--;
+				w->board_rep[ here.h ] |= here.w;
+				w->moves--;
 				continue;
 			default:
 				// Fail out if reaching this area
@@ -258,48 +263,53 @@ void setupThreads ( coordinate start )
 
 int main ( int argc, char *argv[] )
 {
+	// Allocate space for the board
+	board* w = (board*) malloc( sizeof(board) );
+
 	// Allow inputting size of grid on command line
 	if ( argc == 3 ) {
-		width = atoi( argv[1] );
-		height = atoi( argv[2] );
+		w->width = atoi( argv[1] );
+		w->height = atoi( argv[2] );
 	}
 	else {
 		// Default to problem specifics
-		width = 10;
-		height = 4;
+		w->width = 10;
+		w->height = 4;
 	}
-	// Create initial board and move list for thread setup
-	board = (uint32_t*)calloc( sizeof(uint32_t), height );
-	move_list = (move*)calloc( sizeof(move), width * height );
+
+	// Allocate space for the board
+	w->board_rep = (uint32_t*)calloc( sizeof(uint32_t), w->height );
+	w->move_list = (move*)calloc( sizeof(move), w->width * w->height );
 
 	// Set up the mask with the low bits equal to the width of the grid set to '1's
-	mask = 0;
+	w->mask = 0;
 	uint32_t i;
 	uint32_t bit = 1;
-	for (i = 0; i < width; i++) {
-		mask |= bit;
+	for (i = 0; i < w->width; i++) {
+		w->mask |= bit;
 		bit <<= 1;
 	}
 
 	// Initialize board using the mask
-	for (i = 0; i < height; i++) {
-		board[i] = mask;
+	for (i = 0; i < w->height; i++) {
+		w->board_rep[i] = w->mask;
 	}
 
 	// Set up initial entry into the grid
 	coordinate h;
 	h.w = 1;
-	h.h = height - 1;
+	h.h = w->height - 1;
 
 	// Start creating the threads and running them
-	setupThreads ( h );
-
-	// Free allocated memory
-	free( board );
-	free( move_list );
+	setupThreads ( h, w );
 
 	// Print out solution
-	printf("Total possibilities for T(%zu,%zu) = %u\n", width, height, total);
+	printf("Total possibilities for T(%zu,%zu) = %u\n", w->width, w->height, total);
+
+	// Free allocated memory
+	free( w->board_rep );
+	free( w->move_list );
+	free( w );
 
 	return EXIT_SUCCESS;
 }

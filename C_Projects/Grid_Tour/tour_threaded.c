@@ -7,7 +7,11 @@
 #include <stdbool.h>
 
 // Uncomment to disable asserts
-//#define NDEBUG 1
+#define NDEBUG 1
+
+// Define threading defaults
+const uint32_t MAX_THREAD_COUNT = 4;
+const uint32_t THREAD_DEPTH = 2;
 
 uint32_t total = 0; //!< Full count of possible paths
 pthread_mutex_t tour_mutex = PTHREAD_MUTEX_INITIALIZER; //!< Mutex lock for updating count
@@ -32,12 +36,27 @@ typedef struct {
 } board; //!< Total board representation
 
 // Constants for directionality
+// Would prefer these to be of 'const' type, but this way is necessary for use within switch statement
 #define UP 0
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
 #define FINISHED 4
 
+/** Validate Allocation
+ *  short function to validate if a memory allocation was successful.
+ *  Exits program on failure
+ *
+ *  @arg p Pointer to allocated space
+ */
+void validateAlloc ( void* p )
+{
+	if ( NULL == p ) {
+		printf("Memory allocation failed.");
+		exit(1);
+	}
+	return ;
+}
 
 /** Validate coordinates
  *  Takes in a coordinate and a valid board, and checks to see if it is
@@ -60,11 +79,12 @@ bool validCoord ( coordinate here, board* w )
  *
  *  @arg input Structure with necesary inputs for thread
  */
-static void* executeThread ( void* input )
+void* executeThread ( void* input )
 {
 	// Pull inputs (board, move history, etc)
 	board* w = (board*) input;
 
+	// We'll update a local variable with the total to save time on trying to lock the mutex
 	uint32_t local_total = 0;
 	int32_t minimum_moves = w->moves;
 
@@ -159,28 +179,31 @@ static void* executeThread ( void* input )
  */
 void setupThreads ( coordinate start, board* w )
 {
-	pthread_t thread[4];
+	pthread_t thread[MAX_THREAD_COUNT];
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-	board* inputs[4];
-	int in_counter = 0;
+	board* inputs[MAX_THREAD_COUNT];
+	uint32_t in_counter = 0;
 	pthread_mutex_init(&tour_mutex, NULL);
 
 	w->moves = 0;
 	w->move_list[w->moves].loc = start;
 	w->move_list[w->moves].dir = UP;
 	while ( w->moves >=  0 ) {
-		if ( w->moves == 2 ) {
+		if ( w->moves == THREAD_DEPTH ) {
 			// Reached the depth of the initial search
 			// Start up thread on this path
 			board* new_board = (board*) malloc( sizeof(board) );
+			validateAlloc ( new_board );
 			new_board->width = w->width;
 			new_board->height = w->height;
 			new_board->mask = w->mask;
 			new_board->moves = w->moves;
 			new_board->move_list = (move*) malloc(sizeof(move)*w->width*w->height);
+			validateAlloc ( new_board->move_list );
 			new_board->board_rep = (uint32_t*) calloc( sizeof(uint32_t), w->height );
+			validateAlloc ( new_board->board_rep );
 			memcpy( new_board->move_list, w->move_list, sizeof(move)*w->width*w->height );
 			memcpy( new_board->board_rep, w->board_rep, sizeof(uint32_t)*w->height );
 			inputs[in_counter] = new_board;
@@ -253,8 +276,9 @@ void setupThreads ( coordinate start, board* w )
 				return;
 		}
 	}
+	// Wait for all threads to finish before returning
 	void* status;
-	int t;
+	uint32_t t;
 	for (t = 0; t < in_counter; t++) {
 		pthread_join(thread[t], &status);
 	}
@@ -265,6 +289,7 @@ int main ( int argc, char *argv[] )
 {
 	// Allocate space for the board
 	board* w = (board*) malloc( sizeof(board) );
+	validateAlloc ( w );
 
 	// Allow inputting size of grid on command line
 	if ( argc == 3 ) {
@@ -279,7 +304,9 @@ int main ( int argc, char *argv[] )
 
 	// Allocate space for the board
 	w->board_rep = (uint32_t*)calloc( sizeof(uint32_t), w->height );
+	validateAlloc ( w->board_rep );
 	w->move_list = (move*)calloc( sizeof(move), w->width * w->height );
+	validateAlloc ( w->move_list );
 
 	// Set up the mask with the low bits equal to the width of the grid set to '1's
 	w->mask = 0;

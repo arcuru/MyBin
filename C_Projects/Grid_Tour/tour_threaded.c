@@ -10,14 +10,14 @@
 #define NDEBUG 1
 
 // Define threading defaults
-const uint32_t MAX_THREAD_COUNT = 4;
-const uint32_t THREAD_DEPTH = 2;
+uint32_t MAX_THREAD_COUNT = 4;
+int32_t THREAD_DEPTH = 2;
 
 uint32_t total = 0; //!< Full count of possible paths
 pthread_mutex_t tour_mutex = PTHREAD_MUTEX_INITIALIZER; //!< Mutex lock for updating count
 
 typedef struct {
-	uint32_t w;
+	uint64_t w;
 	uint32_t h;
 } coordinate; //!< Coordinate, with h being the index into 'board' and w being the bitwise representation of the current space
 
@@ -29,8 +29,8 @@ typedef struct {
 typedef struct {
 	size_t width; //!< Width of the board
 	size_t height; //!< Height of the board
-	uint32_t* board_rep; //!< Board in bitwise form. Each entry is a single row, '1's indicate free space
-	uint32_t mask; //!< Mask for the correct width of the board
+	uint64_t* board_rep; //!< Board in bitwise form. Each entry is a single row, '1's indicate free space
+	uint64_t mask; //!< Mask for the correct width of the board
 	move* move_list; //!< History of moves made on this board
 	int32_t moves; //!< Number of moves made on the board
 } board; //!< Total board representation
@@ -74,6 +74,11 @@ bool validCoord ( coordinate here, board* w )
 	return false;
 }
 
+/** Grid Traverse
+ *  Move to the next location on the board, backtraciing if necessary
+ *
+ *  @arg w Board to work on
+ */
 void gridTraverse ( board* w )
 {
 	coordinate next;
@@ -104,7 +109,7 @@ void gridTraverse ( board* w )
 				w->move_list[w->moves].dir = LEFT;
 				w->moves++;
 				w->move_list[w->moves].loc = next;
-				w->move_list[w->moves].dir = UP;
+				w->move_list[w->moves].dir = DOWN;
 				return ;
 			}
 		case LEFT:
@@ -220,12 +225,12 @@ void setupThreads ( coordinate start, board* w )
 			// Allocate space for the necessary copied arrays
 			new_board->move_list = (move*) malloc(sizeof(move)*w->width*w->height);
 			validateAlloc ( new_board->move_list );
-			new_board->board_rep = (uint32_t*) calloc( sizeof(uint32_t), w->height );
+			new_board->board_rep = (uint64_t*) calloc( sizeof(uint64_t), w->height );
 			validateAlloc ( new_board->board_rep );
 
 			// Copy over existing movements and grid
 			memcpy( new_board->move_list, w->move_list, sizeof(move)*w->width*w->height );
-			memcpy( new_board->board_rep, w->board_rep, sizeof(uint32_t)*w->height );
+			memcpy( new_board->board_rep, w->board_rep, sizeof(uint64_t)*w->height );
 
 			// Kick off new thread
 			inputs[thread_counter] = new_board;
@@ -260,12 +265,35 @@ int main ( int argc, char *argv[] )
 	validateAlloc ( w );
 
 	// Allow inputting size of grid on command line
-	if ( argc == 3 ) {
+	if ( argc == 4 ) {
+		w->width = atoi( argv[1] );
+		w->height = atoi( argv[2] );
+		int cores = atoi( argv[3] );
+		if ( cores <= 4 ) {
+			// Keep defaults
+			MAX_THREAD_COUNT = 4;
+			THREAD_DEPTH = 2;
+		}
+		else if ( cores <= 10 ) {
+			// Keep defaults
+			MAX_THREAD_COUNT = 10;
+			THREAD_DEPTH = 3;
+		}
+		else {
+			THREAD_DEPTH = 3;
+			MAX_THREAD_COUNT = 10;
+			int i;
+			for (i = 10; i <= cores; i*=3)
+				THREAD_DEPTH++;
+			MAX_THREAD_COUNT = i;
+		}
+	}
+	else if ( argc == 3 ) {
 		w->width = atoi( argv[1] );
 		w->height = atoi( argv[2] );
 	}
 	else if ( argc != 1 ) {
-		printf("Usage: %s <width=10> <height=4>\n", argv[0]);
+		printf("Usage: %s <width=10> <height=4> [<max threads=4>]\n", argv[0]);
 		printf("Executing with default inputs.");
 		// Default to problem specifics
 		w->width = 10;
@@ -278,7 +306,7 @@ int main ( int argc, char *argv[] )
 	}
 
 	// Allocate space for the board
-	w->board_rep = (uint32_t*)calloc( sizeof(uint32_t), w->height );
+	w->board_rep = (uint64_t*)calloc( sizeof(uint64_t), w->height );
 	validateAlloc ( w->board_rep );
 	w->move_list = (move*)calloc( sizeof(move), w->width * w->height );
 	validateAlloc ( w->move_list );
@@ -286,7 +314,7 @@ int main ( int argc, char *argv[] )
 	// Set up the mask with the low bits equal to the width of the grid set to '1's
 	w->mask = 0;
 	uint32_t i;
-	uint32_t bit = 1;
+	uint64_t bit = 1;
 	for (i = 0; i < w->width; i++) {
 		w->mask |= bit;
 		bit <<= 1;

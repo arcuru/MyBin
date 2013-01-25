@@ -74,6 +74,69 @@ bool validCoord ( coordinate here, board* w )
 	return false;
 }
 
+void gridTraverse ( board* w )
+{
+	coordinate next;
+	coordinate here = w->move_list[w->moves].loc;
+	// Finish if we are trying to pass through the finish line
+	if ( here.w == 1 && here.h == 0 ) {
+		w->moves--;
+		return ;
+	}
+	// Mark board with the current location
+	w->board_rep[ here.h ] ^= here.w;
+	if (w->board_rep[ here.h ] & here.w)
+		w->board_rep[ here.h ] ^= here.w;
+	// Perform movements based on current location and valid moves	
+	switch ( w->move_list[w->moves].dir ) {
+		case UP:
+			next.w = here.w; next.h = here.h + 1;
+			if ( validCoord( next, w ) ) {
+				w->move_list[w->moves].dir = DOWN;
+				w->moves++;
+				w->move_list[w->moves].loc = next;
+				w->move_list[w->moves].dir = UP;
+				return ;
+			}
+		case DOWN:
+			next.w = here.w; next.h = here.h - 1;
+			if ( validCoord( next, w ) ) {
+				w->move_list[w->moves].dir = LEFT;
+				w->moves++;
+				w->move_list[w->moves].loc = next;
+				w->move_list[w->moves].dir = UP;
+				return ;
+			}
+		case LEFT:
+			next.w = here.w >> 1; next.h = here.h;
+			if ( validCoord( next, w ) ) {
+				w->move_list[w->moves].dir = RIGHT;
+				w->moves++;
+				w->move_list[w->moves].loc = next;
+				w->move_list[w->moves].dir = UP;
+				return ;
+			}
+		case RIGHT:
+			next.w = here.w << 1; next.h = here.h;
+			if ( validCoord( next, w ) ) {
+				w->move_list[w->moves].dir = FINISHED;
+				w->moves++;
+				w->move_list[w->moves].loc = next;
+				w->move_list[w->moves].dir = UP;
+				return ;
+			}
+		case FINISHED:
+			w->board_rep[ here.h ] |= here.w;
+			w->moves--;
+			return ;
+		default:
+			// Fail out if reaching this area
+			assert( false );
+			exit(1);
+	}
+	return ;
+}
+
 /** Single Thread
  *  Performs a single thread of searching for a working path.
  *
@@ -91,72 +154,20 @@ void* executeThread ( void* input )
 	while ( w->moves >= minimum_moves ) {
 		if ( w->moves >= (int32_t)(w->width * w->height - 1) ) {
 			// Found a full working path
-			// Add to total
+
+			// No other checking should be necessary
 			assert( w->move_list[w->moves].loc.w == 1 && w->move_list[w->moves].loc.h == 0 );
+
+			// Add to local total
 			local_total++;
-			pthread_mutex_unlock( &tour_mutex );
+
+			// Remove marker from this position
 			w->board_rep[ w->move_list[w->moves].loc.h ] |= w->move_list[w->moves].loc.w;
 			w->moves--;
 			continue;
 		}
-		coordinate next;
-		coordinate here = w->move_list[w->moves].loc;
-		// Finish if we are trying to pass through the finish line
-		if ( here.w == 1 && here.h == 0 ) {
-			w->moves--;
-			continue;
-		}
-		// Mark board with the current location
-		w->board_rep[ here.h ] ^= here.w;
-		if (w->board_rep[ here.h ] & here.w)
-			w->board_rep[ here.h ] ^= here.w;
-		// Perform movements based on current location and valid moves	
-		switch ( w->move_list[w->moves].dir ) {
-			case UP:
-				next.w = here.w; next.h = here.h + 1;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = DOWN;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case DOWN:
-				next.w = here.w; next.h = here.h - 1;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = LEFT;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case LEFT:
-				next.w = here.w >> 1; next.h = here.h;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = RIGHT;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case RIGHT:
-				next.w = here.w << 1; next.h = here.h;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = FINISHED;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case FINISHED:
-				w->board_rep[ here.h ] |= here.w;
-				w->moves--;
-				continue;
-			default:
-				// Fail out if reaching this area
-				assert( false );
-				return NULL;
-		}
+		// Traverse to the next position or back up if done searching this position
+		gridTraverse ( w );
 	}
 
 	// Free allocated memory
@@ -179,12 +190,16 @@ void* executeThread ( void* input )
  */
 void setupThreads ( coordinate start, board* w )
 {
+	// Initialize threading defaults
 	pthread_t thread[MAX_THREAD_COUNT];
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 	board* inputs[MAX_THREAD_COUNT];
-	uint32_t in_counter = 0;
+
+	// Counter for the number of threads
+	uint32_t thread_counter = 0;
+
 	pthread_mutex_init(&tour_mutex, NULL);
 
 	w->moves = 0;
@@ -194,92 +209,45 @@ void setupThreads ( coordinate start, board* w )
 		if ( w->moves == THREAD_DEPTH ) {
 			// Reached the depth of the initial search
 			// Start up thread on this path
+
+			// Allocate space for a new board
 			board* new_board = (board*) malloc( sizeof(board) );
 			validateAlloc ( new_board );
-			new_board->width = w->width;
-			new_board->height = w->height;
-			new_board->mask = w->mask;
-			new_board->moves = w->moves;
+
+			// Copy over all non-pointer stuff
+			memcpy( new_board, w, sizeof(board) );
+
+			// Allocate space for the necessary copied arrays
 			new_board->move_list = (move*) malloc(sizeof(move)*w->width*w->height);
 			validateAlloc ( new_board->move_list );
 			new_board->board_rep = (uint32_t*) calloc( sizeof(uint32_t), w->height );
 			validateAlloc ( new_board->board_rep );
+
+			// Copy over existing movements and grid
 			memcpy( new_board->move_list, w->move_list, sizeof(move)*w->width*w->height );
 			memcpy( new_board->board_rep, w->board_rep, sizeof(uint32_t)*w->height );
-			inputs[in_counter] = new_board;
-			if ( pthread_create(&thread[in_counter], &attr, executeThread, (void*) inputs[in_counter]) ) {
+
+			// Kick off new thread
+			inputs[thread_counter] = new_board;
+			if ( pthread_create(&thread[thread_counter], &attr, executeThread, (void*) inputs[thread_counter]) ) {
 				printf("Pthread create failed\n");
 				exit(1);
 			}
 
-			in_counter++;
+			thread_counter++;
+
+			// Remove marker from current position
 			w->board_rep[ w->move_list[w->moves].loc.h ] |= w->move_list[w->moves].loc.w;
 			w->moves--;
 			continue;
 		}
-		coordinate next;
-		coordinate here = w->move_list[w->moves].loc;
-		// Finish if we are trying to pass through the finish line
-		if ( here.w == 1 && here.h == 0 ) {
-			w->moves--;
-			continue;
-		}
-		// Mark board with the current location
-		w->board_rep[ here.h ] ^= here.w;
-		if (w->board_rep[ here.h ] & here.w)
-			w->board_rep[ here.h ] ^= here.w;
-		// Perform movements based on current location and valid moves	
-		switch ( w->move_list[w->moves].dir ) {
-			case UP:
-				next.w = here.w; next.h = here.h + 1;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = DOWN;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case DOWN:
-				next.w = here.w; next.h = here.h - 1;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = LEFT;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case LEFT:
-				next.w = here.w >> 1; next.h = here.h;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = RIGHT;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case RIGHT:
-				next.w = here.w << 1; next.h = here.h;
-				if ( validCoord( next, w ) ) {
-					w->move_list[w->moves].dir = FINISHED;
-					w->moves++;
-					w->move_list[w->moves].loc = next;
-					w->move_list[w->moves].dir = UP;
-					continue;
-				}
-			case FINISHED:
-				w->board_rep[ here.h ] |= here.w;
-				w->moves--;
-				continue;
-			default:
-				// Fail out if reaching this area
-				assert( false );
-				return;
-		}
+		// Traverse to the next position or back up if done searching this position
+		gridTraverse ( w );
 	}
 	// Wait for all threads to finish before returning
 	void* status;
 	uint32_t t;
-	for (t = 0; t < in_counter; t++) {
+	for (t = 0; t < thread_counter; t++) {
 		pthread_join(thread[t], &status);
 	}
 	return;

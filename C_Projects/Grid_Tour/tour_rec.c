@@ -10,13 +10,13 @@
 typedef struct {
 	uint32_t w;
 	uint32_t h;
-} coordinate; //!< Coordinate, with h being the index into 'board' and w being the bitwise representation of the current space
+} coordinate; //!< Coordinates into the board, w along the width direction and h along the height direction
 
 typedef struct {
 	uint32_t total; //!< Total count of possible solutions
 	size_t width; //!< Width of the board
 	size_t height; //!< Height of the board
-	uint32_t* board_rep; //!< Board in bitwise form. Each entry is a single row, '1's indicate free space
+	bool* board_rep; //!< Board as a 2D array of booleans
 	uint32_t mask; //!< Mask for the correct width of the board
 } board; //!< Total board representation
 
@@ -30,8 +30,8 @@ typedef struct {
  */
 inline bool validCoord ( coordinate here, board* w )
 {
-	if ( (here.w & w->mask) != 0 && here.h < w->height )
-		if ( (w->board_rep[ here.h ] & here.w) != 0 )
+	if ( here.w < w->width && here.h < w->height )
+		if ( w->board_rep[ here.h*w->width + here.w ] == false )
 			return true;
 	return false;
 }
@@ -50,17 +50,17 @@ void countTours ( uint32_t moves, coordinate here, board* w )
 		// Based on other criteria, we shouldn't have to do any more checking
 		// Run checks only during debug
 		assert( moves == w->width * w->height );
-		assert( here.w == 1 && here.h == 0 );
+		assert( here.w == 0 && here.h == 0 );
 		w->total++;
 		return ;
 	}
 
 	// Optimize out the situation in which we are passing through the final point
-	if ( here.w == 1 && here.h == 0 )
+	if ( here.w == 0 && here.h == 0 )
 		return ;
 	
 	// Mark the board with the current position
-	w->board_rep[ here.h ] ^= here.w;
+	w->board_rep[ here.h*w->width + here.w ] = true;
 
 	// Move in each direction recursively if it's a valid direction
 	coordinate next;
@@ -76,17 +76,17 @@ void countTours ( uint32_t moves, coordinate here, board* w )
 		countTours ( moves + 1, next, w );
 
 	// Right
-	next.w = here.w << 1; next.h = here.h;
+	next.w = here.w + 1; next.h = here.h;
 	if ( validCoord( next, w ) )
 		countTours ( moves + 1, next, w );
 
 	// Left
-	next.w = here.w >> 1; next.h = here.h;
+	next.w = here.w - 1; next.h = here.h;
 	if ( validCoord( next, w ) )
 		countTours ( moves + 1, next, w );
 	
 	// Unmark the current place on the board and backtrace
-	w->board_rep[ here.h ] |= here.w;
+	w->board_rep[ here.h*w->width + here.w ] = false;
 	return ;
 }
 
@@ -111,7 +111,7 @@ int main ( int argc, char *argv[] )
 
 	// Allocate space for the board
 	w->total = 0;
-	w->board_rep = (uint32_t*)calloc( sizeof(uint32_t), w->height );
+	w->board_rep = (bool*)calloc( sizeof(bool), w->height * w->width );
 	if ( NULL == w->board_rep ) {
 		printf("Memory allocation failed.");
 		exit(1);
@@ -128,12 +128,12 @@ int main ( int argc, char *argv[] )
 
 	// Initialize board using the mask
 	for (i = 0; i < w->height; i++) {
-		w->board_rep[i] = w->mask;
+		w->board_rep[i] = false;
 	}
 
 	// Set up initial entry into the grid
 	coordinate h;
-	h.w = 1;
+	h.w = 0;
 	h.h = w->height - 1;
 
 	// Call recursive function

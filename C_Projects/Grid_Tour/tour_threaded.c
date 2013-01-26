@@ -89,9 +89,7 @@ void gridTraverse ( board* w )
 		return ;
 	}
 	// Mark board with the current location
-	w->board_rep[ here.h ] ^= here.w;
-	if (w->board_rep[ here.h ] & here.w)
-		w->board_rep[ here.h ] ^= here.w;
+	w->board_rep[ here.h ] &= ~here.w;
 	// Perform movements based on current location and valid moves	
 	switch ( w->move_list[w->moves].dir ) {
 		case UP:

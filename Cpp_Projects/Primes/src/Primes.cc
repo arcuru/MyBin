@@ -1,7 +1,9 @@
 #include "Primes.h"
 #include <cmath>
+#include <cassert>
+#include <cstdlib>
 
-#define DEBUG
+#define NDEBUG
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -46,7 +48,7 @@ bool Primes::isPrime(int n) const
 		return false;
 	if (!(n % 5))
 		return false;
-	if ( n < maxVal && pSieve != nullptr) {
+	if ( n < maxVal && pSieve != nullptr ) {
 		switch (n % 30) {
 			case 1:
 				return !(pSieve[n / 30] & 0x01);
@@ -102,22 +104,25 @@ int* Primes::getList(int end)
 	return pList;
 }
 
-#define	mark(mod,n)	if(mod>30) {							\
-						mod-=30;							\
-						n+=1;								\
-					}										\
-					kk=0;									\
-					switch(mod) {							\
-						case 1:		kk=0x01;	break;		\
-						case 7:		kk=0x02;	break;		\
-						case 11:	kk=0x04;	break;		\
-						case 13:	kk=0x08;	break;		\
-						case 17:	kk=0x10;	break;		\
-						case 19:	kk=0x20;	break;		\
-						case 23:	kk=0x40;	break;		\
-						case 29:	kk=0x80;	break;		\
-					}										\
-					primes[n] |= kk;
+inline void mark(int *mod, int *n, uint8_t* primes)
+{
+	if(*mod>30) {
+		(*mod)-=30;
+		(*n)+=1;
+	}
+	uint8_t kk=0;
+	switch(*mod) {
+		case 1:		kk=0x01;	break;
+		case 7:		kk=0x02;	break;
+		case 11:	kk=0x04;	break;
+		case 13:	kk=0x08;	break;
+		case 17:	kk=0x10;	break;
+		case 19:	kk=0x20;	break;
+		case 23:	kk=0x40;	break;
+		case 29:	kk=0x80;	break;
+	}
+	primes[*n] |= kk;
+}
 
 uint8_t* Primes::SieveOfEratosthenes(int N) const
 {
@@ -134,7 +139,7 @@ uint8_t* Primes::SieveOfEratosthenes(int N) const
 	int n, s, num, num1, num2, num4, num6;
 	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
 	int incr2, incr4, incr6, s30;
-	uint8_t k, kk;
+	uint8_t k;
 	primes[0] |= 1;
 	for (n = 0, num1 = 0; n <= sqrtEnd; num1 += 30, n++) {
 		for (k = 1; k; k += k) {
@@ -209,28 +214,28 @@ uint8_t* Primes::SieveOfEratosthenes(int N) const
 				incr6 = num6 / 30;
 				s30 = s / 30;
 				switch (k)do {
-					case 0x01: mark(mod,s30); s+=num6;
+					case 0x01: mark(&mod,&s30,primes); s+=num6;
 					if (s>=N) break;
 					s30+=incr6; mod+=mod23;
-					case 0x02: mark(mod,s30); s+=num4;
+					case 0x02: mark(&mod,&s30,primes); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 0x04: mark(mod,s30); s+=num2;
+					case 0x04: mark(&mod,&s30,primes); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
-					case 0x08: mark(mod,s30); s+=num4;
+					case 0x08: mark(&mod,&s30,primes); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 0x10: mark(mod,s30); s+=num2;
+					case 0x10: mark(&mod,&s30,primes); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
-					case 0x20: mark(mod,s30); s+=num4;
+					case 0x20: mark(&mod,&s30,primes); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 0x40: mark(mod,s30); s+=num6;
+					case 0x40: mark(&mod,&s30,primes); s+=num6;
 					if (s>=N) break;
 					s30+=incr6; mod+=mod23;
-					case 0x80: mark(mod,s30); s+=num2;
+					case 0x80: mark(&mod,&s30,primes); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
 				}while(1);

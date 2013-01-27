@@ -10,7 +10,7 @@ int main()
     int max=0;
     int maxnum=0;
     unsigned char* list = SieveEratosthenes(N);
-    int* primes = primeListE_inc(50000,list);
+    unsigned int* primes = primeListE_inc(50000,list);
     int ind,j;
     for (i=6; i<N; i+=2) { //only even numbers
     	j=-1;

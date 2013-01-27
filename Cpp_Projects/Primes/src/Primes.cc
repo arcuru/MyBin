@@ -110,18 +110,16 @@ inline void mark(int *mod, int *n, uint8_t* primes)
 		(*mod)-=30;
 		(*n)+=1;
 	}
-	uint8_t kk=0;
 	switch(*mod) {
-		case 1:		kk=0x01;	break;
-		case 7:		kk=0x02;	break;
-		case 11:	kk=0x04;	break;
-		case 13:	kk=0x08;	break;
-		case 17:	kk=0x10;	break;
-		case 19:	kk=0x20;	break;
-		case 23:	kk=0x40;	break;
-		case 29:	kk=0x80;	break;
+		case 1:		primes[*n] |= 0x01;	break;
+		case 7:		primes[*n] |= 0x02;	break;
+		case 11:	primes[*n] |= 0x04;	break;
+		case 13:	primes[*n] |= 0x08;	break;
+		case 17:	primes[*n] |= 0x10;	break;
+		case 19:	primes[*n] |= 0x20;	break;
+		case 23:	primes[*n] |= 0x40;	break;
+		case 29:	primes[*n] |= 0x80;	break;
 	}
-	primes[*n] |= kk;
 }
 
 uint8_t* Primes::SieveOfEratosthenes(int N) const

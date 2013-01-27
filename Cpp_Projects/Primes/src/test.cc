@@ -5,16 +5,16 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	Primes p(atoi(argv[1]));
+	int tmp = 1000000;
+	if ( argc > 1 )
+		tmp = atoi(argv[1]);
+	Primes p( tmp );
 	int* list = p.getList();
-	int count = 0;
-	int max = 0;
+	uint64_t max = 0;
 	for (int i = 0; list[i] != 0; i++) {
-		count++;
-		max = list[i];
+		max += list[i];
 	}
 	cout << max << endl;
-	cout << count << endl;
 	return 0;
 }
 

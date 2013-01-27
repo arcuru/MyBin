@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -g -fopenmp -Werror
+CFLAGS=-Wall -Wextra -g -fopenmp -Werror -O3
 INCLUDE_DIR=-I./inc \
 			-I../Utils/inc \
 			-I../Primes/inc \
@@ -11,7 +11,7 @@ MYLIBS=../Utils/libUtils.a \
 	 ../NumberTheory/libNumberTheory.a \
 	 ../Sort/libSort.a \
 	 ../Sudoku/libSudoku.a
-LIBS=-pthread -lgomp -lm $(MYLIBS)
+LIBS=-pthread -lgomp -lm $(MYLIBS) -O3
 HEADERS=./inc/Euler.h
 SOURCES=./src/main.c \
 		./src/108.c \

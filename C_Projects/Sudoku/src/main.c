@@ -19,6 +19,7 @@ typedef struct {
 static puzzle_struct* SolvingIt(puzzle_struct*);
 static puzzle_struct* Reduction(puzzle_struct*);
 static puzzle_struct* LonelyNum(puzzle_struct*);
+static puzzle_struct* LonelyBox(puzzle_struct*);
 static puzzle_struct* Twos(puzzle_struct*);
 static puzzle_struct* Remove(puzzle_struct*, int, int);
 static puzzle_struct* RemoveSingle(puzzle_struct*, int, int, int);
@@ -97,19 +98,28 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
     //Main solving loop
     while (oldValue > puz->value && puz->value > 81) {
         oldValue = puz->value;
-        puz = LonelyNum(puz);
-        if ((puz == nullptr) || (puz->value == 81))
-            return puz;
-        else if (puz->value < 81){
-            free(puz);
-            return nullptr;
-        }
+		puz = LonelyNum(puz);
+		if ((puz == nullptr) || (puz->value == 81))
+			return puz;
+		else if (puz->value < 81) {
+			free(puz);
+			return nullptr;
+		}
+		puz = LonelyBox(puz);
+		if ((puz == nullptr) || (puz->value == 81))
+			return puz;
+		else if (puz->value < 81) {
+			free(puz);
+			return nullptr;
+		}
         puz = Twos(puz);
     }
     if (puz->value == 81)
         return puz;
-    else if (puz->value < 81)
+    else if (puz->value < 81) {
+		//free(puz);
         return nullptr;
+	}
     if (CheckSudoku_Bits(puz) || guess >= guesslimit)
         return puz;
     int s, i, n;
@@ -171,6 +181,46 @@ static puzzle_struct* Reduction(puzzle_struct* puz)
                     puz = Remove(puz, r, c);
     }
     return puz;
+}
+
+//Checks for a number in a row/column that is unique within a box
+//i.e. - The only 4's in col 5 are in the lowest box, so remove
+//all other 4s from that box
+//TODO: Reverse of this (search boxes for numbers unique to a row/col)
+
+static puzzle_struct* LonelyBox(puzzle_struct* puz)
+{
+	uint_fast16_t oldValue = 9 * 81;
+	uint_fast16_t boxa[3];
+	uint_fast16_t boxb[3];
+	uint_fast8_t a, b, i;
+    while ((oldValue > puz->value) && (puz->value > 81)) {
+        oldValue = puz->value;
+		boxa[0] = boxa[1] = boxa[2] = 0;
+		boxb[0] = boxb[1] = boxb[2] = 0;
+        for (a = 0; a < 9; ++a) {
+			for (i = 0; i < 3; ++i) {
+				for (b = 0; b < 3; ++b) {
+					boxa[i] |= puz->body[SUDOKU_INDEX(a, b+(i*3))];
+					boxb[i] |= puz->body[SUDOKU_INDEX(b+(i*3), a)];
+				}
+			}
+			uint_fast16_t xor;
+			xor = boxa[0] ^ boxa[1] ^ boxa[2];
+			xor ^= (boxa[0] & boxa[1] & boxa[2]);
+			// At this point, the only bits in xor that are set are in only one box
+			if (0 != xor) {
+				for (b = 0; b < 3; ++b) {
+					boxa[i];
+				}
+			}
+
+
+
+			boxb_xor = boxb[0] ^ boxb[1] ^ boxb[2];
+		}
+	}
+	return puz;
 }
 
 //Checks for a number that is alone in a column, row, or box

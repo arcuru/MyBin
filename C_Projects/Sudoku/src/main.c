@@ -19,7 +19,7 @@ typedef struct {
 static puzzle_struct* SolvingIt(puzzle_struct*);
 static puzzle_struct* Reduction(puzzle_struct*);
 static puzzle_struct* LonelyNum(puzzle_struct*);
-static puzzle_struct* LonelyBox(puzzle_struct*);
+//static puzzle_struct* LonelyBox(puzzle_struct*);
 static puzzle_struct* Twos(puzzle_struct*);
 static puzzle_struct* Remove(puzzle_struct*, int, int);
 static puzzle_struct* RemoveSingle(puzzle_struct*, int, int, int);
@@ -105,6 +105,7 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
 			free(puz);
 			return nullptr;
 		}
+		/*
 		puz = LonelyBox(puz);
 		if ((puz == nullptr) || (puz->value == 81))
 			return puz;
@@ -112,6 +113,7 @@ static puzzle_struct* SolvingIt(puzzle_struct* puz)
 			free(puz);
 			return nullptr;
 		}
+		*/
         puz = Twos(puz);
     }
     if (puz->value == 81)
@@ -187,13 +189,14 @@ static puzzle_struct* Reduction(puzzle_struct* puz)
 //i.e. - The only 4's in col 5 are in the lowest box, so remove
 //all other 4s from that box
 //TODO: Reverse of this (search boxes for numbers unique to a row/col)
-
+/*
 static puzzle_struct* LonelyBox(puzzle_struct* puz)
 {
 	uint_fast16_t oldValue = 9 * 81;
 	uint_fast16_t boxa[3];
 	uint_fast16_t boxb[3];
 	uint_fast8_t a, b, i;
+	// Loop till we go through a loop without change
     while ((oldValue > puz->value) && (puz->value > 81)) {
         oldValue = puz->value;
 		boxa[0] = boxa[1] = boxa[2] = 0;
@@ -201,10 +204,13 @@ static puzzle_struct* LonelyBox(puzzle_struct* puz)
         for (a = 0; a < 9; ++a) {
 			for (i = 0; i < 3; ++i) {
 				for (b = 0; b < 3; ++b) {
+					// A for a row, B for a column
+					// boxa[0] contains all the values in boxa
 					boxa[i] |= puz->body[SUDOKU_INDEX(a, b+(i*3))];
 					boxb[i] |= puz->body[SUDOKU_INDEX(b+(i*3), a)];
 				}
 			}
+			// Search for values that are unique to one of the boxes in the column
 			uint_fast16_t xor;
 			xor = boxa[0] ^ boxa[1] ^ boxa[2];
 			xor ^= (boxa[0] & boxa[1] & boxa[2]);
@@ -222,6 +228,7 @@ static puzzle_struct* LonelyBox(puzzle_struct* puz)
 	}
 	return puz;
 }
+*/
 
 //Checks for a number that is alone in a column, row, or box
 //Simplifies the case where multiple #'s are left at a single

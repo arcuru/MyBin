@@ -5,7 +5,7 @@ int64_t Euler_14()
 	int maxval = 1000000;
     int longest = 0, longval = 0;
     int count;
-#pragma omp parallel for
+//#pragma omp parallel for
 	for (count = maxval-1; count > maxval/2; count-=2) {
         int length = 0;
         uint64_t series = count;

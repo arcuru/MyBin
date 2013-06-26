@@ -1,11 +1,12 @@
 #include "Euler.h"
+#include <stdlib.h>
 
 int64_t Euler_14()
 {
 	const int maxval = 1000000;
 	int longest = 0, longval = 0;
 	int count;
-	int16_t cache[maxval];
+	int16_t* cache = (int16_t*) calloc(sizeof(int16_t), maxval + 1);
 	//#pragma omp parallel for
 	for (count = 1; count <= maxval; ++count) {
 		int length = 0;
@@ -31,5 +32,6 @@ int64_t Euler_14()
 		}
 	}
 	// Longest is 524
+	free( cache );
 	return longval;
 }

@@ -24,8 +24,8 @@ int64_t Euler_4()
 	int a, b, ans=0;
 	for (a=999; a; a--) {
 		for (b=999; b>=a; b--) {
-            if (Palindrome(a * b) == 1) {
-                if (a * b > ans) {
+            if (a * b > ans) {
+				if (Palindrome(a * b) == 1) {
                     ans = a * b;
                 }
             }

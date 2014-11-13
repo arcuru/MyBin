@@ -6,13 +6,14 @@ static const char
 
 int64_t Euler_8()
 {
-    int biggest = 0;
+    int64_t biggest = 0;
     int start;
-    for (start = 0; start < 996; start++) {
-        int total = 1;
+	int digits = 13;
+    for (start = 0; start < 1000-digits; start++) {
+        int64_t total = 1;
         int i;
-        for (i = 0; i < 5; i++)
-            total *= (int) num[start + i] - '0';
+        for (i = 0; i < digits; i++)
+            total *= (int64_t) num[start + i] - '0';
         if (total > biggest)
             biggest = total;
     }

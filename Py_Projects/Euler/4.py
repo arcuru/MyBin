@@ -7,13 +7,19 @@ def Euler_4(n=3):
 	# Set an initial value of 0 for maxval
 	maxval = 0
 
+	# Iterate over all possible combinations
 	for a in range (10**n-1, 0, -1):
 		for b in range (10**n-1, 0, -1):
+
+			# Check to see if we've gone too far
 			if maxval > a*b:
 				break
+
+			# Check if it's a palindrome
 			if a*b == reverseNumber(a*b):
 				maxval = a*b
 				break
+
 	return maxval
 
 def reverseNumber(number):

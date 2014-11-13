@@ -1,22 +1,19 @@
 #include "Euler.h"
-#include "NumberTheory.h"
+#include <stdbool.h>
 
-static int Palindrome(int num)
+// Checks if a number is a Palindrome
+static bool Palindrome(int num)
 {
-    int size = 0;
-    int tmp = num;
-    while (tmp > 0) {
-        tmp = tmp / 10;
-        size++;
-    }
-    int count = 0;
-    while (count <= size - 1 - count) {
-        if ((num / (Power(10, count))) % 10 != (num / (Power(10, (size - 1 - count)))) % 10) {
-			return 0;
-        }
-        count++;
-    }
-    return 1;
+	int rev = 0;
+	int tmpnum = num;
+	while ( tmpnum > 0 ) {
+		rev *= 10;
+		rev += tmpnum % 10;
+		tmpnum /= 10;
+	}
+	if ( rev == num )
+		return true;
+	return false;
 }
 
 int64_t Euler_4()

@@ -1,4 +1,5 @@
-def Euler_79(passfile='79.txt'):
+from io import open
+def Euler_79(passfile='079.txt'):
     '''Find the secret password, knowing that each line of the input
         file contains an in order subset of the password chars
 

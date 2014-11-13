@@ -1,6 +1,7 @@
 import itertools
 import gmpy2
-def Euler_98(i_file='98.txt'):
+from io import open
+def Euler_98(i_file='098.txt'):
 	'''Find the largest square anagram in the given text file
 		The anagram of the word must exist in the text file
 	'''

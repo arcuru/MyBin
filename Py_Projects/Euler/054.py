@@ -1,4 +1,4 @@
-def Euler_54(i_file="54.txt"):
+def Euler_54(i_file="054.txt"):
 	'''Determine how many hands of poker player 1 wins
 	'''
 	def import_line(i_file):

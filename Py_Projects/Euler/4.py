@@ -11,7 +11,7 @@ def Euler_4(n=3):
 		for b in range (10**n-1, 0, -1):
 			if maxval > a*b:
 				break
-			if isPalindrome(a*b):
+			if a*b == reverseNumber(a*b):
 				maxval = a*b
 				break
 	return maxval
@@ -29,16 +29,6 @@ def reverseNumber(number):
 		rev += number % 10
 		number //= 10
 	return rev
-
-
-def isPalindrome(number):
-	''' Return true if a number is a palindrome
-		False otherwise
-	'''
-
-	if number == reverseNumber(number):
-		return True
-	return False
 
 if __name__ == '__main__':
 	print(Euler_4())

@@ -2,7 +2,7 @@ def Euler_120(bot=3,top=1000):
 	''' Returns the sum of the max remainders between bot and top inclusive
 		when using the formula (a-1)^n+(a+1)^n % a^2
 	'''
-	from gmpy import mpz
+	from gmpy2 import mpz
 	total = 0
 	for x in range(bot,top+1):
 		a = mpz(x)

@@ -1,4 +1,4 @@
-from gmpy import mpz
+from gmpy2 import mpz
 from primes import Primes
 def Euler_123(low = 10**10):
 	''' Returns the nth prime that has a remainder above low when using

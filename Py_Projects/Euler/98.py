@@ -1,5 +1,5 @@
 import itertools
-import gmpy
+import gmpy2
 def Euler_98(i_file='98.txt'):
 	'''Find the largest square anagram in the given text file
 		The anagram of the word must exist in the text file
@@ -41,11 +41,11 @@ def Euler_98(i_file='98.txt'):
 		letter_set = tuple(ord(c) for c in set(word))
 		for guess in itertools.permutations(digits, len(letter_set)):
 			translation = dict(zip(letter_set, guess))
-			if not gmpy.is_square(int(word.translate(translation))):
+			if not gmpy2.is_square(int(word.translate(translation))):
 				continue
 			word_dict = {x:word.count(x) for x in word}
 			for candidate in word_tuple:
-				if word_dict == {x:candidate.count(x) for x in candidate} and gmpy.is_square(int(candidate.translate(translation))):
+				if word_dict == {x:candidate.count(x) for x in candidate} and gmpy2.is_square(int(candidate.translate(translation))):
 					if int(candidate.translate(translation)) > max_sq:
 						max_sq = int(candidate.translate(translation))
 						max_length = len(candidate)

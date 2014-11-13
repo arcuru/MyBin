@@ -1,11 +1,11 @@
-import gmpy
+import gmpy2
 def Euler_104():
 	'''Find the index of the first Fibonacci number with first and last 9 digits pandigital
 	'''
 	# a is lower fib number, b is higher fib number
 	# index is the fibonacci index of b
 
-	(a, b, index) = (gmpy.mpz(1), gmpy.mpz(1), 2)
+	(a, b, index) = (gmpy2.mpz(1), gmpy2.mpz(1), 2)
 	while True:
 		(a, b, index) = (b, a + b, index + 1)
 		low_num = b % (10 ** 9)

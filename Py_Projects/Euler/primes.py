@@ -1,3 +1,6 @@
+
+# This file is Python 3 code
+
 def isPrime(num):
 	if num < 10:
 		if num < 2:
@@ -151,8 +154,10 @@ class PosPrimes:
 			raise StopIteration
 		return self.current
 
-
 class PrimesIter:
+	''' Prime iterator
+		TODO: May be easier to just convert this to a generator...
+	'''
 
 	def __init__(self, max):
 		self.max = max

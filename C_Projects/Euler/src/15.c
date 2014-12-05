@@ -3,53 +3,32 @@
 
 int64_t Euler_15()
 {
-    int grid = 20;
-    int64_t* array1 = (int64_t*) calloc(grid + 2, sizeof (int64_t));
-    array1[0] = 1;
-    int count = 1;
-    int index = 0;
-    int check = 0;
-    int64_t* array2 = (int64_t*) calloc(grid + 2, sizeof (int64_t));
-    while (count <= grid) {
-        count++;
-        check = 0;
-        while (check < count) {
-            if (check == 0) {
-                array2[0] = array1[0];
-            } else if (check != count - 1) {
-                array2[check] = array1[check - 1] + array1[check];
-            } else if (check == count - 1) {
-                array2[check] = array1[check - 1];
-            }
-            check++;
-        }
-        index = 0;
-        while (index <= count) {
-            array1[index] = array2[index];
-            index++;
-        }
-        array1[count] = 0;
-    }
-    count--;
-    while (count > 0) {
-        int check = 0;
-        while (check <= count) {
-            if (check < count) {
-                array2[check] = array1[check] + array1[check + 1];
-            } else if (check == count) {
-                array2[check] = 0;
-            }
-            check++;
-        }
-        index = 0;
-        while (index <= count) {
-            array1[index] = array2[index];
-            index++;
-        }
-        count--;
-    }
-    int64_t ans = array1[0];
-    free(array1);
-    free(array2);
-    return (int64_t) ans;
+	size_t side = 20; // Size of grid
+	side++; // Grid has side + 1 vertexes in each direction
+
+	// Create a grid of values for the number of paths to each vertex
+	// Each point corresponds to a vertex in the grid
+	uint64_t grid[ side ][ side ];
+	
+	// Initialize starting position
+	grid[0][0] = 1;
+
+	// Iterate and combine
+	size_t x;
+	size_t y;
+	for (x = 0; x < side; x++) {
+		for (y = 0; y < side; y++) {
+			// Need to initialize values to 0 (skipping first vertex)
+			if (x > 0 || y > 0)
+				grid[x][y] = 0;
+
+			// Add # of paths to the vertes to the left if it exists
+			if (x > 0)
+				grid[x][y] += grid[x-1][y];
+			// Add # of paths to the vertex above if it exists
+			if (y > 0)
+				grid[x][y] += grid[x][y-1];
+		}
+	}
+	return (int64_t) grid[side-1][side-1];
 }

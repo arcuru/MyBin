@@ -160,6 +160,7 @@ uint32_t* primeListE_inc(uint32_t N, const uint8_t* prime)
 		for (k = 0, s = 1; s; k++, s += s)
 			if (!(prime[n] & s))
 				top++;
+	top++; // Add one so that we have space for the endpoint value
 
 	uint32_t* list = (uint32_t*) (malloc)(sizeof(uint32_t) * top);
 	if (!list) {

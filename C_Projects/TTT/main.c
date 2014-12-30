@@ -197,7 +197,7 @@ move_t pickMove ( board_t board[3][3], uint32_t difficulty, uint32_t current_dep
 		}
 	}
 	if ( -1 == m.x ) {
-		// Losses or ties everywhere, pick at random
+		// Losses everywhere, pick at random
 		int g = rand() % 9;
 		while ( EMPTY != board[g/3][g%3] )
 			g = rand() % 9;
@@ -209,7 +209,6 @@ move_t pickMove ( board_t board[3][3], uint32_t difficulty, uint32_t current_dep
 	printf("Meh!\n");
 	return m;
 }
-
 
 uint8_t getUserInput ( )
 {

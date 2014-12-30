@@ -29,5 +29,7 @@ int main()
             printf("%d\t%d\n",max,maxnum);
         }
     }
+	free(list);
+	free(primes);
     return 0;
 }

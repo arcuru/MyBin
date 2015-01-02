@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <math.h>
 
-static int isPal(int* num, int size)
+static bool isPal(int* num, int size)
 {
     int n;
     for (n = 0; n <= (size >> 1); n++) {
         if (num[n] != num[size - n])
-            return FALSE;
+            return false;
     }
-    return TRUE;
+    return true;
 }
 
 static int incrNum(int* num, int size)

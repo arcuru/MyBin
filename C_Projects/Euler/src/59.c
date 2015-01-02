@@ -22,20 +22,20 @@ int64_t Euler_59()
     }
     int decode[3];
     int64_t total=0;
-    int print = FALSE;
+    int print = false;
     for (decode[0] = 'a'; decode[0] <= 'z'; decode[0]++) {
         for (decode[1] = 'a'; decode[1] <= 'z'; decode[1]++) {
             for (decode[2] = 'a'; decode[2] <= 'z'; decode[2]++) {
-                print = TRUE;
+                print = true;
                 //printf("%c%c%c\n",decode[0],decode[1],decode[2]);
                 for (i = 0; i < 1201; i++) {
                     A[i] = (char) (FileArray[i] ^ decode[i % 3]);
                     if (A[i]>'z' || A[i]<' ') {
-                        print=FALSE;
+                        print = false;
                         break;
                     }
                     if (A[i-3]=='G' && A[i-2]=='o' && A[i-1]=='d') {
-                        print = TRUE;
+                        print = true;
                     }
                 }
                 if (print) {

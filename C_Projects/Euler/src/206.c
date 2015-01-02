@@ -3,7 +3,7 @@
 static int works(uint64_t n)
 {
     int64_t test = (n * n) / 100;
-    int out = TRUE;
+    bool out = true;
     int i;
     for (i = 8; i > 0 && out; i--) {
         out = (test % 10 == i);

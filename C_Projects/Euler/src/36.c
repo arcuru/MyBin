@@ -4,7 +4,7 @@ static const int top = 1000000;
 static char binary[32];
 static int g1 = 0;
 
-static int isPal(int n)
+static bool isPal(int n)
 {
     int count = 0;
     short array[6];
@@ -17,22 +17,22 @@ static int isPal(int n)
     int i;
     for (i = 0; end - i > 0; i++) {
         if (array[i] != array[end])
-            return FALSE;
+            return false;
         end--;
     }
-    return TRUE;
+    return true;
 }
 
-static int isPal2()
+static bool isPal2()
 {
     g1--;
     int i;
     for (i = 0; g1 - i > 0; i++) {
         if (*(binary + i) != *(binary + g1))
-            return FALSE;
+            return false;
         g1--;
     }
-    return TRUE;
+    return true;
 }
 
 static void base2(int n)

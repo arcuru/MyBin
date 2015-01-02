@@ -44,10 +44,10 @@ static void makeArray()
     }
 }
 
-static int PrimeFactorCheck(int a, int b) //TRUE if it matches something else
+static bool PrimeFactorCheck(int a, int b) //TRUE if it matches something else
 {
     if (factorarray[a][0] == 0)
-        return FALSE;
+        return false;
     int base = factorarray[a][0];
     int num = factorarray[a][b];
     int i, dex;
@@ -56,18 +56,18 @@ static int PrimeFactorCheck(int a, int b) //TRUE if it matches something else
             continue;
         for (dex = 2; factorarray[i][dex] <= num && dex <= 100; dex++) {
             if (factorarray[i][dex] == num) {
-                return TRUE;
+                return true;
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
 int64_t Euler_29()
 {
     makeArray();
     int count = 0;
-    int breaking = FALSE;
+    bool breaking = false;
     int a, b, i, dex;
     for (a = 2; a <= 100; a++) {
         for (b = 2; b <= 100; b++) {
@@ -77,7 +77,7 @@ int64_t Euler_29()
                     if (pow(i, dex) == a) {
                         if (b * dex <= 100) {
                             count--;
-                            breaking = TRUE;
+                            breaking = true;
                             break;
                         }
                     }
@@ -87,7 +87,7 @@ int64_t Euler_29()
                 }
             }
             if (breaking) {
-                breaking = FALSE;
+                breaking = false;
                 continue;
             }
             if (PrimeFactorCheck(a, b)) {

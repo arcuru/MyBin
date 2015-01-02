@@ -77,10 +77,7 @@ int64_t Euler_49	()	;
 int64_t Euler_50	()	;
 int64_t Euler_51	()	;
 int64_t Euler_52	()	;
-int64_t Euler_53	()
-{
-    return 0;
-}
+int64_t Euler_53	()  ;
 int64_t Euler_54	()
 {
     return 0;
@@ -90,10 +87,7 @@ int64_t Euler_56	()
 {
     return 0;
 }
-int64_t Euler_57	()
-{
-    return 0;
-}
+int64_t Euler_57	()  ;
 int64_t Euler_58	()	;
 int64_t Euler_59	()	;
 int64_t Euler_60	()	;
@@ -133,10 +127,7 @@ int64_t Euler_71	()
     return 0;
 }
 int64_t Euler_72	()	;
-int64_t Euler_73	()
-{
-    return 0;
-}
+int64_t Euler_73	()  ;
 int64_t Euler_74	()	;
 int64_t Euler_75	()	;
 int64_t Euler_76	()	;

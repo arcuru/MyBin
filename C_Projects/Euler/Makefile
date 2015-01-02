@@ -11,7 +11,7 @@ MYLIBS=../Utils/libUtils.a \
 	 ../NumberTheory/libNumberTheory.a \
 	 ../Sort/libSort.a \
 	 ../Sudoku/libSudoku.a
-LIBS=-pthread -lgomp -lm $(MYLIBS) -O3
+LIBS=-pthread -lgomp -lgmp -lm $(MYLIBS) -O3
 HEADERS=./inc/Euler.h
 SOURCES=./src/main.c \
 		./src/108.c \
@@ -70,7 +70,9 @@ SOURCES=./src/main.c \
 		./src/50.c \
 		./src/51.c \
 		./src/52.c \
+		./src/53.c \
 		./src/55.c \
+		./src/57.c \
 		./src/58.c \
 		./src/59.c \
 		./src/5.c \
@@ -80,6 +82,7 @@ SOURCES=./src/main.c \
 		./src/6.c \
 		./src/70.c \
 		./src/72.c \
+		./src/73.c \
 		./src/74.c \
 		./src/75.c \
 		./src/76.c \

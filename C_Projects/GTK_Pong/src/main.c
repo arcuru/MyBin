@@ -47,7 +47,7 @@ void Fill(GdkGC*, gint x, gint y, gint width, gint height);
 
 gint UniformRandom(gint minimum, gint maximum) {
     // Choose a uniform random value
-    static gboolean seeded = FALSE;
+    static gboolean seeded = false;
     static unsigned long heuristic_sequence = 0;
     if (!seeded) { // Seed the random number generator with time of day
         struct timeval tv;
@@ -56,7 +56,7 @@ gint UniformRandom(gint minimum, gint maximum) {
         gint seed = (tv.tv_sec ^ tv.tv_usec ^ (heuristic_sequence << 8))
                 & 0x7fffffff;
         srand48(seed);
-        seeded = TRUE;
+        seeded = true;
     }
     gdouble r = drand48();
     return (minimum + r * (maximum - minimum));
@@ -109,7 +109,7 @@ gint main(gint argc, char** argv) {
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(window, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+    gtk_window_set_resizable(GTK_WINDOW(window), false);
     gtk_window_set_title(GTK_WINDOW(window), "GTK Pong");
 
     draw = gtk_drawing_area_new();
@@ -157,8 +157,8 @@ gint main(gint argc, char** argv) {
         ball->dy *= -1;
 
     Fill(white, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-    DrawPaddle(TRUE);
-    DrawBall(TRUE);
+    DrawPaddle(true);
+    DrawBall(true);
 
 #ifdef DEBUG
     ball->dx = 0;
@@ -167,8 +167,8 @@ gint main(gint argc, char** argv) {
     for (g_usleep(2 * G_USEC_PER_SEC); g_main_context_iteration(NULL, 0);)
         ;
 #endif
-    while (TRUE) {
-        DrawBall(FALSE);
+    while (true) {
+        DrawBall(false);
         gint i;
         for (i = 0; i < ABS(ball->dx) || i < ABS(ball->dy); ++i) {//Move ball
             if (i < ABS(ball->dx)) {
@@ -186,7 +186,7 @@ gint main(gint argc, char** argv) {
                 }
             }
         }
-        DrawBall(TRUE);
+        DrawBall(true);
         for (g_usleep(20000); g_main_context_iteration(NULL, 0);)
             ;
     }
@@ -196,7 +196,7 @@ gint main(gint argc, char** argv) {
 //Fill in a rectangle with given dimensions and color
 
 void Fill(GdkGC *color, gint x, gint y, gint width, gint height) {
-    gdk_draw_rectangle(pixmap, color, TRUE, x, y, width, height);
+    gdk_draw_rectangle(pixmap, color, true, x, y, width, height);
     gtk_widget_queue_draw_area(draw, x, y, width, height);
 }
 
@@ -204,7 +204,7 @@ void Fill(GdkGC *color, gint x, gint y, gint width, gint height) {
 //true to draw, false to erase
 
 void DrawBall(gboolean set) {
-    if (set == TRUE)
+    if (set == true)
         gdk_draw_pixbuf(pixmap, NULL, ballimage, ball->xsrc, ball->ysrc,
             ball->x, ball->y, ball->width, ball->height,
             GDK_RGB_DITHER_NORMAL, 0, 0);
@@ -233,30 +233,30 @@ void PaddleCollision(gboolean set) {
 gboolean checkPos() {
     if ((ball->x + ball->width >= DISPLAY_WIDTH) || (ball->x <= 0) || (ball->y
             <= 0)) {
-        return FALSE;
+        return false;
     } else if (ball->y + ball->height >= paddle->y) {
         if (DISPLAY_WIDTH - paddle->x < paddle->width) {//paddle is wrapped around
             if (ball->x <= paddle->x + paddle->width - DISPLAY_WIDTH) {
-                PaddleCollision(TRUE);
-                return FALSE;
+                PaddleCollision(true);
+                return false;
             }
         }
         if (((ball->x >= paddle->x) && (ball->x <= paddle->x + paddle->width))
                 || ((ball->x + ball->width >= paddle->x) && (ball->x
                 + ball->width <= paddle->x + paddle->width))) {//Ball hit the paddle
-            PaddleCollision(TRUE);
-            return FALSE;
+            PaddleCollision(true);
+            return false;
         }
-        PaddleCollision(FALSE);
+        PaddleCollision(false);
     }
-    return TRUE;
+    return true;
 }
 
 //Draws or removes entire paddle from show
 //Set=true to draw, false to remove
 
 void DrawPaddle(gboolean set) {
-    if (set == TRUE) {
+    if (set == true) {
         if (DISPLAY_WIDTH - paddle->x < paddle->width) {
             Fill(black, paddle->x, paddle->y, DISPLAY_WIDTH - paddle->x,
                     paddle->height);
@@ -279,11 +279,11 @@ void DrawPaddle(gboolean set) {
 //Move paddle based on keystroke
 
 void movePaddle(gint direction) {
-    DrawPaddle(FALSE);
+    DrawPaddle(false);
     paddle->x += paddle->speed * direction;
     while (paddle->x < 0) //Keep 0 < paddle->x < DISPLAY_WIDTH
         paddle->x += DISPLAY_WIDTH;
     while (paddle->x > DISPLAY_WIDTH)
         paddle->x -= DISPLAY_WIDTH;
-    DrawPaddle(TRUE);
+    DrawPaddle(true);
 }

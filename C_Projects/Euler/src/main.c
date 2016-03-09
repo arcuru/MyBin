@@ -6,7 +6,7 @@
 
 static void Fill_Euler_FunctionArray();
 static int64_t (*Euler[301])() = {NULL};
-static int suppress_time=FALSE;
+static int suppress_time=false;
 
 static void Euler_Compute_Ans(int number)
 {
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
         int i;
         for (i = 1; i < argc; i++) {
             if ('t'==*argv[i]) {
-                suppress_time=TRUE;
+                suppress_time=true;
                 continue;
             }
             int tmp = atoi(argv[i]);

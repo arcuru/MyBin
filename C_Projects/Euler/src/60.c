@@ -14,10 +14,10 @@ static int Concatenate(int n, int h)
     int num1 = n * pow(10, Length_int(h)) + h;
     int num2 = h * pow(10, Length_int(n)) + n;
     if (!PIndex[num1])
-        return FALSE;
+        return false;
     else if (!PIndex[num2])
-        return FALSE;
-    return TRUE;
+        return false;
+    return true;
 }
 
 static void rec(int* list, int place, uint32_t* primelist, int index)
@@ -39,11 +39,11 @@ static void rec(int* list, int place, uint32_t* primelist, int index)
     int i;
     for (i = index; primelist[i]; i++) {
         list[place] = primelist[i];
-        int works = TRUE;
+        int works = true;
         int n;
         for (n = 1; n < place; n++) {
             if (!Concatenate(list[n], list[place])) {
-                works = FALSE;
+                works = false;
                 break;
             }
         }

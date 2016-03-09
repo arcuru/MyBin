@@ -48,7 +48,7 @@ static int* SolvingIt(int* puzzle) {
 
 		//PrintSudoku(puzzle);
 		puzzleValue=GetValue(puzzle);
-		while(TRUE){
+		while(true){
 			LonelyNum(puzzle);
 			if (GetValue(puzzle)==puzzleValue)
 				break;
@@ -286,17 +286,17 @@ static int* NumFill(int* list, int num, int pos) {
 //according to basic rules
 int CheckSudoku(int* puzzle) {
 	if (puzzle==NULL)
-		return FALSE;
+		return false;
 	if (GetValue(puzzle) != 81)
-		return FALSE;
+		return false;
 	int a, b, i, r, c, n;
 	for (a = 0; a < 9; a++)
 		for (b = 0; b < 9; b++)
 			for (i = b + 1; i < 9; i++) {
 				if (puzzle[SUDOKU_INDEX(b,a)] == puzzle[SUDOKU_INDEX(i,a)])
-					return FALSE;
+					return false;
 				if (puzzle[SUDOKU_INDEX(a,b)] == puzzle[SUDOKU_INDEX(a,i)])
-					return FALSE;
+					return false;
 			}
 	for (a = 0; a < 9; a += 3)
 		for (b = 0; b < 9; b += 3)
@@ -307,11 +307,11 @@ int CheckSudoku(int* puzzle) {
 							if (puzzle[SUDOKU_INDEX(r,c)]
 									== puzzle[SUDOKU_INDEX(i,n)] && r != i && c
 									!= n)
-								return FALSE;
+								return false;
 	for (a = 0; a < 81; ++a)
 		if (puzzle[a] == 0)
-			return FALSE;
-	return TRUE;
+			return false;
+	return true;
 }
 
 //Count of numbers left in the puzzle

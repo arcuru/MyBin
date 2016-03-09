@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
             maxprob = puzzleid;
         }
         //PrintSudoku(puzzle);
-        if (CheckSudoku(puzzle) == TRUE) {
+        if (CheckSudoku(puzzle) == true) {
             //Puzzle solved correctly
             ++solved;
             if (verbose == 1) {

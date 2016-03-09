@@ -398,17 +398,17 @@ uint64_t* primeFactorsE_u64(uint64_t N)
 
 //Checks a single number for primality
 //Must be within range of input list
-//Returns TRUE if prime, FALSE if not
+//Returns true if prime, false if not
 
 int isPrimeE(int n, const uint8_t* primes)
 {
 	if (n <= 6) {
 		if (n == 2 || n == 3 || n == 5)
-			return TRUE;
-		return FALSE;
+			return true;
+		return false;
 	}
 	if (!(n & 1) || (n%3 == 0))
-		return FALSE;
+		return false;
 	switch (n % 30) {
 	case 1:
 		return !(primes[n / 30] & 1);
@@ -427,88 +427,88 @@ int isPrimeE(int n, const uint8_t* primes)
 	case 29:
 		return !(primes[n / 30] & 128);
 	}
-	return FALSE;
+	return false;
 }
 
 int isPrime(int n)
 {
 	if (n < 10) {
 		if (n < 2)
-			return FALSE;
+			return false;
 		if (n < 4)
-			return TRUE;
+			return true;
 		if (!(n & 1))
-			return FALSE;
+			return false;
 		if (n < 9)
-			return TRUE;
-		return FALSE;
+			return true;
+		return false;
 	}
 	if (!(n & 1))
-		return FALSE;
+		return false;
 	if (!(n % 3))
-		return FALSE;
+		return false;
 	if (!(n % 5))
-		return FALSE;
+		return false;
 	int f = 7;
 	while (f * f <= n) {
 		if (!(n % f))
-			return FALSE;
+			return false;
 		if (!(n % (f += 4)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 2)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 4)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 2)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 4)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 6)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 2)))
-			return FALSE;
+			return false;
 		f += 6;
 	}
-	return TRUE;
+	return true;
 }
 
 int isPrime_u64(uint64_t n) {
 	if (n < 10) {
 		if (n < 2)
-			return FALSE;
+			return false;
 		if (n < 4)
-			return TRUE;
+			return true;
 		if (!(n & 1))
-			return FALSE;
+			return false;
 		if (n < 9)
-			return TRUE;
-		return FALSE;
+			return true;
+		return false;
 	}
 	if (!(n & 1))
-		return FALSE;
+		return false;
 	if (!(n % 3))
-		return FALSE;
+		return false;
 	if (!(n % 5))
-		return FALSE;
+		return false;
 	uint64_t f = 7;
 	while (f * f <= n) {
 		if (!(n % f))
-			return FALSE;
+			return false;
 		if (!(n % (f += 4)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 2)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 4)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 2)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 4)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 6)))
-			return FALSE;
+			return false;
 		if (!(n % (f += 2)))
-			return FALSE;
+			return false;
 		f += 6;
 	}
-	return TRUE;
+	return true;
 }

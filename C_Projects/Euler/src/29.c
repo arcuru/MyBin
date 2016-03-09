@@ -44,7 +44,7 @@ static void makeArray()
     }
 }
 
-static bool PrimeFactorCheck(int a, int b) //TRUE if it matches something else
+static bool PrimeFactorCheck(int a, int b) //true if it matches something else
 {
     if (factorarray[a][0] == 0)
         return false;

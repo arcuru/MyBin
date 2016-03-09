@@ -92,10 +92,10 @@ int GetMicrosecondClock()
     struct timeval tv;
     gettimeofday(&tv, 0);
     static int startsec = 0;
-    static char first = TRUE;
+    static char first = true;
     if (first && 0 == startsec) {
         startsec = tv.tv_sec;
-        first = FALSE;
+        first = false;
     }
     return tv.tv_sec * 1000000 + tv.tv_usec;
 }

@@ -15,12 +15,12 @@ int isPerm(int a, int b)
     int n;
     for (n=0; n<10; n++) {
         if (lista[n]!=listb[n]) {
-            return FALSE;
+            return false;
         }
     }
     free(lista);
     free(listb);
-    return TRUE;
+    return true;
 }
 
 int64_t Euler_49()

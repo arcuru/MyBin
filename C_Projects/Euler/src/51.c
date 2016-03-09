@@ -69,11 +69,11 @@ static void Filter()
     for (n = 0; n < 7; n++) {
         Array[n] = Number[n];
     }
-    int end = FALSE;
+    int end = false;
     while (1) {
         for (n = 1; n <= 7; n++) {
             if (n == 7) {
-                end = TRUE;
+                end = true;
                 break;
             }
             if (Array[n] > 9)

@@ -2,14 +2,7 @@
 #define UTILS_H
 
 #include <stdint.h>
-
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
+#include <stdbool.h>
 
 int Length_int(int);
 int Length_u64(uint64_t);

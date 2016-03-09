@@ -504,9 +504,9 @@ static puzzle_struct* RemoveBox(puzzle_struct* puz, int rowbox, int colbox,
 static int CheckSudoku_Bits(puzzle_struct* puz)
 {
     if (puz == nullptr)
-        return FALSE;
+        return false;
     if ((puz->body == nullptr) || (puz->value != 81))
-        return FALSE;
+        return false;
 	assert( GetValue(puz) == 81 );
     int a, b, r, c;
     int maska = 0, maskb = 0;
@@ -516,7 +516,7 @@ static int CheckSudoku_Bits(puzzle_struct* puz)
             maskb |= puz->body[SUDOKU_INDEX(b, a)];
         }
         if ((maska != mask) || (maskb != mask))
-            return FALSE;
+            return false;
         maska = 0;
         maskb = 0;
     }
@@ -528,11 +528,11 @@ static int CheckSudoku_Bits(puzzle_struct* puz)
                     maska |= puz->body[SUDOKU_INDEX(r, c)];
                 }
             if (maska != mask)
-                return FALSE;
+                return false;
             maska = 0;
         }
 
-    return TRUE;
+    return true;
 }
 
 //Returns # of #s left in bitspecification
@@ -604,15 +604,15 @@ void PrintSudoku_Bits(puzzle_struct* puz) {
 int CheckSudoku(int* puzzle)
 {
     if (puzzle == nullptr)
-        return FALSE;
+        return false;
     int a, b, i, r, c, n;
     for (a = 0; a < 9; a++)
         for (b = 0; b < 9; b++)
             for (i = b + 1; i < 9; i++) {
                 if (puzzle[SUDOKU_INDEX(b, a)] == puzzle[SUDOKU_INDEX(i, a)])
-                    return FALSE;
+                    return false;
                 if (puzzle[SUDOKU_INDEX(a, b)] == puzzle[SUDOKU_INDEX(a, i)])
-                    return FALSE;
+                    return false;
             }
     for (a = 0; a < 9; a += 3)
         for (b = 0; b < 9; b += 3)
@@ -623,11 +623,11 @@ int CheckSudoku(int* puzzle)
                             if (puzzle[SUDOKU_INDEX(r, c)]
                                     == puzzle[SUDOKU_INDEX(i, n)] && r != i && c
                                     != n)
-                                return FALSE;
+                                return false;
     for (a = 0; a < 81; ++a)
         if (puzzle[a] == 0)
-            return FALSE;
-    return TRUE;
+            return false;
+    return true;
 }
 
 //Prints the puzzle

@@ -1,6 +1,7 @@
 #ifndef PRIMES_H
 #define PRIMES_H
 #include <stdint.h>
+#include <stdbool.h>
 
 /*
  * Sieve of Eratosthenes
@@ -61,13 +62,5 @@ int isPrimeE(int, const uint8_t*);
  */
 int isPrime(int);
 int isPrime_u64(uint64_t);
-
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
 
 #endif

@@ -6,10 +6,10 @@ static gint configure_event(GtkWidget *widget, GdkEventConfigure *event) {
 
     pixmap = gdk_pixmap_new(widget->window, widget->allocation.width,
             widget->allocation.height, -1);
-    gdk_draw_rectangle(pixmap, widget->style->white_gc, TRUE, 0, 0,
+    gdk_draw_rectangle(pixmap, widget->style->white_gc, true, 0, 0,
             widget->allocation.width, widget->allocation.height);
 
-    return TRUE;
+    return true;
 }
 
 static gint expose_event(GtkWidget *widget, GdkEventExpose *event) {
@@ -17,7 +17,7 @@ static gint expose_event(GtkWidget *widget, GdkEventExpose *event) {
             widget)], pixmap, event->area.x, event->area.y, event->area.x,
             event->area.y, event->area.width, event->area.height);
 
-    return FALSE;
+    return false;
 }
 
 static gint key_press_event(GtkWidget *widget, GdkEventKey *event) {
@@ -34,7 +34,7 @@ static gint key_press_event(GtkWidget *widget, GdkEventKey *event) {
 
 gboolean on_window_delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
     //gtk_main_quit();
-    return FALSE; //Propagate event
+    return false; //Propagate event
 }
 
 void on_window_destroy(GtkObject *object, gpointer data) {
@@ -53,5 +53,5 @@ gboolean InitCallback() {
             on_window_delete_event), NULL);
     g_signal_connect(G_OBJECT(window), "destroy",
             GTK_SIGNAL_FUNC(on_window_destroy), NULL);
-    return TRUE;
+    return true;
 }

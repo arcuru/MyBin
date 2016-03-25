@@ -4,6 +4,7 @@
 #include <gtk-2.0/gtk/gtk.h>
 #include <gtk-2.0/gdk/gdkkeysyms.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 extern GtkWidget *window;
 extern GdkPixmap *pixmap;

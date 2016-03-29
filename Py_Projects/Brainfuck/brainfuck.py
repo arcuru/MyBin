@@ -109,7 +109,8 @@ class Brainfuck:
 
 		elif ',' == current:
 			# Read a character
-			print 'debug'
+                        self.array[self.pointer] = ord(raw_input("\nGimme a character: ")[0])
+                        
 
 		elif '=' == current:
 			return 1

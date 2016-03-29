@@ -115,11 +115,6 @@ class Brainfuck:
 		elif '=' == current:
 			return 1
 
-		else:
-			# Nothing should happen
-			# If debug print current
-			print 'No Command'
-
 		if self.progplace == len(self.prog):
 			return 1
 		return 0
@@ -141,8 +136,7 @@ class Brainfuck:
 	
 
 if __name__ == '__main__':
-	interp = Brainfuck('hello.bf')
-	#interp.printState()
+	interp = Brainfuck(sys.argv[1])
 	interp.run()
 
 

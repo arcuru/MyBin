@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cassert>
 #include <cstdlib>
+#include <vector>
 
 #define NDEBUG
 #ifdef DEBUG
@@ -11,7 +12,6 @@
 Primes::Primes()
 {
 	maxVal = maxList = 0;
-	pList = nullptr;
 	pSieve = nullptr;
 }
 
@@ -20,13 +20,11 @@ Primes::Primes(int n)
 	pSieve = SieveOfEratosthenes(n);
 	maxVal = n;
 	maxList = 0;
-	pList = nullptr;
 }
 
 Primes::~Primes()
 {
 	free(pSieve);
-	free(pList);
 }
 
 bool Primes::isPrime(int n) const
@@ -91,14 +89,15 @@ bool Primes::isPrime(int n) const
 	return true;
 }
 
-int* Primes::getList(int end)
+std::vector<int> Primes::getList(int end)
 {
 	if (-1 == end)
 		end = maxVal;
 	if (end <= maxList)
 		return pList;
-	else if (end > maxVal)
-		return nullptr;
+	// Need to add error checking for if end is too high
+	//else if (end > maxVal)
+	//	return nullptr;
 	pList = SE_List(end, pSieve);
 	maxList = end;
 	return pList;
@@ -243,29 +242,22 @@ uint8_t* Primes::SieveOfEratosthenes(int N) const
 	return primes;
 }
 
-//Returns array filled with primes from 2 to N
+//Returns vector filled with primes from 2 to N
 //Index 0 starts off with 2
-//Fills an extra place with value of 0 for terminator
-#define pLhelp(x)	if (x>N) break; list[count]=x; count++; break;
-int* Primes::SE_List(int N, const uint8_t* prime) const
+#define pLhelp(x)	if (x>N) break; list.push_back(x); break;
+std::vector<int> Primes::SE_List(int N, const uint8_t* prime) const
 {
 	int primeEnd = (N / 30) + 1;
 	int n;
 	uint8_t s;
-	int top = 3;
-	for (n = 0; n <= primeEnd; n++) //Counts primes
-		for (s = 1; s; s += s)
-			if (!(prime[n] & s))
-				top++;
 
-	int* list = (int*) calloc(top, sizeof(int));
-	if (!list) {
-		return nullptr;
-	}
-	int count = 3;
-	list[0] = 2;
-	list[1] = 3;
-	list[2] = 5;
+	std::vector<int> list({2,3,5});
+
+	// Reserve an approximate length
+	// This is a formula for the upper bound of pi(x)
+	int upper = (N/log(N))*(1 + (1.2762/log(N)));
+	list.reserve(upper);
+
 	for (n = 0; n < primeEnd; n++) {
 		for (s = 1; s; s += s) {
 			if (!(prime[n] & s)) {
@@ -290,7 +282,6 @@ int* Primes::SE_List(int N, const uint8_t* prime) const
 			}
 		}
 	}
-	list[count] = 0;
 	return list;
 }
 
@@ -518,4 +509,3 @@ int* Primes::SS_List(int N, const uint8_t* primes) const
 	list[current] = 0;
 	return list;
 }
-

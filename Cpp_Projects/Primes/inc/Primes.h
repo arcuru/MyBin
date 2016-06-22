@@ -12,6 +12,7 @@ class Primes
 		~Primes();
 		bool isPrime(int n) const;
 		std::vector<int> getList(int end = -1);
+		int pi(int n = -1);
 
 	protected:
 		uint8_t* SieveOfEratosthenes(int N) const;

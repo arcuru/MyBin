@@ -1,8 +1,8 @@
 #include "Primes.h"
 #include <cmath>
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
-#include <vector>
 
 #define NDEBUG
 #ifdef DEBUG
@@ -101,6 +101,33 @@ std::vector<int> Primes::getList(int end)
 	pList = SE_List(end, pSieve);
 	maxList = end;
 	return pList;
+}
+
+int Primes::pi(int n)
+{
+	// Counts the number of primes less than or equal to n
+	if (-1 == n)
+		n = maxVal;
+	if (n <= maxList) {
+		std::vector<int>::iterator low;
+		low = std::lower_bound (pList.begin(), pList.end(), n);
+		if (Primes::isPrime(*low))
+			low++;
+		return low - pList.begin();
+	}
+	if (n <= maxVal) {
+		// Count elements in psieve
+		// TODO: account for getting to the exact right number
+		int primeEnd = (n / 30) + 1;
+		int top = 3;
+		for (int x = 0; x <= primeEnd; x++) //Counts primes
+			for (int s = 1; s; s += s)
+				if (!(pSieve[x] & s))
+					top++;
+		return top;
+	}
+	// Estimate if it's higher than we have numbers for
+	return n / (log(n) - 1);
 }
 
 inline void mark(int *mod, int *n, uint8_t* primes)

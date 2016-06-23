@@ -8,23 +8,23 @@ class Primes
 {
 	public:
 		Primes();
-		Primes(int n);
+		Primes(int64_t n);
 		~Primes();
-		bool isPrime(int n) const;
-		std::vector<int> getList(int end = -1);
-		int pi(int n = -1);
+		bool isPrime(int64_t n) const;
+		std::vector<int64_t> getList(int64_t end = -1);
+		int64_t pi(int64_t n = -1);
 
 	protected:
-		std::vector<uint8_t> SieveOfEratosthenes(int N) const;
-		std::vector<int> SE_List(int N, const std::vector<uint8_t> prime) const;
+		std::vector<uint8_t> SieveOfEratosthenes(int64_t N) const;
+		std::vector<int64_t> SE_List(int64_t N, const std::vector<uint8_t> prime) const;
 
 		//uint8_t* SieveOfSundarem(int N) const;
 		//int* SS_List(int N, const uint8_t* primes) const;
 
 	private:
-		int maxVal;
-		int maxList;
-		std::vector<int> pList;
+		int64_t maxVal;
+		int64_t maxList;
+		std::vector<int64_t> pList;
 		std::vector<uint8_t> pSieve;
 };
 

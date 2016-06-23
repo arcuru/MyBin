@@ -14,7 +14,7 @@ Primes::Primes()
 	maxVal = maxList = 0;
 }
 
-Primes::Primes(int n)
+Primes::Primes(int64_t n)
 {
 	pSieve = SieveOfEratosthenes(n);
 	maxVal = n;
@@ -26,7 +26,7 @@ Primes::~Primes()
 
 }
 
-bool Primes::isPrime(int n) const
+bool Primes::isPrime(int64_t n) const
 {
 	if (n < 10) {
 		if (n < 2)
@@ -65,7 +65,7 @@ bool Primes::isPrime(int n) const
 				return !(pSieve[n / 30] & 0x80);
 			}
 	}
-	int f = 7;
+	int64_t f = 7;
 	while (f * f <= n) {
 		if (!(n % f))
 			return false;
@@ -88,7 +88,7 @@ bool Primes::isPrime(int n) const
 	return true;
 }
 
-std::vector<int> Primes::getList(int end)
+std::vector<int64_t> Primes::getList(int64_t end)
 {
 	if (-1 == end)
 		end = maxVal;
@@ -102,13 +102,13 @@ std::vector<int> Primes::getList(int end)
 	return pList;
 }
 
-int Primes::pi(int n)
+int64_t Primes::pi(int64_t n)
 {
 	// Counts the number of primes less than or equal to n
 	if (-1 == n)
 		n = maxVal;
 	if (n <= maxList) {
-		std::vector<int>::iterator low;
+		std::vector<int64_t>::iterator low;
 		low = std::lower_bound (pList.begin(), pList.end(), n);
 		if (Primes::isPrime(*low))
 			low++;
@@ -129,7 +129,7 @@ int Primes::pi(int n)
 	return n / (log(n) - 1);
 }
 
-inline void mark(int *mod, int *n, std::vector<uint8_t>* primes)
+inline void mark(int64_t *mod, int64_t *n, std::vector<uint8_t>* primes)
 {
 	if(*mod>30) {
 		(*mod)-=30;
@@ -147,15 +147,15 @@ inline void mark(int *mod, int *n, std::vector<uint8_t>* primes)
 	}
 }
 
-std::vector<uint8_t> Primes::SieveOfEratosthenes(int N) const
+std::vector<uint8_t> Primes::SieveOfEratosthenes(int64_t N) const
 {
-	int SQRTN = (int) sqrt(N);
-	int sqrtEnd = (SQRTN / 30) + 1;
-	int primeEnd = (N / 30) + 1;
+	int64_t SQRTN = (int64_t) sqrt(N);
+	int64_t sqrtEnd = (SQRTN / 30) + 1;
+	int64_t primeEnd = (N / 30) + 1;
 	std::vector<uint8_t> primes(primeEnd + 1, 0);
-	int n, s, num, num1, num2, num4, num6;
-	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
-	int incr2, incr4, incr6, s30;
+	int64_t n, s, num, num1, num2, num4, num6;
+	int64_t mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
+	int64_t incr2, incr4, incr6, s30;
 	uint8_t k;
 	primes[0] |= 1;
 	for (n = 0, num1 = 0; n <= sqrtEnd; num1 += 30, n++) {
@@ -264,14 +264,15 @@ std::vector<uint8_t> Primes::SieveOfEratosthenes(int N) const
 
 //Returns vector filled with primes from 2 to N
 //Index 0 starts off with 2
+// TODO: Write as a template function for the option to use small int sizes
 #define pLhelp(x)	if (x>N) break; list.push_back(x); break;
-std::vector<int> Primes::SE_List(int N, const std::vector<uint8_t> prime) const
+std::vector<int64_t> Primes::SE_List(int64_t N, const std::vector<uint8_t> prime) const
 {
-	int primeEnd = (N / 30) + 1;
-	int n;
+	int64_t primeEnd = (N / 30) + 1;
+	int64_t n;
 	uint8_t s;
 
-	std::vector<int> list({2,3,5});
+	std::vector<int64_t> list({2,3,5});
 
 	// Reserve an approximate length
 	// This is a formula for the upper bound of pi(x)

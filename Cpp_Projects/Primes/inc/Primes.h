@@ -15,17 +15,17 @@ class Primes
 		int pi(int n = -1);
 
 	protected:
-		uint8_t* SieveOfEratosthenes(int N) const;
-		std::vector<int> SE_List(int N, const uint8_t* prime) const;
+		std::vector<uint8_t> SieveOfEratosthenes(int N) const;
+		std::vector<int> SE_List(int N, const std::vector<uint8_t> prime) const;
 
-		uint8_t* SieveOfSundarem(int N) const;
-		int* SS_List(int N, const uint8_t* primes) const;
+		//uint8_t* SieveOfSundarem(int N) const;
+		//int* SS_List(int N, const uint8_t* primes) const;
 
 	private:
 		int maxVal;
 		int maxList;
 		std::vector<int> pList;
-		uint8_t* pSieve;
+		std::vector<uint8_t> pSieve;
 };
 
 #endif /* PRIMES_H */

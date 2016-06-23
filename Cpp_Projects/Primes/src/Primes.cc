@@ -12,7 +12,6 @@
 Primes::Primes()
 {
 	maxVal = maxList = 0;
-	pSieve = nullptr;
 }
 
 Primes::Primes(int n)
@@ -24,7 +23,7 @@ Primes::Primes(int n)
 
 Primes::~Primes()
 {
-	free(pSieve);
+
 }
 
 bool Primes::isPrime(int n) const
@@ -46,7 +45,7 @@ bool Primes::isPrime(int n) const
 		return false;
 	if (!(n % 5))
 		return false;
-	if ( n < maxVal && pSieve != nullptr ) {
+	if ( n < maxVal && !pSieve.empty() ) {
 		switch (n % 30) {
 			case 1:
 				return !(pSieve[n / 30] & 0x01);
@@ -130,36 +129,30 @@ int Primes::pi(int n)
 	return n / (log(n) - 1);
 }
 
-inline void mark(int *mod, int *n, uint8_t* primes)
+inline void mark(int *mod, int *n, std::vector<uint8_t>* primes)
 {
 	if(*mod>30) {
 		(*mod)-=30;
 		(*n)+=1;
 	}
 	switch(*mod) {
-		case 1:		primes[*n] |= 0x01;	break;
-		case 7:		primes[*n] |= 0x02;	break;
-		case 11:	primes[*n] |= 0x04;	break;
-		case 13:	primes[*n] |= 0x08;	break;
-		case 17:	primes[*n] |= 0x10;	break;
-		case 19:	primes[*n] |= 0x20;	break;
-		case 23:	primes[*n] |= 0x40;	break;
-		case 29:	primes[*n] |= 0x80;	break;
+		case 1:		(*primes)[*n] |= 0x01;	break;
+		case 7:		(*primes)[*n] |= 0x02;	break;
+		case 11:	(*primes)[*n] |= 0x04;	break;
+		case 13:	(*primes)[*n] |= 0x08;	break;
+		case 17:	(*primes)[*n] |= 0x10;	break;
+		case 19:	(*primes)[*n] |= 0x20;	break;
+		case 23:	(*primes)[*n] |= 0x40;	break;
+		case 29:	(*primes)[*n] |= 0x80;	break;
 	}
 }
 
-uint8_t* Primes::SieveOfEratosthenes(int N) const
+std::vector<uint8_t> Primes::SieveOfEratosthenes(int N) const
 {
 	int SQRTN = (int) sqrt(N);
 	int sqrtEnd = (SQRTN / 30) + 1;
 	int primeEnd = (N / 30) + 1;
-	uint8_t* primes = (uint8_t*) calloc(primeEnd + 1, sizeof(uint8_t));
-	if (!primes) {
-#ifdef DEBUG
-		std::cout << "Could not allocate " << primeEnd+1 << " bytes." << std::endl;
-#endif
-		return nullptr;
-	}
+	std::vector<uint8_t> primes(primeEnd + 1, 0);
 	int n, s, num, num1, num2, num4, num6;
 	int mod = 0, mod2 = 0, mod22 = 0, mod23 = 0;
 	int incr2, incr4, incr6, s30;
@@ -238,28 +231,28 @@ uint8_t* Primes::SieveOfEratosthenes(int N) const
 				incr6 = num6 / 30;
 				s30 = s / 30;
 				switch (k)do {
-					case 0x01: mark(&mod,&s30,primes); s+=num6;
+					case 0x01: mark(&mod,&s30,&primes); s+=num6;
 					if (s>=N) break;
 					s30+=incr6; mod+=mod23;
-					case 0x02: mark(&mod,&s30,primes); s+=num4;
+					case 0x02: mark(&mod,&s30,&primes); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 0x04: mark(&mod,&s30,primes); s+=num2;
+					case 0x04: mark(&mod,&s30,&primes); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
-					case 0x08: mark(&mod,&s30,primes); s+=num4;
+					case 0x08: mark(&mod,&s30,&primes); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 0x10: mark(&mod,&s30,primes); s+=num2;
+					case 0x10: mark(&mod,&s30,&primes); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
-					case 0x20: mark(&mod,&s30,primes); s+=num4;
+					case 0x20: mark(&mod,&s30,&primes); s+=num4;
 					if (s>=N) break;
 					s30+=incr4; mod+=mod22;
-					case 0x40: mark(&mod,&s30,primes); s+=num6;
+					case 0x40: mark(&mod,&s30,&primes); s+=num6;
 					if (s>=N) break;
 					s30+=incr6; mod+=mod23;
-					case 0x80: mark(&mod,&s30,primes); s+=num2;
+					case 0x80: mark(&mod,&s30,&primes); s+=num2;
 					if (s>=N) break;
 					s30+=incr2; mod+=mod2;
 				}while(1);
@@ -272,7 +265,7 @@ uint8_t* Primes::SieveOfEratosthenes(int N) const
 //Returns vector filled with primes from 2 to N
 //Index 0 starts off with 2
 #define pLhelp(x)	if (x>N) break; list.push_back(x); break;
-std::vector<int> Primes::SE_List(int N, const uint8_t* prime) const
+std::vector<int> Primes::SE_List(int N, const std::vector<uint8_t> prime) const
 {
 	int primeEnd = (N / 30) + 1;
 	int n;
@@ -496,7 +489,7 @@ uns64* primeFactorsE_uns64(uns64 N) {
 	list[s] = 0;
 	return list;
 }
-*/
+
 
 uint8_t* Primes::SieveOfSundarem(int N) const
 {
@@ -536,3 +529,4 @@ int* Primes::SS_List(int N, const uint8_t* primes) const
 	list[current] = 0;
 	return list;
 }
+*/

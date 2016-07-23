@@ -11,12 +11,14 @@ def Euler_120(bot=3,top=1000):
 		aa = a**2
 		bb = b
 		cc = c
-		totlist = []
+		maxval = 0
 		for n in range(1,2000):
-			totlist.append((bb+cc) % aa)
+			tmp = (bb + cc) % aa
+			if tmp > maxval:
+				maxval = tmp
 			bb *= b
 			cc *= c
-		total += max(totlist)
+		total += maxval
 
 	return total
 

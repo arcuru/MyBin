@@ -1,5 +1,4 @@
 #include "Euler.h"
-#include "Sort.h"
 #include "Utils.h"
 #include <stdlib.h>
 
@@ -11,6 +10,11 @@ static int64_t Sum(int64_t num)
         num /= 10;
     }
     return ans;
+}
+
+static int compare_int64(const void* lhs, const void* rhs)
+{
+    return ((int64_t)lhs > (int64_t)rhs);
 }
 
 int64_t Euler_119()
@@ -31,7 +35,7 @@ int64_t Euler_119()
             }
         }
     }
-    BubbleSort_s64(list, index);
+    qsort(list, index, sizeof(list[0]), &compare_int64);
     int count = 0;
     int64_t tmp = 0;
     for (n = 0; n < 50; n++) {

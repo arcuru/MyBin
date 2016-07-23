@@ -14,7 +14,6 @@ set (EXTRA_LIBS -pthread -lgomp -lgmp -lm)
 foreach(lib 
         Utils
         Sudoku
-        Sort
         Primes
         NumberTheory
     )

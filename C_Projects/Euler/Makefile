@@ -4,12 +4,10 @@ INCLUDE_DIR=-I./inc \
 			-I../Utils/inc \
 			-I../Primes/inc \
 			-I../NumberTheory/inc \
-			-I../Sort/inc \
 			-I../Sudoku/inc
 MYLIBS=../Utils/libUtils.a \
 	 ../Primes/libPrimes.a \
 	 ../NumberTheory/libNumberTheory.a \
-	 ../Sort/libSort.a \
 	 ../Sudoku/libSudoku.a
 LIBS=-pthread -lgomp -lgmp -lm $(MYLIBS) -O3
 HEADERS=./inc/Euler.h

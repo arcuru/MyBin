@@ -1,5 +1,6 @@
 #include "Euler.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int64_t Euler_341()
 {
@@ -15,7 +16,7 @@ int64_t Euler_341()
 	int64_t base = 1;
 	int64_t base3 = base * base * base;
 	int64_t n = limit * limit * limit;
-	printf("%lld\n",n);
+	printf("%ld\n",n);
 	while (base < limit) {
 		i++;
 		total += clist[i];
@@ -27,7 +28,7 @@ int64_t Euler_341()
 		if (i == endlist-1) {
 			if (j > 65000) {
 				puts("Too big\n");
-				printf("%lld\n",base);
+				printf("%ld\n",base);
 				return (int64_t)base;
 			}
 			clist[i+1]=j;

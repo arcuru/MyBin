@@ -1,5 +1,4 @@
 #include "Euler.h"
-#include "Utils.h"
 
 static int sumFac(int n)
 {
@@ -21,7 +20,7 @@ int64_t Euler_34()
 {
     int p = 3;
     int total = 0;
-    while (p < Length_int(p) * sumFac(9)) {
+    while (p < 7 * sumFac(9)) {
         if (sumFac(p) == p)
             total += p;
         p++;

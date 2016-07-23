@@ -1,25 +1,19 @@
 #include "Euler.h"
-#include "Utils.h"
-#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 // 0 - Multiple at 1 place
 // 1 - Works
 // 2 - Keep going
-static int helper(int64_t n)
+static int check(int* arr)
 {
-    int i, ans = 1;
-    int array[10];
-    Clear(array, 10);
-    while (n > 0) {
-        array[n % 10]++;
-        n /= 10;
-    }
-    if (array[0])
+    int i, ans=1;
+    if (arr[0])
         return 0;
     for (i = 1; i < 10; i++) {
-        if (array[i] > 1)
+        if (arr[i] > 1)
             return 0;
-        if (array[i] == 0)
+        if (arr[i] == 0)
             ans = 2;
     }
     return ans;
@@ -29,18 +23,25 @@ int64_t Euler_38()
 {
     int i;
     int64_t max = 0;//918273645;
+    int* arr = calloc(10, sizeof(int));
     for (i = 1; i <= 9876; i++) {
         int64_t total = 0;
         int q;
-        for (q = 1; helper(total) == 2; q++) {
+        for (q = 1; check(arr) == 2; q++) {
             int n = q * i;
-            total *= pow(10, Length_int(n));
-            total += n;
+            while (n > 0) {
+                arr[n % 10]++;
+                total *= 10;
+                n /= 10;
+            }
+            total += q * i;
         }
-        if (helper(total) == 1) {
+        if (check(arr) == 1) {
             if (total > max)
                 max = total;
         }
+        memset(arr, 0, 10*sizeof(int));
     }
+    free(arr);
     return (int64_t) max;
 }

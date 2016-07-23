@@ -1,6 +1,6 @@
 #include "Euler.h"
-#include "Utils.h"
 #include "NumberTheory.h"
+#include <string.h>
 
 static int check(int n, int* list)
 {
@@ -36,7 +36,7 @@ int64_t Euler_74()
         }
         if (dex == 60)
             total++;
-        Clear(list, 60);
+        memset(list, 0, 60*sizeof(int));
     }
     return (int64_t) total;
 }

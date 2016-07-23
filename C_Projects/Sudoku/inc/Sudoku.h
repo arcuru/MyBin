@@ -8,9 +8,6 @@
 #define nullptr NULL
 #endif
 
-// Define only if we are not debugging
-#define NDEBUG
-
 //Solves an input puzzle defined by array of length 81
 //placement is defined according to SUDOKU_INDEX(r,c)
 int* SudokuSolver(int*);

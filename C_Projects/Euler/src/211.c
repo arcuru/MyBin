@@ -8,8 +8,9 @@ int64_t Euler_211()
     uint64_t* list = (uint64_t*) calloc(N, sizeof (uint64_t));
     if (!list)
         return 0;
-    uint64_t n, s, q;
+    uint64_t n;
     for (n = 1; n < N; n++) {
+        uint64_t s, q;
         s = n;
         q = n * n;
         while (s < N) {

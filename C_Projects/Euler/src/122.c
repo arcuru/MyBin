@@ -41,5 +41,6 @@ int64_t Euler_122()
         //printf("%d\n", min);
     }
 
+    free(list);
     return (int64_t) total;
 }

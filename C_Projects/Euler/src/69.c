@@ -9,9 +9,8 @@ int64_t Euler_69()
     int* list = EulersTotient(N);
     double max = 0;
     int maxN = 0, n;
-    double tmp;
     for (n = 2; n <= N; n++) {
-        tmp = ((double) n) / list[n];
+        double tmp = ((double) n) / list[n];
         if (tmp > max) {
             maxN = n;
             max = tmp;

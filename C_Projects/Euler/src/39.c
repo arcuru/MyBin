@@ -3,19 +3,15 @@
 
 int64_t Euler_39()
 {
-    int a, b, c, check, csq, val, maxval = 0, maxcount = 0;
-    int* plist = (int*) malloc(sizeof(int) * 1000);
-    for (check = 0; check <= 1000; check++) {
-        plist[check] = 0;
-    }
-    for (c = 1; c < 500; c++) {
-        csq = c * c;
+    int N = 1001;
+    int a, b, c, check, val, maxval = 0, maxcount = 0;
+    int* plist = (int*) calloc(sizeof(int), N);
+    for (c = 1; 2 * c < N; c++) {
+        int csq = c * c;
         for (a = 1; a < c; a++) {
-            for (b = 1; b < (1000 - c - a); b++) {
+            for (b = 1; b < (N - c - a); b++) {
                 val = (a * a) + (b * b);
-                if (a + b + c > 999) {
-                    break;
-                } else if (val < csq) {
+                if (val < csq) {
                     continue;
                 } else if (val > csq) {
                     break;
@@ -27,7 +23,7 @@ int64_t Euler_39()
         }
     }
 
-    for (check = 0; check <= 1000; check++) {
+    for (check = 0; check < N; check++) {
         if (plist[check] > maxcount) {
             maxval = check;
             maxcount = plist[check];

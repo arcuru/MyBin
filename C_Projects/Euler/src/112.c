@@ -5,8 +5,8 @@ static int isBouncy(int n)
     int status = 0;
     int a = n % 10;
     n /= 10;
-    int b;
     while (n != 0) {
+        int b;
         b = n % 10;
         if (status == 0) {
             if (b > a)

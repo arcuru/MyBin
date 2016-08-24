@@ -39,10 +39,11 @@ int main(int argc, char* argv[])
             if (tmp > 0 && tmp < 301) {
                 Euler_Compute_Ans(tmp);
             }
-            int n;
-            if (*argv[i] == '-' && atoi(argv[i - 1]) && atoi(argv[i + 1]))
+            if (*argv[i] == '-' && atoi(argv[i - 1]) && atoi(argv[i + 1])) {
+                int n;
                 for (n = 1 + atoi(argv[i - 1]); n < atoi(argv[i + 1]); n++)
                     Euler_Compute_Ans(n);
+            }
         }
         if (!suppress_time)
             return 0;

@@ -25,5 +25,6 @@ int64_t Euler_47()
 		else
 			count = 0;
 	}
+    free(factors);
 	return (int64_t) (i - 3);
 }

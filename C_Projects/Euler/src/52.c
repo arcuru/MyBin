@@ -28,7 +28,7 @@ int64_t Euler_52()
     int d[10];
     int num = 1000;
     int bignum = 10000;
-    while (1 == 1) {
+    while (true) {
         while (num <= bignum / 6) {
             num++;
             int a[10];

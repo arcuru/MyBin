@@ -1,11 +1,10 @@
 #include "Euler.h"
 #include "Primes.h"
-#include <stdlib.h>
 
 int isPerm(int a, int b)
 {
-    int* lista = (int*)calloc(10,sizeof(int));
-    int* listb = (int*)calloc(10,sizeof(int));
+    int lista[] = {0,0,0,0,0,0,0,0,0,0};
+    int listb[] = {0,0,0,0,0,0,0,0,0,0};
     while ((a!=0) && (b!=0)) {
         lista[a%10]++;
         a/=10;
@@ -18,8 +17,6 @@ int isPerm(int a, int b)
             return false;
         }
     }
-    free(lista);
-    free(listb);
     return true;
 }
 

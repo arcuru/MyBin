@@ -10,13 +10,13 @@ int64_t Euler_234()
     uint32_t* primeList = primeListE(primetop);
     uint64_t total=0;
     int index=0;
-    uint64_t lps=0;
     uint64_t ups=primeList[index++];
     uint64_t lps2=0;
     uint64_t ups2=ups*ups;
     uint64_t tmp1=lps2;
     uint64_t tmp2=ups2;
     while ( lps2 <= N ) {
+        uint64_t lps=0;
         lps=ups;
         ups=primeList[index++];
         lps2=ups2;

@@ -4,9 +4,10 @@
 
 static void BubbleSort(int* d, int n, int* thek)
 {
-    int k, tmp;
+    int tmp;
     int i = 1;
     while (i < n) {
+        int k;
         k = i;
         while ((k > 0) && (d[k] < d[k - 1])) {
             tmp = d[k];

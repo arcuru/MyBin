@@ -17,12 +17,16 @@ int64_t Euler_96()
     for (i = 0; i < 50; i++) {
         if (nullptr == fgets(line, sizeof(line), data)) {
 			printf("Error reading from file.\n");
+            free(puzzle);
+            fclose(data);
 			return -1;
 		}
         int n;
         for (n = 0; n < 9; n++) {
 			if (nullptr == fgets(line, sizeof(line), data)) {
 				printf("Error reading from file.\n");
+                free(puzzle);
+                fclose(data);
 				return -1;
 			}
             int s;

@@ -2,13 +2,13 @@
 #include "NumberTheory.h"
 #include <string.h>
 
-static int check(int n, int* list)
+static bool check(int n, int* list)
 {
     int i;
-    for (i = 0; list[i] > 0 && i < 60; i++)
+    for (i = 0; i < 60 && list[i] > 0; i++)
         if (n == list[i])
-            return 1;
-    return 0;
+            return true;
+    return false;
 }
 
 int64_t Euler_74()
